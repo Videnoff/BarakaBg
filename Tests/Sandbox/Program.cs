@@ -52,6 +52,7 @@
         {
             var sw = Stopwatch.StartNew();
 
+            Console.WriteLine(DateTime.UtcNow.DayOfWeek);
             var settingsService = serviceProvider.GetService<ISettingsService>();
             Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
 
