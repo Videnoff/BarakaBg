@@ -1,9 +1,16 @@
 ﻿@using BarakaBg.Common
+@model BarakaBg.Web.ViewModels.Home.IndexViewModel
 @{
     this.ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>We have:</p>
+    <ul>
+        <li>Products: @Model.ProductsCount</li>
+        <li>Categories: @Model.CategoriesCount</li>
+        <li>Images: @Model.ImagesCount</li>
+        <li>Ingredients: @Model.IngredientsCount</li>
+    </ul>
 </div>
