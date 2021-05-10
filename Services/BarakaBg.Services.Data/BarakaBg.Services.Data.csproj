@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\BarakaBg.Data.Common\BarakaBg.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\BarakaBg.Data.Models\BarakaBg.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\BarakaBg.Web.ViewModels\BarakaBg.Web.ViewModels.csproj" />
     <ProjectReference Include="..\BarakaBg.Services.Mapping\BarakaBg.Services.Mapping.csproj" />
   </ItemGroup>
 

@@ -18,11 +18,9 @@
 
         public string ProductCode { get; set; }
 
-        public string Stock { get; set; }
+        public bool Stock { get; set; }
 
         public double Price { get; set; }
-
-
 
         public string Description { get; set; }
 
@@ -31,6 +29,10 @@
         public string Feedback { get; set; }
 
         public int CategoryId { get; set; }
+
+        public string AddedByUserId { get; set; }
+
+        public virtual ApplicationUser AddedByUser { get; set; }
 
         public virtual Category Category { get; set; }
 

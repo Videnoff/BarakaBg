@@ -173,6 +173,9 @@ namespace BarakaBg.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AddedByUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -192,6 +195,8 @@ namespace BarakaBg.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddedByUserId");
 
                     b.HasIndex("IsDeleted");
 
@@ -236,6 +241,9 @@ namespace BarakaBg.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("AddedByUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Brand")
                         .HasColumnType("nvarchar(max)");
 
@@ -272,10 +280,12 @@ namespace BarakaBg.Data.Migrations
                     b.Property<string>("ProductCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Stock")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Stock")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddedByUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -444,22 +454,34 @@ namespace BarakaBg.Data.Migrations
 
             modelBuilder.Entity("BarakaBg.Data.Models.Image", b =>
                 {
-                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "AddedByUser")
                         .WithMany()
+                        .HasForeignKey("AddedByUserId");
+
+                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
+                        .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AddedByUser");
 
                     b.Navigation("Product");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.Product", b =>
                 {
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "AddedByUser")
+                        .WithMany()
+                        .HasForeignKey("AddedByUserId");
+
                     b.HasOne("BarakaBg.Data.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AddedByUser");
 
                     b.Navigation("Category");
                 });
@@ -555,6 +577,8 @@ namespace BarakaBg.Data.Migrations
 
             modelBuilder.Entity("BarakaBg.Data.Models.Product", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618

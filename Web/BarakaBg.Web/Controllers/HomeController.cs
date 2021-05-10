@@ -4,30 +4,36 @@
     using System.Linq;
 
     using BarakaBg.Data;
+    using BarakaBg.Data.Common.Repositories;
+    using BarakaBg.Data.Models;
+    using BarakaBg.Services.Data;
     using BarakaBg.Web.ViewModels;
     using BarakaBg.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly IGetCountsService countsService;
 
-        public HomeController(ApplicationDbContext dbContext)
+        public HomeController(IGetCountsService countsService)
         {
-            this.dbContext = dbContext;
+            this.countsService = countsService;
         }
 
         public IActionResult Index()
         {
+            var countsDto = this.countsService.GetCounts();
+
+            // var viewModel = this.mapper.Map<IndexViewModel>(countsDto);
             var viewModel = new IndexViewModel
             {
-                CategoriesCount = this.dbContext.Categories.Count(),
-                ImagesCount = this.dbContext.Images.Count(),
-                IngredientsCount = this.dbContext.Ingredients.Count(),
-                ProductsCount = this.dbContext.Products.Count(),
+                CategoriesCount = countsDto.CategoriesCount,
+                ImagesCount = countsDto.ImagesCount,
+                IngredientsCount = countsDto.IngredientsCount,
+                ProductsCount = countsDto.ProductsCount,
             };
 
-            return this.View();
+            return this.View(viewModel);
         }
 
         public IActionResult Privacy()

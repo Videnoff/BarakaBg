@@ -13,6 +13,6 @@
 
         public string Name { get; set; }
 
-        public ICollection<ProductIngredient> Products { get; set; }
+        public virtual ICollection<ProductIngredient> Products { get; set; }
     }
 }
