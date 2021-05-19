@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BarakaBg.Data.Migrations
 {
-    public partial class AddProductsAndAllRelatedModels : Migration
+    public partial class OriginalUrlProduct : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -221,11 +221,12 @@ namespace BarakaBg.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Stock = table.Column<bool>(type: "bit", nullable: false),
+                    Stock = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OriginalUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     AddedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),

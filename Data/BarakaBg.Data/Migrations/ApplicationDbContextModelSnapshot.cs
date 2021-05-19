@@ -274,14 +274,17 @@ namespace BarakaBg.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OriginalUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
                     b.Property<string>("ProductCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Stock")
-                        .HasColumnType("bit");
+                    b.Property<string>("Stock")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

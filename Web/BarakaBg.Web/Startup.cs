@@ -8,11 +8,11 @@
     using BarakaBg.Data.Models;
     using BarakaBg.Data.Repositories;
     using BarakaBg.Data.Seeding;
+    using BarakaBg.Services;
     using BarakaBg.Services.Data;
     using BarakaBg.Services.Mapping;
     using BarakaBg.Services.Messaging;
     using BarakaBg.Web.ViewModels;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -68,6 +68,7 @@
             services.AddTransient<IGetCountsService, GetCountsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IProductsService, ProductsService>();
+            services.AddTransient<IBarakaBgScraperService, BarakaBgScraperService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

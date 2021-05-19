@@ -18,7 +18,7 @@
 
         public string ProductCode { get; set; }
 
-        public bool Stock { get; set; }
+        public string Stock { get; set; }
 
         public double Price { get; set; }
 
@@ -27,6 +27,8 @@
         public string Content { get; set; }
 
         public string Feedback { get; set; }
+
+        public string OriginalUrl { get; set; }
 
         public int CategoryId { get; set; }
 

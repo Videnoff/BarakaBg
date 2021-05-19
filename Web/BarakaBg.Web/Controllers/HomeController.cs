@@ -1,11 +1,6 @@
 ﻿namespace BarakaBg.Web.Controllers
 {
     using System.Diagnostics;
-    using System.Linq;
-
-    using BarakaBg.Data;
-    using BarakaBg.Data.Common.Repositories;
-    using BarakaBg.Data.Models;
     using BarakaBg.Services.Data;
     using BarakaBg.Web.ViewModels;
     using BarakaBg.Web.ViewModels.Home;

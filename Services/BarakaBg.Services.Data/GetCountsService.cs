@@ -5,7 +5,6 @@
     using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Data.Models;
-    using BarakaBg.Web.ViewModels.Home;
 
     public class GetCountsService : IGetCountsService
     {

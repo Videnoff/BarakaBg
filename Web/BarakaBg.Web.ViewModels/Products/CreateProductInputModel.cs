@@ -17,7 +17,7 @@
         public string ProductCode { get; set; }
 
         [Required]
-        public bool Stock { get; set; }
+        public string Stock { get; set; }
 
         [Required]
         [Range(1, 1000)]
