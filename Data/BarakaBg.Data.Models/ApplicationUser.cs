@@ -28,6 +28,16 @@ namespace BarakaBg.Data.Models
 
         public DateTime? DeletedOn { get; set; }
 
+        public string Name { get; set; }
+
+        public string Lastname { get; set; }
+
+        public string Town { get; set; }
+
+        public string Country { get; set; }
+
+        public string Address { get; set; }
+
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }

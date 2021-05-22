@@ -203,6 +203,10 @@
                 Console.WriteLine(e);
             }
 
+            /*
+             * TODO: Get Feedback
+             */
+
             // var feedback = document.QuerySelector("tab-review").GetElementsByTagName("div");
             // foreach (var element in feedback)
             // {
@@ -229,7 +233,6 @@
              * Get Image
              */
             var imageUrl = document.QuerySelector(".left.product-image > .image > img").GetAttribute("src");
-
             product.OriginalUrl = imageUrl;
 
             /*
@@ -289,7 +292,7 @@
                 */
                 var productCode = document
                     .QuerySelector(
-                        ".product-description > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2)")
+                        ".product-description > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2)")
                     .TextContent;
                 product.ProductCode = productCode;
                 /*
