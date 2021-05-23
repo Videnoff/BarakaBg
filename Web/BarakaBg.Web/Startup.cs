@@ -42,6 +42,31 @@
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddAuthentication()
+                .AddFacebook(fbOptions =>
+                    {
+                        fbOptions.AppId = "123456789";
+                        fbOptions.AppSecret = "987654321";
+                    })
+                .AddGoogle(ggOptions =>
+                {
+                    IConfigurationSection googleAuthSection = configuration.GetSection("123456789");
+
+                    ggOptions.ClientId = "123456789";
+                    ggOptions.ClientSecret = "987654321";
+                })
+                .AddMicrosoftAccount(msOptions =>
+                {
+                    msOptions.ClientId = "123456789";
+                    msOptions.ClientSecret = "987654321";
+                })
+                .AddTwitter(twOptions =>
+                {
+                    twOptions.ConsumerKey = "123456789";
+                    twOptions.ConsumerSecret = "987654321";
+                    twOptions.RetrieveUserDetails = true;
+                });
+
             services.Configure<CookiePolicyOptions>(
                 options =>
                     {
