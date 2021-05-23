@@ -50,7 +50,7 @@
                     })
                 .AddGoogle(ggOptions =>
                 {
-                    IConfigurationSection googleAuthSection = configuration.GetSection("123456789");
+                    IConfigurationSection googleAuthSection = this.configuration.GetSection("123456789");
 
                     ggOptions.ClientId = "123456789";
                     ggOptions.ClientSecret = "987654321";

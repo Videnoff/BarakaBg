@@ -4,8 +4,10 @@
 
     using BarakaBg.Services.Data;
     using BarakaBg.Web.ViewModels.Products;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize(Roles = "Administrator")]
     public class ProductsController : Controller
     {
         private readonly ICategoriesService categoriesService;
