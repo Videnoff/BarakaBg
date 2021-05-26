@@ -1,0 +1,25 @@
+﻿@model BarakaBg.Web.ViewModels.Products.ProductsListViewModel
+@{
+    this.ViewData["Title"] = "All Products, Page " + Model.PageNumber;
+}
+
+<h1>@this.ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    @foreach (var product in this.Model.Products)
+    {
+        <div class="media col-md-3 d-flex align-items-center">
+            <div class="flex-shrink-0">
+                <img src="@product.ImageUrl" alt="image">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 h5 class="mt-0">@product.Name</h5>
+                @product.CategoryName
+                This is some content from a media component. You can replace this with any content and adjust it as needed.
+            </div>
+        </div>
+    }
+</div>
+<hr />
+
+<partial name="_PagingPartial" model="@Model"/>

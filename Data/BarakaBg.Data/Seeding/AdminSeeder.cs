@@ -10,7 +10,7 @@
 
     public class AdminSeeder : ISeeder
     {
-        private string adminUserName = "admin@localhost";
+        private string adminUserName = "admin@localhost.com";
 
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {

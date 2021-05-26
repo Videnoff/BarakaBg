@@ -1,6 +1,7 @@
 ﻿namespace BarakaBg.Web.Controllers
 {
     using System.Diagnostics;
+
     using BarakaBg.Services.Data;
     using BarakaBg.Web.ViewModels;
     using BarakaBg.Web.ViewModels.Home;
