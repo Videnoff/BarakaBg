@@ -1,6 +1,10 @@
-﻿namespace BarakaBg.Services.Data
+﻿using System;
+using System.Runtime.CompilerServices;
+
+namespace BarakaBg.Services.Data
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -11,6 +15,7 @@
 
     public class ProductsService : IProductsService
     {
+        private readonly string[] AllowedExtensions = new[] { "jpg", "jpeg", "png", "gif" };
         private readonly IDeletableEntityRepository<Product> productsRepository;
         private readonly IDeletableEntityRepository<Ingredient> ingredientsRepository;
 
@@ -22,7 +27,7 @@
             this.ingredientsRepository = ingredientsRepository;
         }
 
-        public async Task CreateAsync(CreateProductInputModel input, string userId)
+        public async Task CreateAsync(CreateProductInputModel input, string userId, string imagePath)
         {
             var product = new Product
             {
@@ -53,6 +58,33 @@
                 {
                     Ingredient = ingredient,
                 });
+            }
+
+            // /wwwroot/images/products/{id}.{ext}
+            Directory.CreateDirectory($"{imagePath}/products/");
+            foreach (var image in input.Images)
+            {
+                var extension = Path.GetExtension(image.FileName).TrimStart('.');
+                if (!this.AllowedExtensions.Any(x => extension.EndsWith(x)))
+                {
+                    throw new Exception($"Invalid image format - {extension}!");
+                }
+
+                var dbImage = new Image
+                {
+                    AddedByUserId = userId,
+                    Extension = Path.GetExtension(image.FileName),
+                };
+
+                product.Images.Add(dbImage);
+
+                var physicalPath = $"{imagePath}/products/{dbImage.Id}.{extension}";
+                using (Stream fileStream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    await image.CopyToAsync(fileStream);
+                }
+
+                // TODO: Save image!
             }
 
             await this.productsRepository.AddAsync(product);

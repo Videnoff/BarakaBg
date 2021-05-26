@@ -1,5 +1,6 @@
 ﻿namespace BarakaBg.Web.ViewModels.Products
 {
+    using Microsoft.AspNetCore.Http;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -34,6 +35,8 @@
 
         [Required]
         public int CategoryId { get; set; }
+
+        public IEnumerable<IFormFile> Images { get; set; }
 
         public IEnumerable<ProductIngredientInputModel> Ingredients { get; set; }
 

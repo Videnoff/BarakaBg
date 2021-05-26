@@ -1,4 +1,6 @@
-﻿namespace BarakaBg.Web.Controllers
+﻿using System;
+
+namespace BarakaBg.Web.Controllers
 {
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -7,6 +9,7 @@
     using BarakaBg.Services.Data;
     using BarakaBg.Web.ViewModels.Products;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -16,15 +19,18 @@
         private readonly ICategoriesService categoriesService;
         private readonly IProductsService productsService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IWebHostEnvironment environment;
 
         public ProductsController(
             ICategoriesService categoriesService,
             IProductsService productsService,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment environment)
         {
             this.categoriesService = categoriesService;
             this.productsService = productsService;
             this.userManager = userManager;
+            this.environment = environment;
         }
 
         public IActionResult Create()
@@ -45,7 +51,16 @@
 
             // var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await this.userManager.GetUserAsync(this.User);
-            await this.productsService.CreateAsync(input, user.Id);
+            try
+            {
+                await this.productsService.CreateAsync(input, user.Id, $"{this.environment.WebRootPath}/images");
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty, e.Message);
+                input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+                return this.View(input);
+            }
 
             // return this.Json(input);
             return this.Redirect("/");
