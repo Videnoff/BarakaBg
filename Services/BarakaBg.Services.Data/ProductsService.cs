@@ -1,11 +1,10 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-
-namespace BarakaBg.Services.Data
+﻿namespace BarakaBg.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using BarakaBg.Data.Common.Repositories;
@@ -79,10 +78,8 @@ namespace BarakaBg.Services.Data
                 product.Images.Add(dbImage);
 
                 var physicalPath = $"{imagePath}/products/{dbImage.Id}.{extension}";
-                using (Stream fileStream = new FileStream(physicalPath, FileMode.Create))
-                {
-                    await image.CopyToAsync(fileStream);
-                }
+                using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
+                await image.CopyToAsync(fileStream);
 
                 // TODO: Save image!
             }

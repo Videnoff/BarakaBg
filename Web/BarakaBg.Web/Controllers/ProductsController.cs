@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace BarakaBg.Web.Controllers
+﻿namespace BarakaBg.Web.Controllers
 {
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
