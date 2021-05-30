@@ -44,7 +44,7 @@
 
             for (var j = 61; j < 63; j++)
             {
-                for (var i = 1000; i < productsCount; i++)
+                for (var i = 1148; i < productsCount; i++)
                 {
                     try
                     {
@@ -104,9 +104,9 @@
                         await this.productIngredientsRepository.SaveChangesAsync();
                     }
 
-                    var image = new Image()
+                    var image = new Image
                     {
-                        Extension = product.OriginalUrl,
+                        RemoteImageUrl = product.ImageUrl,
                         ProductId = newProduct.Id,
                     };
 
@@ -233,14 +233,16 @@
              * Get Image
              */
             var imageUrl = document.QuerySelector(".left.product-image > .image > img").GetAttribute("src");
-            product.OriginalUrl = imageUrl;
+            product.ImageUrl = imageUrl;
 
             /*
              * Get Ingredients
              */
             try
             {
-                var ingredients = document.QuerySelector("#tab-content > p > em").TextContent.Split(", ");
+                var ingredients = document.QuerySelector("#tab-content > p:nth-child(1)").TextContent.Split(", ");
+
+                // TODO: Remove "Съдържание: "
                 foreach (var item in ingredients)
                 {
                     product.Ingredients.Add(item);

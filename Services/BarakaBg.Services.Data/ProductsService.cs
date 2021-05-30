@@ -72,7 +72,7 @@
                 var dbImage = new Image
                 {
                     AddedByUserId = userId,
-                    Extension = Path.GetExtension(image.FileName),
+                    Extension = extension,
                 };
 
                 product.Images.Add(dbImage);

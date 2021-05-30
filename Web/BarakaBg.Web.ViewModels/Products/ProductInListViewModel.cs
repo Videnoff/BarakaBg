@@ -18,6 +18,10 @@
 
         public string CategoryName { get; set; }
 
+        public string Description { get; set; }
+
+        public double Price { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Product, ProductInListViewModel>()
