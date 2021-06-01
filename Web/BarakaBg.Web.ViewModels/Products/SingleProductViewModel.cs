@@ -19,6 +19,8 @@
 
         public string Description { get; set; }
 
+        public string Stock { get; set; }
+
         public IEnumerable<IngredientsViewModel> Ingredients { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)

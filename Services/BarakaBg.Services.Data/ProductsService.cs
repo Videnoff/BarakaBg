@@ -111,5 +111,15 @@
         {
             return this.productsRepository.All().Count();
         }
+
+        public T GetById<T>(int id)
+        {
+            var product = this.productsRepository.AllAsNoTracking()
+                .Where(x => x.Id == id)
+                .To<T>()
+                .FirstOrDefault();
+
+            return product;
+        }
     }
 }

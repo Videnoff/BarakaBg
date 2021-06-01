@@ -17,8 +17,7 @@
     <link rel="canonical" href="https://calveen-store.myshopify.com/collections/chanel"><!-- Title and description -->
 
     <title>
-        Chanel
-        &ndash; calveen-store
+        @this.ViewData["Title"]
     </title>
     <meta name="description" content="Notebooks, agendas, office accessories and more. Everything you need to combine the pleasant and the useful, either at work or at home.  "><!-- Helpers -->
     <!-- /snippets/social-meta-tags.liquid -->
@@ -1103,14 +1102,16 @@ window.BOLD = window.BOLD || {};
                                                                         <span class="shopify-product-reviews-badge" data-id="5375351521435"></span>
                                                                     </div>
                                                                     <h3>
-                                                                        <a href="@product.ImageUrl" title="@product.Name">@product.Name</a>
+                                                                        <a asp-action="ById" asp-route-id="@product.Id" title="@product.Name">@product.Name</a>
                                                                     </h3>
                                                                     <div class="price-box">
                                                                         <span class="new-price"><span class=money>@product.Price</span></span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="product-description">
-                                                                    @product.Description
+                                                                    <a asp-action="ById" asp-route-id="@product.Id">
+                                                                        @product.Description
+                                                                    </a>
                                                                 </div>
                                                                 <div class="product-action">
                                                                     <a href="javascript:void(0);" onclick="quiqview('etiam-gravida')" class="quick-view" data-toggle="tooltip" data-placement="top" title="Quickview">

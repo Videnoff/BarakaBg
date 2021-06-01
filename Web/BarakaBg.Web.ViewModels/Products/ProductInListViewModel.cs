@@ -22,6 +22,8 @@
 
         public double Price { get; set; }
 
+        public string Stock { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Product, ProductInListViewModel>()
