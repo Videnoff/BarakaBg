@@ -114,7 +114,8 @@
 
         public T GetById<T>(int id)
         {
-            var product = this.productsRepository.AllAsNoTracking()
+            var product = this.productsRepository
+                .AllAsNoTracking()
                 .Where(x => x.Id == id)
                 .To<T>()
                 .FirstOrDefault();

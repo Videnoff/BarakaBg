@@ -22,9 +22,11 @@
         {
             if (userManager.FindByNameAsync(this.adminUserName).Result == null)
             {
-                var user = new ApplicationUser();
-                user.UserName = this.adminUserName;
-                user.Email = this.adminUserName;
+                var user = new ApplicationUser
+                {
+                    UserName = this.adminUserName,
+                    Email = this.adminUserName,
+                };
 
                 var result = await userManager.CreateAsync(user, "Px/Y@+TPPYggfVO!g;8U");
 

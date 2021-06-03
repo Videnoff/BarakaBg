@@ -4,14 +4,16 @@ using BarakaBg.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BarakaBg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210603123252_AddVotesForProducts")]
+    partial class AddVotesForProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,40 +371,6 @@ namespace BarakaBg.Data.Migrations
                     b.ToTable("Settings");
                 });
 
-            modelBuilder.Entity("BarakaBg.Data.Models.Vote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte>("Value")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UId");
-
-                    b.ToTable("Votes");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -560,23 +528,6 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("BarakaBg.Data.Models.Vote", b =>
-                {
-                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
-                        .WithMany("Votes")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "U")
-                        .WithMany("Votes")
-                        .HasForeignKey("UId");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("U");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("BarakaBg.Data.Models.ApplicationRole", null)
@@ -635,8 +586,6 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Logins");
 
                     b.Navigation("Roles");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.Category", b =>
@@ -654,8 +603,6 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Ingredients");
-
-                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,6 +9,8 @@
 
     public class SingleProductViewModel : IMapFrom<Product>, IHaveCustomMappings
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public string CategoryName { get; set; }
@@ -21,11 +23,14 @@
 
         public string Stock { get; set; }
 
+        public double AverageVote { get; set; }
+
         public IEnumerable<IngredientsViewModel> Ingredients { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Product, ProductInListViewModel>()
+            configuration.CreateMap<Product, SingleProductViewModel>()
+                .ForMember(x => x.AverageVote, opt => opt.MapFrom(x => x.Votes.Average(v => v.Value)))
                 .ForMember(x => x.ImageUrl, opt => opt.MapFrom(x => x.Images.FirstOrDefault().RemoteImageUrl != null
                     ? x.Images.FirstOrDefault().RemoteImageUrl
                     : "/images/products/" + x.Images.FirstOrDefault().Id + "." + x.Images.FirstOrDefault().Extension));
