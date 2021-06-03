@@ -1136,6 +1136,8 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
                         <div class="col-md-6 col-xl-6 product_details">
                             <div class="product_details_info">
 
+                                @*TODO: fix star rating view*@
+
                                 <div class="product-title">
                                     <h2>@Model.Name</h2>
                                 </div>
@@ -1205,7 +1207,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
                                                     </button>
                                                     <script>
-                                                        jQuery('.ajax-spin-cart').click(function (e) {
+                                                        jQuery('.ajax-spin-cart').click(function(e) {
                                                             e.preventDefault();
                                                             Shopify.addItemFromForm('add-item-form');
                                                         });
