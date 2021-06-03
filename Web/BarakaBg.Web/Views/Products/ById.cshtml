@@ -1146,8 +1146,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
                                         <li class="star-fill" data-vote="3"><i class="fas fa-star"></i></li>
                                         <li class="star-fill" data-vote="4"><i class="fas fa-star"></i></li>
                                         <li class="star-fill" data-vote="5"><i class="fas fa-star"></i></li>
-                                        <li class="star-fill" data-vote="5"><i class="fas fa-star"></i></li>
-                                        <li><span id="averageVoteValue">@Model.AverageVote.ToString("0.0")</span><span>/5</span></li>
+                                        <li><span id="averageVoteValue">@Model.AverageVote.ToString("0.0")</span><span> / 5</span></li>
                                     </ul>
                                 </li>
                                 <div class="product-inventory">
@@ -2490,7 +2489,8 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
             $(this).click(function() {
                 var value = $(this).attr("data-vote");
                 var productId = @Model.Id;
-                var antiForgeryToken = $('#antiForgeryForm input[name=RequestVerificationToken]').val();
+                var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
+                console.log(antiForgeryToken);
                 var data = { productId: productId, value: value };
 
                 $.ajax({
