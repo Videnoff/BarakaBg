@@ -1,4 +1,6 @@
-﻿namespace BarakaBg.Web.Tests
+﻿using OpenQA.Selenium.Firefox;
+
+namespace BarakaBg.Web.Tests
 {
     using System;
     using System.Linq;
@@ -17,10 +19,10 @@
         {
             this.server = server;
             server.CreateClient();
-            var opts = new ChromeOptions();
+            var opts = new FirefoxOptions();
             opts.AddArguments("--headless");
             opts.AcceptInsecureCertificates = true;
-            this.browser = new ChromeDriver(opts);
+            this.browser = new FirefoxDriver(opts);
         }
 
         [Fact(Skip = "Example test. Disabled for CI.")]

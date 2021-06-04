@@ -17,7 +17,8 @@ namespace BarakaBg.Web.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
             });
         }
     }

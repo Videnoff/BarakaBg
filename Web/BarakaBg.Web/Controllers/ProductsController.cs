@@ -3,7 +3,7 @@
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using BarakaBg.Data;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Data;
     using BarakaBg.Web.ViewModels.Products;
@@ -32,10 +32,17 @@
             this.environment = environment;
         }
 
+        public ProductsController(ApplicationDbContext dbContext)
+        {
+        }
+
         public IActionResult Create()
         {
-            var viewModel = new CreateProductInputModel();
-            viewModel.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+            var viewModel = new CreateProductInputModel
+            {
+                CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs(),
+            };
+
             return this.View(viewModel);
         }
 
