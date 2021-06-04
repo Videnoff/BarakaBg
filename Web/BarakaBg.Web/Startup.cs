@@ -79,6 +79,7 @@
                     {
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     }).AddRazorRuntimeCompilation();
+
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddAntiforgery(options =>

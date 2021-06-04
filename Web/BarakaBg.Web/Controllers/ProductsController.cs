@@ -12,7 +12,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public class ProductsController : Controller
     {
         private readonly ICategoriesService categoriesService;
