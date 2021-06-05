@@ -1,6 +1,7 @@
 ﻿namespace BarakaBg.Web.ViewModels.Products
 {
     using Microsoft.AspNetCore.Http;
+
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 

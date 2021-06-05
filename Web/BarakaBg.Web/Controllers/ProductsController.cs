@@ -1,8 +1,11 @@
-﻿namespace BarakaBg.Web.Controllers
+﻿using BarakaBg.Common;
+
+namespace BarakaBg.Web.Controllers
 {
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
+
     using BarakaBg.Data;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Data;
@@ -12,7 +15,6 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    [Authorize(Roles = "Administrator")]
     public class ProductsController : Controller
     {
         private readonly ICategoriesService categoriesService;
@@ -32,10 +34,7 @@
             this.environment = environment;
         }
 
-        public ProductsController(ApplicationDbContext dbContext)
-        {
-        }
-
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public IActionResult Create()
         {
             var viewModel = new CreateProductInputModel
@@ -46,6 +45,7 @@
             return this.View(viewModel);
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductInputModel input)
         {
@@ -68,8 +68,10 @@
                 return this.View(input);
             }
 
+            this.TempData["Message"] = "Product added successfully.";
+
             // return this.Json(input);
-            return this.Redirect("/");
+            return this.RedirectToAction("All");
         }
 
         public IActionResult All(int id = 1)

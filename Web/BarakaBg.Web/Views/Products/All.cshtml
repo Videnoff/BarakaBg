@@ -3,6 +3,11 @@
     this.ViewData["Title"] = "All Products, Page " + Model.PageNumber;
 }
 
+@if (this.TempData.ContainsKey("Message"))
+{
+    <div class="alert alert-success alert-dismissible">@this.TempData["Message"]</div>
+}
+
 <!doctype html>
 <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="en"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!-->
@@ -1088,7 +1093,7 @@ window.BOLD = window.BOLD || {};
                                                     <div class="col-md-4 col-6 st-col-item">
                                                         <div class="single-product-wrap">
                                                             <div class="product-image">
-                                                                <a class="pro-img" href="/collections/chanel/products/etiam-gravida">
+                                                                <a class="pro-img" asp-action="ById" asp-route-id="@product.Id">
                                                                     <img class="img-fluid img1" src="@product.ImageUrl" alt="@product.Name">
                                                                     <img class="img-fluid img2" src="@product.ImageUrl" alt="@product.Name"/>
                                                                 </a>
@@ -1114,11 +1119,11 @@ window.BOLD = window.BOLD || {};
                                                                     </a>
                                                                 </div>
                                                                 <div class="product-action">
-                                                                    <a href="javascript:void(0);" onclick="quiqview('etiam-gravida')" class="quick-view" data-toggle="tooltip" data-placement="top" title="Quickview">
+                                                                    <a href="@product.ImageUrl" onclick="quiqview('etiam-gravida')" class="quick-view" data-toggle="tooltip" data-placement="top" title="Quickview">
                                                                         <i class="ti-eye"></i>
                                                                     </a>
 
-                                                                    <a class="wishlist" href="/account/login" title="Wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
+                                                                    <a class="wishlist" href="/Identity/Account/Login" title="Wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
                                                                         <i class="ti-heart"></i>
                                                                     </a>
 
