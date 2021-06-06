@@ -1,7 +1,11 @@
 ﻿namespace BarakaBg.Web.ViewModels.Home
 {
+    using System.Collections.Generic;
+
     public class IndexViewModel
     {
+        public IEnumerable<IndexPageProductViewModel> RandomProducts { get; set; }
+
         public int ProductsCount { get; set; }
 
         public int CategoriesCount { get; set; }

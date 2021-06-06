@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table table-bordered table-hover table-striped">
     <thead>
@@ -17,9 +17,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedOn)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
@@ -38,8 +35,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.DeletedOn)
             </td>
             <td>

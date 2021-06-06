@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using BarakaBg.Data;
+    using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,18 +14,18 @@
 
     public class ProductsController : AdministrationController
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly IDeletableEntityRepository<Product> productRepository;
 
-        public ProductsController(ApplicationDbContext dbContext)
+        public ProductsController(IDeletableEntityRepository<Product> productRepository)
         {
-            this.dbContext = dbContext;
+            this.productRepository = productRepository;
         }
 
         // GET: Administration/Products
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = this.dbContext
-                .Products
+            var applicationDbContext = this.productRepository
+                .AllWithDeleted()
                 .Include(p => p.AddedByUser)
                 .Include(p => p.Category);
 
@@ -39,7 +40,8 @@
                 return this.NotFound();
             }
 
-            var product = await this.dbContext.Products
+            var product = await this.productRepository
+                .All()
                 .Include(p => p.AddedByUser)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -54,8 +56,8 @@
         // GET: Administration/Products/Create
         public IActionResult Create()
         {
-            this.ViewData["AddedByUserId"] = new SelectList(this.dbContext.Users, "Id", "Id");
-            this.ViewData["CategoryId"] = new SelectList(this.dbContext.Categories, "Id", "Id");
+            this.ViewData["AddedByUserId"] = new SelectList(this.productRepository.All(), "Id", "Id");
+            this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id");
             return this.View();
         }
 
@@ -68,13 +70,13 @@
         {
             if (this.ModelState.IsValid)
             {
-                this.dbContext.Add(product);
-                await this.dbContext.SaveChangesAsync();
+                this.productRepository.AddAsync(product);
+                await this.productRepository.SaveChangesAsync();
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            this.ViewData["AddedByUserId"] = new SelectList(this.dbContext.Users, "Id", "Id", product.AddedByUserId);
-            this.ViewData["CategoryId"] = new SelectList(this.dbContext.Categories, "Id", "Id", product.CategoryId);
+            this.ViewData["AddedByUserId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.AddedByUserId);
+            this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.CategoryId);
             return this.View(product);
         }
 
@@ -86,14 +88,14 @@
                 return this.NotFound();
             }
 
-            var product = await this.dbContext.Products.FindAsync(id);
+            var product = this.productRepository.All().FirstOrDefault(x => x.Id == id);
             if (product == null)
             {
                 return this.NotFound();
             }
 
-            this.ViewData["AddedByUserId"] = new SelectList(this.dbContext.Users, "Id", "Id", product.AddedByUserId);
-            this.ViewData["CategoryId"] = new SelectList(this.dbContext.Categories, "Id", "Id", product.CategoryId);
+            this.ViewData["AddedByUserId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.AddedByUserId);
+            this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.CategoryId);
             return this.View(product);
         }
 
@@ -113,8 +115,8 @@
             {
                 try
                 {
-                    this.dbContext.Update(product);
-                    await this.dbContext.SaveChangesAsync();
+                    this.productRepository.Update(product);
+                    await this.productRepository.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -131,8 +133,8 @@
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            this.ViewData["AddedByUserId"] = new SelectList(this.dbContext.Users, "Id", "Id", product.AddedByUserId);
-            this.ViewData["CategoryId"] = new SelectList(this.dbContext.Categories, "Id", "Id", product.CategoryId);
+            this.ViewData["AddedByUserId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.AddedByUserId);
+            this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.CategoryId);
             return this.View(product);
         }
 
@@ -144,10 +146,12 @@
                 return this.NotFound();
             }
 
-            var product = await this.dbContext.Products
+            var product = await this.productRepository
+                .All()
                 .Include(p => p.AddedByUser)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (product == null)
             {
                 return this.NotFound();
@@ -162,15 +166,15 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await this.dbContext.Products.FindAsync(id);
-            this.dbContext.Products.Remove(product);
-            await this.dbContext.SaveChangesAsync();
+            var product = this.productRepository.All().FirstOrDefault(x => x.Id == id);
+            this.productRepository.Delete(product);
+            await this.productRepository.SaveChangesAsync();
             return this.RedirectToAction(nameof(this.Index));
         }
 
         private bool ProductExists(int id)
         {
-            return this.dbContext.Products.Any(e => e.Id == id);
+            return this.productRepository.All().Any(e => e.Id == id);
         }
     }
 }

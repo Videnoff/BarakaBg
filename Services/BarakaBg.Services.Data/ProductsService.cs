@@ -107,6 +107,15 @@
             return products;
         }
 
+        public IEnumerable<T> GetRandom<T>(int random)
+        {
+            return this.productsRepository
+                .All()
+                .OrderBy(x => Guid.NewGuid())
+                .To<T>()
+                .ToList();
+        }
+
         public int GetCount()
         {
             return this.productsRepository.All().Count();

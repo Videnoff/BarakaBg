@@ -1,6 +1,4 @@
-﻿using BarakaBg.Data.Common.Repositories;
-
-namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +6,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
     using System.Threading.Tasks;
 
     using BarakaBg.Data;
+    using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,7 +24,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
         // GET: Administration/Categories
         public async Task<IActionResult> Index()
         {
-            return this.View(await this.categoryRepository.All().ToListAsync());
+            return this.View(await this.categoryRepository.AllWithDeleted().ToListAsync());
         }
 
         // GET: Administration/Categories/Details/5
