@@ -13,18 +13,22 @@
 
     public class ProductsController : AdministrationController
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext dbContext;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext dbContext)
         {
-            _context = context;
+            this.dbContext = dbContext;
         }
 
         // GET: Administration/Products
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.AddedByUser).Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = this.dbContext
+                .Products
+                .Include(p => p.AddedByUser)
+                .Include(p => p.Category);
+
+            return this.View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Administration/Products/Details/5
@@ -32,27 +36,27 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var product = await _context.Products
+            var product = await this.dbContext.Products
                 .Include(p => p.AddedByUser)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(product);
+            return this.View(product);
         }
 
         // GET: Administration/Products/Create
         public IActionResult Create()
         {
-            ViewData["AddedByUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
-            return View();
+            this.ViewData["AddedByUserId"] = new SelectList(this.dbContext.Users, "Id", "Id");
+            this.ViewData["CategoryId"] = new SelectList(this.dbContext.Categories, "Id", "Id");
+            return this.View();
         }
 
         // POST: Administration/Products/Create
@@ -62,15 +66,16 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Brand,ProductCode,Stock,Price,Description,Content,Feedback,OriginalUrl,CategoryId,AddedByUserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Product product)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                this.dbContext.Add(product);
+                await this.dbContext.SaveChangesAsync();
+                return this.RedirectToAction(nameof(this.Index));
             }
-            ViewData["AddedByUserId"] = new SelectList(_context.Users, "Id", "Id", product.AddedByUserId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            return View(product);
+
+            this.ViewData["AddedByUserId"] = new SelectList(this.dbContext.Users, "Id", "Id", product.AddedByUserId);
+            this.ViewData["CategoryId"] = new SelectList(this.dbContext.Categories, "Id", "Id", product.CategoryId);
+            return this.View(product);
         }
 
         // GET: Administration/Products/Edit/5
@@ -78,17 +83,18 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await this.dbContext.Products.FindAsync(id);
             if (product == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
-            ViewData["AddedByUserId"] = new SelectList(_context.Users, "Id", "Id", product.AddedByUserId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            return View(product);
+
+            this.ViewData["AddedByUserId"] = new SelectList(this.dbContext.Users, "Id", "Id", product.AddedByUserId);
+            this.ViewData["CategoryId"] = new SelectList(this.dbContext.Categories, "Id", "Id", product.CategoryId);
+            return this.View(product);
         }
 
         // POST: Administration/Products/Edit/5
@@ -100,32 +106,34 @@
         {
             if (id != product.Id)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    this.dbContext.Update(product);
+                    await this.dbContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!this.ProductExists(product.Id))
                     {
-                        return NotFound();
+                        return this.NotFound();
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return this.RedirectToAction(nameof(this.Index));
             }
-            ViewData["AddedByUserId"] = new SelectList(_context.Users, "Id", "Id", product.AddedByUserId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            return View(product);
+
+            this.ViewData["AddedByUserId"] = new SelectList(this.dbContext.Users, "Id", "Id", product.AddedByUserId);
+            this.ViewData["CategoryId"] = new SelectList(this.dbContext.Categories, "Id", "Id", product.CategoryId);
+            return this.View(product);
         }
 
         // GET: Administration/Products/Delete/5
@@ -133,35 +141,36 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            var product = await _context.Products
+            var product = await this.dbContext.Products
                 .Include(p => p.AddedByUser)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(product);
+            return this.View(product);
         }
 
         // POST: Administration/Products/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var product = await this.dbContext.Products.FindAsync(id);
+            this.dbContext.Products.Remove(product);
+            await this.dbContext.SaveChangesAsync();
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return this.dbContext.Products.Any(e => e.Id == id);
         }
     }
 }
