@@ -1,11 +1,10 @@
-﻿using BarakaBg.Common;
-
-namespace BarakaBg.Web.Controllers
+﻿namespace BarakaBg.Web.Controllers
 {
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using BarakaBg.Common;
     using BarakaBg.Data;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Data;

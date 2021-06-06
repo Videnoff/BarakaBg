@@ -1,13 +1,11 @@
-﻿using OpenQA.Selenium.Firefox;
-
-namespace BarakaBg.Web.Tests
+﻿namespace BarakaBg.Web.Tests
 {
     using System;
     using System.Linq;
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Chrome;
-
+    using OpenQA.Selenium.Firefox;
     using Xunit;
 
     public class SeleniumTests : IClassFixture<SeleniumServerFactory<Startup>>, IDisposable
