@@ -16,5 +16,7 @@
         int GetCount();
 
         T GetById<T>(int id);
+
+        Task UpdateAsync(int id, EditProductInputModel inputModel);
     }
 }

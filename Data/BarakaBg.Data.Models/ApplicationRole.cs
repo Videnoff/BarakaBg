@@ -4,7 +4,6 @@ namespace BarakaBg.Data.Models
     using System;
 
     using BarakaBg.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity

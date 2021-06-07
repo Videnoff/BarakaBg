@@ -1,9 +1,8 @@
 ﻿namespace BarakaBg.Web.ViewModels.Settings
 {
+    using AutoMapper;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Mapping;
-
-    using AutoMapper;
 
     public class SettingViewModel : IMapFrom<Setting>, IHaveCustomMappings
     {

@@ -107,11 +107,12 @@
             return products;
         }
 
-        public IEnumerable<T> GetRandom<T>(int random)
+        public IEnumerable<T> GetRandom<T>(int count)
         {
             return this.productsRepository
                 .All()
                 .OrderBy(x => Guid.NewGuid())
+                .Take(count)
                 .To<T>()
                 .ToList();
         }
@@ -130,6 +131,26 @@
                 .FirstOrDefault();
 
             return product;
+        }
+
+        public async Task UpdateAsync(int id, EditProductInputModel inputModel)
+        {
+            var products = this.productsRepository
+                .All()
+                .FirstOrDefault(x => x.Id == id);
+
+            if (products != null)
+            {
+                products.Name = inputModel.Name;
+                products.Brand = inputModel.Brand;
+                products.ProductCode = inputModel.ProductCode;
+                products.Stock = inputModel.Stock;
+                products.Price = inputModel.Price;
+                products.Description = inputModel.Description;
+                products.CategoryId = inputModel.CategoryId;
+            }
+
+            await this.productsRepository.SaveChangesAsync();
         }
     }
 }

@@ -13,9 +13,7 @@
     using BarakaBg.Data.Seeding;
     using BarakaBg.Services.Data;
     using BarakaBg.Services.Messaging;
-
     using CommandLine;
-
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;

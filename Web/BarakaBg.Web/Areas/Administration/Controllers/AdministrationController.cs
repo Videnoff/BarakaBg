@@ -2,7 +2,6 @@
 {
     using BarakaBg.Common;
     using BarakaBg.Web.Controllers;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 

@@ -8,6 +8,8 @@
     using BarakaBg.Data;
     using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
+    using BarakaBg.Services.Data;
+    using BarakaBg.Web.ViewModels.Products;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
@@ -15,10 +17,17 @@
     public class ProductsController : AdministrationController
     {
         private readonly IDeletableEntityRepository<Product> productRepository;
+        private readonly IProductsService productsService;
+        private readonly ICategoriesService categoriesService;
 
-        public ProductsController(IDeletableEntityRepository<Product> productRepository)
+        public ProductsController(
+            IDeletableEntityRepository<Product> productRepository,
+            IProductsService productsService,
+            ICategoriesService categoriesService)
         {
             this.productRepository = productRepository;
+            this.productsService = productsService;
+            this.categoriesService = categoriesService;
         }
 
         // GET: Administration/Products
@@ -81,22 +90,11 @@
         }
 
         // GET: Administration/Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var product = this.productRepository.All().FirstOrDefault(x => x.Id == id);
-            if (product == null)
-            {
-                return this.NotFound();
-            }
-
-            this.ViewData["AddedByUserId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.AddedByUserId);
-            this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.CategoryId);
-            return this.View(product);
+            var inputModel = this.productsService.GetById<EditProductInputModel>(id);
+            inputModel.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+            return this.View(inputModel);
         }
 
         // POST: Administration/Products/Edit/5
@@ -104,38 +102,22 @@
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Brand,ProductCode,Stock,Price,Description,Content,Feedback,OriginalUrl,CategoryId,AddedByUserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Product product)
+        public async Task<IActionResult> Edit(int id, EditProductInputModel input)
         {
-            if (id != product.Id)
+            if (id != input.Id)
             {
                 return this.NotFound();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                try
-                {
-                    this.productRepository.Update(product);
-                    await this.productRepository.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!this.ProductExists(product.Id))
-                    {
-                        return this.NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return this.RedirectToAction(nameof(this.Index));
+                input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+                return this.View(input);
             }
 
-            this.ViewData["AddedByUserId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.AddedByUserId);
-            this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.CategoryId);
-            return this.View(product);
+            await this.productsService.UpdateAsync(id, input);
+
+            return this.RedirectToAction(nameof(this.ById), new { id });
         }
 
         // GET: Administration/Products/Delete/5
@@ -170,6 +152,12 @@
             this.productRepository.Delete(product);
             await this.productRepository.SaveChangesAsync();
             return this.RedirectToAction(nameof(this.Index));
+        }
+
+        public IActionResult ById(int id)
+        {
+            var product = this.productsService.GetById<SingleProductViewModel>(id);
+            return this.View(product);
         }
 
         private bool ProductExists(int id)

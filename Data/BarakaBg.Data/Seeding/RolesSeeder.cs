@@ -6,7 +6,6 @@
 
     using BarakaBg.Common;
     using BarakaBg.Data.Models;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
 

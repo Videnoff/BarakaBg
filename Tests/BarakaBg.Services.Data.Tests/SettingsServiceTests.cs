@@ -8,11 +8,8 @@
     using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using BarakaBg.Data.Repositories;
-
     using Microsoft.EntityFrameworkCore;
-
     using Moq;
-
     using Xunit;
 
     public class SettingsServiceTests

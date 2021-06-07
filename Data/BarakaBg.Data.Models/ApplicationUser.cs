@@ -5,7 +5,6 @@ namespace BarakaBg.Data.Models
     using System.Collections.Generic;
 
     using BarakaBg.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
