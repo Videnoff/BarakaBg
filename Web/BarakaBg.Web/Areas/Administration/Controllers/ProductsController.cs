@@ -93,6 +93,7 @@
         public async Task<IActionResult> Edit(int id)
         {
             var inputModel = this.productsService.GetById<EditProductInputModel>(id);
+            inputModel.Id = id;
             inputModel.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
             return this.View(inputModel);
         }
