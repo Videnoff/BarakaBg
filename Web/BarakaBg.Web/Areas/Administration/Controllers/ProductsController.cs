@@ -79,7 +79,7 @@
         {
             if (this.ModelState.IsValid)
             {
-                this.productRepository.AddAsync(product);
+                await this.productRepository.AddAsync(product);
                 await this.productRepository.SaveChangesAsync();
                 return this.RedirectToAction(nameof(this.Index));
             }
