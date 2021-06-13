@@ -90,10 +90,9 @@
         }
 
         // GET: Administration/Products/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             var inputModel = this.productsService.GetById<EditProductInputModel>(id);
-            inputModel.Id = id;
             inputModel.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
             return this.View(inputModel);
         }
@@ -112,13 +111,14 @@
 
             if (!this.ModelState.IsValid)
             {
+                input.Id = id;
                 input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
                 return this.View(input);
             }
 
             await this.productsService.UpdateAsync(id, input);
 
-            return this.RedirectToAction(nameof(this.ById), new { id });
+            return this.RedirectToAction(nameof(this.ById),new { id });
         }
 
         // GET: Administration/Products/Delete/5

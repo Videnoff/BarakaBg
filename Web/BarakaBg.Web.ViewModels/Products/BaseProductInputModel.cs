@@ -29,7 +29,6 @@
         [MinLength(100)]
         public string Description { get; set; }
 
-        [Required]
         public string Content { get; set; }
 
         public string Feedback { get; set; }

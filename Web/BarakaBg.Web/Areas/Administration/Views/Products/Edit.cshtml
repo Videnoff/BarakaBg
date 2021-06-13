@@ -2,62 +2,25 @@
 
 @{
     ViewData["Title"] = "Edit";
-    var categoryItems = this.Model.CategoriesItems.Select(x => new SelectListItem(x.Value, x.Key));
+    var categoryItems = this.Model
+        .CategoriesItems
+        .Select(x => new SelectListItem(x.Value, x.Key));
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>Product</h4>
+<h4>@Model.Name</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form method="post" id="editForm">
+            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
             @*<div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductCode" class="control-label"></label>
-                <input asp-for="ProductCode" class="form-control" />
-                <span asp-validation-for="ProductCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Stock" class="control-label"></label>
-                <input asp-for="Stock" class="form-control" />
-                <span asp-validation-for="Stock" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Feedback" class="control-label"></label>
                 <input asp-for="Feedback" class="form-control" />
                 <span asp-validation-for="Feedback" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>*@
+            *@
             @*<div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
@@ -81,51 +44,33 @@
             </div>*@
             <div class="form-group">
                 <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control"/>
+                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-                <hr/>
-                <input type="hidden" asp-for="Id"/>
-                <input type="submit" value="Save changes" class="btn btn-success"/>
             </div>
             <div class="form-group">
                 <label asp-for="Brand"></label>
-                <input asp-for="Brand" class="form-control"/>
+                <input asp-for="Brand" class="form-control" />
                 <span asp-validation-for="Brand" class="text-danger"></span>
-                <hr/>
-                <input type="hidden" asp-for="Id"/>
-                <input type="submit" value="Save changes" class="btn btn-success"/>
             </div>
             <div class="form-group">
                 <label asp-for="ProductCode"></label>
-                <input asp-for="ProductCode" class="form-control"/>
+                <input asp-for="ProductCode" class="form-control" />
                 <span asp-validation-for="ProductCode" class="text-danger"></span>
-                <hr/>
-                <input type="hidden" asp-for="Id"/>
-                <input type="submit" value="Save changes" class="btn btn-success"/>
             </div>
             <div class="form-group">
                 <label asp-for="Stock"></label>
-                <input asp-for="Stock" class="form-control"/>
+                <input asp-for="Stock" class="form-control" />
                 <span asp-validation-for="Stock" class="text-danger"></span>
-                <hr/>
-                <input type="hidden" asp-for="Id"/>
-                <input type="submit" value="Save changes" class="btn btn-success"/>
             </div>
             <div class="form-group">
                 <label asp-for="Price"></label>
-                <input asp-for="Price" class="form-control"/>
+                <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
-                <hr/>
-                <input type="hidden" asp-for="Id"/>
-                <input type="submit" value="Save changes" class="btn btn-success"/>
             </div>
             <div class="form-group">
                 <label asp-for="Description"></label>
                 <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
-                <hr/>
-                <input type="hidden" asp-for="Id"/>
-                <input type="submit" value="Save changes" class="btn btn-success"/>
             </div>
             @*<div class="form-group">
                 <label asp-for="Images"></label>
@@ -137,17 +82,41 @@
                 <label asp-for="CategoryId"></label>
                 <select asp-for="CategoryId" asp-items="categoryItems" class="form-control"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
-                <hr/>
-                <input type="hidden" asp-for="Id"/>
-                <input type="submit" value="Save changes" class="btn btn-success"/>
             </div>
+            <hr />
         </form>
+        <div>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#modalEdit">Save changes</button>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<!-- Modal -->
+<div class="modal" id="modalEdit" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Do you confirm this changes?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="editForm.submit()">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
