@@ -101,6 +101,7 @@
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IProductsService, ProductsService>();
             services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<IIngredientsService, IngredientsService>();
             services.AddTransient<IBarakaBgScraperService, BarakaBgScraperService>();
         }
 
