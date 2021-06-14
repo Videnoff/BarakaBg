@@ -170,5 +170,15 @@
                 .To<T>()
                 .ToList();
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var product = this.productsRepository
+                .All()
+                .FirstOrDefault(x => x.Id == id);
+
+            this.productsRepository.Delete(product);
+            await this.productsRepository.SaveChangesAsync();
+        }
     }
 }

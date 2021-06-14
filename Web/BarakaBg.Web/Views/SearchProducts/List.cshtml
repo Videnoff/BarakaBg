@@ -6,30 +6,37 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    @foreach (var product in Model.Products)
-    {
-        <div class="card col-md-3">
-            <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name">
-            <div class="card-body">
-                <h5 class="card-title">
-                    @product.Name
-                </h5>
-                <p class="card-text">
-                    @product.CategoryName
-                </p>
-                <a asp-controller="Products" asp-action="ById" asp-route-id="@product.Id" class="btn btn-primary">Go to Product</a>
-            </div>
+@if (!Model.Products.Any())
+{
+    <p>Nothing found</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var product in Model.Products)
+        {
+            <div class="card col-md-3">
+                <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @product.Name
+                    </h5>
+                    <p class="card-text">
+                        @product.CategoryName
+                    </p>
+                    <a asp-controller="Products" asp-action="ById" asp-route-id="@product.Id" class="btn btn-primary">Go to Product</a>
+                </div>
                 <div class="price-box__old">
                     <span class="new-price">
                         <span class="money">@product.Price</span>
                     </span>
                 </div>
-            <div class="product-description">
-                <a asp-controller="Products" asp-action="ById" asp-route-id="@product.Id">
-                    @product.Description
-                </a>
+                <div class="product-description">
+                    <a asp-controller="Products" asp-action="ById" asp-route-id="@product.Id">
+                        @product.Description
+                    </a>
+                </div>
             </div>
-        </div>
+        }
+    </div>
     }
-</div>

@@ -1,4 +1,7 @@
-﻿namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿using System.Text;
+using BarakaBg.Services.Messaging;
+
+namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -19,15 +22,18 @@
         private readonly IDeletableEntityRepository<Product> productRepository;
         private readonly IProductsService productsService;
         private readonly ICategoriesService categoriesService;
+        private readonly IEmailSender emailSender;
 
         public ProductsController(
             IDeletableEntityRepository<Product> productRepository,
             IProductsService productsService,
-            ICategoriesService categoriesService)
+            ICategoriesService categoriesService,
+            IEmailSender emailSender)
         {
             this.productRepository = productRepository;
             this.productsService = productsService;
             this.categoriesService = categoriesService;
+            this.emailSender = emailSender;
         }
 
         // GET: Administration/Products
@@ -75,7 +81,10 @@
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Brand,ProductCode,Stock,Price,Description,Content,Feedback,OriginalUrl,CategoryId,AddedByUserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")] Product product)
+        public async Task<IActionResult> Create(
+            [Bind(
+                "Name,Brand,ProductCode,Stock,Price,Description,Content,Feedback,OriginalUrl,CategoryId,AddedByUserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")]
+            Product product)
         {
             if (this.ModelState.IsValid)
             {
@@ -84,7 +93,8 @@
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            this.ViewData["AddedByUserId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.AddedByUserId);
+            this.ViewData["AddedByUserId"] =
+                new SelectList(this.productRepository.All(), "Id", "Id", product.AddedByUserId);
             this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.CategoryId);
             return this.View(product);
         }
@@ -118,7 +128,7 @@
 
             await this.productsService.UpdateAsync(id, input);
 
-            return this.RedirectToAction(nameof(this.ById),new { id });
+            return this.RedirectToAction(nameof(this.ById), new {id});
         }
 
         // GET: Administration/Products/Delete/5
@@ -149,9 +159,7 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = this.productRepository.All().FirstOrDefault(x => x.Id == id);
-            this.productRepository.Delete(product);
-            await this.productRepository.SaveChangesAsync();
+            await this.productsService.DeleteAsync(id);
             return this.RedirectToAction(nameof(this.Index));
         }
 
@@ -164,6 +172,18 @@
         private bool ProductExists(int id)
         {
             return this.productRepository.All().Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendToEmail(int id)
+        {
+            var product = this.productsService.GetById<ProductInListViewModel>(id);
+            var html = new StringBuilder();
+            html.AppendLine($"<h1>{product.Name}</h1>");
+            html.AppendLine($"<h3>{product.CategoryName}</h3>");
+            html.AppendLine($"<img src=\"{product.ImageUrl}\" />");
+            await this.emailSender.SendEmailAsync("baraka@barakabg.com", "BarakaBg", "ivvr41bqicex@marmaryta.email", product.Name, html.ToString());
+            return this.RedirectToAction(nameof(this.ById));
         }
     }
 }
