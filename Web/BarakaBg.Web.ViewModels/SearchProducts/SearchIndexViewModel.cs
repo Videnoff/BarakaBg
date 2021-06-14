@@ -4,6 +4,6 @@
 
     public class SearchIndexViewModel
     {
-        public IEnumerable<IngredientNameIdViewModel> Ingredient { get; set; }
+        public IEnumerable<IngredientNameIdViewModel> Ingredients { get; set; }
     }
 }

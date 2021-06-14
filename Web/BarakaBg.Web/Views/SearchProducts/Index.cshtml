@@ -1,0 +1,25 @@
+﻿@model BarakaBg.Web.ViewModels.SearchProducts.SearchIndexViewModel
+
+@{
+    ViewData["Title"] = "Search Products by Ingredient:";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="List" method="get">
+    <div class="row">
+        @foreach (var ingredient in Model.Ingredients)
+        {
+            <div class="col-1">
+                <input id="ingredient_@ingredient.Id"
+                       type="checkbox"
+                       name="Ingredients"
+                       value="@ingredient.Id"
+                       class="form-control"/>
+                <label for="ingredient_@ingredient.Id" class="text-center form-text">@ingredient.Name</label>
+            </div>
+        }
+    </div>
+
+    <button class="btn btn-primary">Search</button>
+</form>

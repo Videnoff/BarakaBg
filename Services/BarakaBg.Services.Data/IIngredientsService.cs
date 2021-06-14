@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace BarakaBg.Services.Data
+﻿namespace BarakaBg.Services.Data
 {
+    using System.Collections.Generic;
+
     public interface IIngredientsService
     {
-        IEnumerable<T> GetAll<T>();
+        IEnumerable<T> GetAllPopular<T>();
     }
 }

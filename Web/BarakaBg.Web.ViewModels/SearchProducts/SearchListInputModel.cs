@@ -4,6 +4,6 @@
 
     public class SearchListInputModel
     {
-        private IEnumerable<int> Ingredients { get; set; }
+        public IEnumerable<int> Ingredients { get; set; }
     }
 }
