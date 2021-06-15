@@ -1,17 +1,16 @@
-﻿using System.Text;
-using BarakaBg.Services.Messaging;
-
-namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
 
     using BarakaBg.Data;
     using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Data;
+    using BarakaBg.Services.Messaging;
     using BarakaBg.Web.ViewModels.Products;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -60,6 +59,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
                 .Include(p => p.AddedByUser)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (product == null)
             {
                 return this.NotFound();
@@ -128,7 +128,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
 
             await this.productsService.UpdateAsync(id, input);
 
-            return this.RedirectToAction(nameof(this.ById), new {id});
+            return this.RedirectToAction(nameof(this.ById), "Products", new { area = string.Empty, id });
         }
 
         // GET: Administration/Products/Delete/5
@@ -157,21 +157,45 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await this.productsService.DeleteAsync(id);
-            return this.RedirectToAction(nameof(this.Index));
+            return this.RedirectToAction(nameof(this.All), "Products", new { area = string.Empty });
+        }
+
+        // POST: Administration/Products/Delete/5
+        //[HttpPost]
+        //[ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    await this.productsService.DeleteAsync(id);
+        //    return this.RedirectToAction(nameof(this.All), "Products", new { area = string.Empty });
+        //}
+
+        public IActionResult All(int id = 1)
+        {
+            if (id <= 0)
+            {
+                return this.NotFound();
+            }
+
+            const int ItemsPerPage = 12;
+            var viewModel = new ProductsListViewModel
+            {
+                ItemsPerPage = ItemsPerPage,
+                PageNumber = id,
+                ProductsCount = this.productsService.GetCount(),
+                Products = this.productsService.GetAll<ProductInListViewModel>(id, ItemsPerPage),
+            };
+
+            return this.View(viewModel);
         }
 
         public IActionResult ById(int id)
         {
             var product = this.productsService.GetById<SingleProductViewModel>(id);
             return this.View(product);
-        }
-
-        private bool ProductExists(int id)
-        {
-            return this.productRepository.All().Any(e => e.Id == id);
         }
 
         [HttpPost]
@@ -182,8 +206,13 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
             html.AppendLine($"<h1>{product.Name}</h1>");
             html.AppendLine($"<h3>{product.CategoryName}</h3>");
             html.AppendLine($"<img src=\"{product.ImageUrl}\" />");
-            await this.emailSender.SendEmailAsync("baraka@barakabg.com", "BarakaBg", "ivvr41bqicex@marmaryta.email", product.Name, html.ToString());
-            return this.RedirectToAction(nameof(this.ById));
+            await this.emailSender.SendEmailAsync("baraka@baraka.bg", "BarakaBg", "wo29lt6xxofg@ndeooo.xyz", product.Name, html.ToString());
+            return this.RedirectToAction(nameof(this.ById), "Products", new { area = string.Empty,  id });
+        }
+
+        private bool ProductExists(int id)
+        {
+            return this.productRepository.All().Any(e => e.Id == id);
         }
     }
 }

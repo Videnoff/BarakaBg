@@ -678,12 +678,12 @@
                                 <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
                             </li>
                             <li class="single-meta">
-                                <form method="post" asp-action="Delete" id="deleteForm" asp-route-id="@Model.Id">
+                                <form method="post" asp-area="Administration" asp-controller="Products" asp-action="Delete" id="deleteForm" asp-route-id="@Model.Id">
                                 </form>
                                 <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
                             </li>
                             <li class="single-meta">
-                                <form method="post" asp-action="SendToEmail" asp-route-id="@Model.Id">
+                                <form method="post" asp-area="Administration" asp-controller="Products" asp-action="SendToEmail" asp-route-id="@Model.Id">
                                     <button class="btn btn-warning">Send to my Email</button>
                                 </form>
                             </li>
@@ -1735,26 +1735,5 @@
     });
 
     </script>
-
-
 </body>
 </html>
-
-<!-- Modal -->
-<div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" id="deleteModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete Product</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to delete "@Model.Name"?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="deleteForm.submit()">Yes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-</div>
