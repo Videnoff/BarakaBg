@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BarakaBg.Common\BarakaBg.Common.csproj" />
     <ProjectReference Include="..\..\Data\BarakaBg.Data.Models\BarakaBg.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\BarakaBg.Services.Mapping\BarakaBg.Services.Mapping.csproj" />
   </ItemGroup>

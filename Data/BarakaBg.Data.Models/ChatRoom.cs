@@ -9,7 +9,7 @@
 
     public class ChatRoom : BaseDeletableModel<string>
     {
-        public ChatRoom(ICollection<RoomMessage> messages)
+        public ChatRoom()
         {
             this.Id = Guid.NewGuid().ToString();
             this.Messages = new HashSet<RoomMessage>();

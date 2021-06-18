@@ -1,11 +1,12 @@
-﻿using BarakaBg.Data.Models;
-
-namespace BarakaBg.Services.Data
+﻿namespace BarakaBg.Services.Data
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using BarakaBg.Data.Common.Repositories;
+    using BarakaBg.Data.Models;
+    using BarakaBg.Services.Mapping;
 
     public class ChatService : IChatService
     {
@@ -20,7 +21,7 @@ namespace BarakaBg.Services.Data
             this.roomMessagesRepository = roomMessagesRepository;
         }
 
-        public Task<T> CreateRoomAsync<T>(string userId)
+        public async Task<T> CreateRoomAsync<T>(string userId)
         {
             if (this.GetRoomIdByOwnerId(userId) != null)
             {
@@ -34,26 +35,59 @@ namespace BarakaBg.Services.Data
 
             await this.chatRoomsRepository.AddAsync(newRoom);
             await this.chatRoomsRepository.SaveChangesAsync();
+
+            return this.GetRoomById<T>(newRoom.Id);
         }
 
-        public Task<T> AddMessageAsync<T>(string roomId, string message, string senderId)
+        public async Task<T> AddMessageAsync<T>(string roomId, string message, string senderId)
         {
-            throw new System.NotImplementedException();
+            var room = this.GetRoomById(roomId);
+            if (room == null)
+            {
+                return default;
+            }
+
+            var roomMessage = new RoomMessage
+            {
+                Message = message,
+                SenderId = senderId,
+            };
+
+            room.Messages.Add(roomMessage);
+            this.chatRoomsRepository.Update(room);
+            await this.chatRoomsRepository.SaveChangesAsync();
+            return this.GetMessageById<T>(roomMessage.Id);
         }
 
-        public IEnumerable<T> GetAllRooms<T>()
-        {
-            throw new System.NotImplementedException();
-        }
+        public IEnumerable<T> GetAllRooms<T>() => this.chatRoomsRepository
+            .AllAsNoTracking()
+            .To<T>()
+            .ToList();
 
-        public IEnumerable<T> GetAllMessagesByRoomId<T>(string roomId)
-        {
-            throw new System.NotImplementedException();
-        }
+        public IEnumerable<T> GetAllMessagesByRoomId<T>(string roomId) => this.roomMessagesRepository
+            .AllAsNoTracking()
+            .Where(x => x.RoomId == roomId)
+            .To<T>()
+            .ToList();
 
-        public string GetRoomIdByOwnerId(string ownerId)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string GetRoomIdByOwnerId(string ownerId) => this.chatRoomsRepository
+            .AllAsNoTracking()
+            .FirstOrDefault(x => x.OwnerId == ownerId)
+            ?.Id;
+
+        private T GetMessageById<T>(int messageId) => this.roomMessagesRepository
+            .AllAsNoTracking()
+            .Where(x => x.Id == messageId)
+            .To<T>()
+            .FirstOrDefault();
+
+        private T GetRoomById<T>(string roomId) => this.chatRoomsRepository
+            .AllAsNoTracking()
+            .Where(x => x.Id == roomId)
+            .To<T>().FirstOrDefault();
+
+        private ChatRoom GetRoomById(string roomId) => this.chatRoomsRepository
+            .All()
+            .FirstOrDefault(x => x.Id == roomId);
     }
 }
