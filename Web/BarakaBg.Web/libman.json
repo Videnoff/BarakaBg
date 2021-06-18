@@ -66,6 +66,13 @@
         "media/css/jquery.dataTables.min.css",
         "media/js/jquery.dataTables.min.js"
       ]
+    },
+    {
+      "library": "@microsoft/signalr@5.0.7",
+      "destination": "wwwroot/lib/signalr",
+      "files": [
+        "dist/browser/signalr.min.js"
+      ]
     }
   ]
 }

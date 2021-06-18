@@ -46,4 +46,8 @@
     <ProjectReference Include="..\BarakaBg.Web.Infrastructure\BarakaBg.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\BarakaBg.Web.ViewModels\BarakaBg.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Hubs\" />
+  </ItemGroup>
 </Project>
