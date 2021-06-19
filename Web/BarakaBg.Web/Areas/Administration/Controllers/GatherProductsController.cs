@@ -1,4 +1,4 @@
-﻿namespace BarakaBg.Web.Controllers
+﻿namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System.Threading.Tasks;
 
@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     // TODO: Move in Administration area
-    public class GatherProductsController : BaseController
+    public class GatherProductsController : AdministrationController
     {
         private readonly IBarakaBgScraperService barakaBgScraperService;
 

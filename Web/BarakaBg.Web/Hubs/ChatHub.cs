@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using BarakaBg.Common;
-using BarakaBg.Web.ViewModels.Chat;
-
-namespace BarakaBg.Web.Hubs
+﻿namespace BarakaBg.Web.Hubs
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
+    using BarakaBg.Common;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Data;
+    using BarakaBg.Web.ViewModels.Chat;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.SignalR;
