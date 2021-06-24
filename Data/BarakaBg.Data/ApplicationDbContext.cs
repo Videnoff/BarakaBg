@@ -37,6 +37,20 @@
 
         public DbSet<Vote> Votes { get; set; }
 
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+
+        public DbSet<City> Cities { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
+        public DbSet<RoomMessage> RoomMessages { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

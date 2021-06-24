@@ -1,4 +1,6 @@
-﻿namespace BarakaBg.Web.ViewModels.Products
+﻿using System;
+
+namespace BarakaBg.Web.ViewModels.Products
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -14,6 +16,8 @@
         public string Name { get; set; }
 
         public string CategoryName { get; set; }
+
+        public DateTime CreatedOn { get; set; }
 
         public string ImageUrl { get; set; }
 

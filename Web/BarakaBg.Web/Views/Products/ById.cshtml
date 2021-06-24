@@ -12,52 +12,20 @@
 <!-- CSS -->
 
 
-<div>
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-xl-6">
-                    <div class="single-product-wrap">
-                        <div class="product-image">
-                            <a class="pro-img" href="@Model.ImageUrl">
-                                <img class="img-fluid img1" src="@Model.ImageUrl" alt="@Model.Name">
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-xl-6 product_details">
-                            <div class="product_details_info">
-                                <div class="product-title">
-                                    <h2>@Model.Name</h2>
-                                </div>
-                                <div class="product-inventory">
-                                    <h2>
-                                        <span>Availability:</span>
-
-                                        <span id="variant-inventory" class="in-stock">@Model.Stock</span>
-
-                                    </h2>
-                                </div>
-                                <div class="pro-price-label">
-                                    <div class="price-box" id="ProductPrice">
-                                        <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price" style="display: none !important;"></span>
-                                        <span class="new-price"><span class=money>@Model.Price</span></span>
-                                    </div>
-                                    <div class="product-label">
-                                        <span class="new-title">New</span>
-                                    </div>
-                                </div>
-
-                                <div class="stock-inventory">
-                                    <span>Hurry up! only</span>
-                                    <span>20</span>
-                                    <span>products left in stock!</span>
-                                </div>
-                                <div class="product-description">
-                                    @Model.Description
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="single-product-layout1">
+    <div class="ctg-name">
+        @Model.CategoryName
+    </div>
+    <h2 class="item-title">
+        @this.ViewData["Title"]
+    </h2>
+    <div class="row mb-4">
+        <div class="col-xl-9 col-12">
+            <ul class="entry-meta">
+                @*<li class="single-meta">
+                        <i class="far fa-calendar-alt"></i>
+                        @Model.CreatedOn.ToShortDateString()
+                    </li>*@
                 <li class="single-meta">
                     <ul class="item-rating">
                         <li class="star-fill" data-vote="1"><i class="fas fa-star"></i></li>
@@ -71,26 +39,86 @@
                         </li>
                     </ul>
                 </li>
-                @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
-                {
-                    <li class="single-meta">
-                        <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
-                    </li>
-                    <li class="single-meta">
-                        <form method="post" asp-area="Administration" asp-controller="Products" asp-action="Delete" id="deleteForm" asp-route-id="@Model.Id">
-                        </form>
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                    </li>
-                    <li class="single-meta">
-                        <form method="post" asp-area="Administration" asp-controller="Products" asp-action="SendToEmail" asp-route-id="@Model.Id">
-                            <button class="btn btn-warning">Send to my Email</button>
-                        </form>
-                    </li>
-                    <li class="single-meta">
-                        <button class="btn btn-warning" onclick="window.print();">Print</button>
-                    </li>
-                }
+            </ul>
+        </div>
+        <div class="product-image">
+            <a class="pro-img" href="@Model.ImageUrl">
+                <img class="img-fluid w-100" src="@Model.ImageUrl" alt="@Model.Name">
+            </a>
+        </div>
+        <div class="col-md-6 col-xl-6 product_details">
+            <div class="product_details_info">
+                <div class="product-title">
+                    <h2>@Model.Name</h2>
+                </div>
+                <div class="product-inventory">
+                    <h2>
+                        <span>Availability:</span>
+                        <span id="variant-inventory" class="in-stock">@Model.Stock</span>
+                    </h2>
+                </div>
+                <div class="pro-price-label">
+                    <div class="price-box" id="ProductPrice">
+                        <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price" style="display: none !important;"></span>
+                        <span class="new-price">
+                            <span class=money>
+                                @Model.Price
+                            </span>
+                        </span>
+                    </div>
+                    <div class="product-label">
+                        <span class="new-title">New</span>
+                    </div>
+                </div>
+                <div class="product-description">
+                    @Model.Description
+                </div>
             </div>
         </div>
-    </section>
+
+    </div>
+    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+    {
+        <li class="single-meta">
+            <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+        </li>
+        <li class="single-meta">
+            <form method="post" asp-area="Administration" asp-controller="Products" asp-action="Delete" id="deleteForm" asp-route-id="@Model.Id">
+            </form>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        </li>
+        <li class="single-meta">
+            <form method="post" asp-area="Administration" asp-controller="Products" asp-action="SendToEmail" asp-route-id="@Model.Id">
+                <button class="btn btn-warning">Send to my Email</button>
+            </form>
+        </li>
+        <li class="single-meta">
+            <button class="btn btn-warning" onclick="window.print();">Print</button>
+        </li>
+    }
 </div>
+
+@section Scripts {
+    <script>
+        $("li[data-vote]").each(function (el) {
+            $(this).click(function () {
+                var value = $(this).attr("data-vote");
+                var recipeId = @Model.Id;
+                var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
+                var data = { recipeId: recipeId, value: value };
+                $.ajax({
+                    type: "POST",
+                    url: "/api/Votes",
+                    data: JSON.stringify(data),
+                    headers: {
+                        'X-CSRF-TOKEN': antiForgeryToken
+                    },
+                    success: function (data) {
+                        $('#averageVoteValue').html(data.averageVote.toFixed(1));
+                    },
+                    contentType: 'application/json',
+                });
+            })
+        });
+    </script>
+}
