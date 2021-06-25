@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace BarakaBg.Web.ViewModels.Products
+﻿namespace BarakaBg.Web.ViewModels.Products
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 

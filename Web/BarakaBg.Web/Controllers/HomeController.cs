@@ -1,4 +1,6 @@
-﻿namespace BarakaBg.Web.Controllers
+﻿using Azure.Storage.Blobs;
+
+namespace BarakaBg.Web.Controllers
 {
     using System.Diagnostics;
 
@@ -14,7 +16,8 @@
 
         public HomeController(
             IGetCountsService countsService,
-            IProductsService productsService)
+            IProductsService productsService,
+            BlobServiceClient blobServiceClient)
         {
             this.countsService = countsService;
             this.productsService = productsService;
@@ -43,6 +46,7 @@
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
         public IActionResult Error()
         {
             return this.View(new ErrorViewModel

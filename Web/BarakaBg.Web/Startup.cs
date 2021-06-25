@@ -1,4 +1,6 @@
-﻿namespace BarakaBg.Web
+﻿using Azure.Storage.Blobs;
+
+namespace BarakaBg.Web
 {
     using System.Reflection;
 
@@ -42,6 +44,8 @@
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddApplicationInsightsTelemetry();
 
             services.AddAuthentication()
                 .AddFacebook(fbOptions =>
@@ -93,6 +97,8 @@
             });
 
             services.AddSingleton(this.configuration);
+            services.AddSingleton(x =>
+                new BlobServiceClient(this.configuration.GetValue<string>("BlobConnectionString")));
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
