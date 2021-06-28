@@ -10,6 +10,7 @@
     using BarakaBg.Data.Models;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {

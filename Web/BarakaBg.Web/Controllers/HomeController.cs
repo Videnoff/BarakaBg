@@ -1,13 +1,13 @@
-﻿using Azure.Storage.Blobs;
-
-namespace BarakaBg.Web.Controllers
+﻿namespace BarakaBg.Web.Controllers
 {
     using System.Diagnostics;
 
+    using Azure.Storage.Blobs;
     using BarakaBg.Services.Data;
     using BarakaBg.Web.ViewModels;
     using BarakaBg.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
 
     public class HomeController : BaseController
     {
@@ -17,7 +17,7 @@ namespace BarakaBg.Web.Controllers
         public HomeController(
             IGetCountsService countsService,
             IProductsService productsService,
-            BlobServiceClient blobServiceClient)
+            IConfiguration configuration)
         {
             this.countsService = countsService;
             this.productsService = productsService;

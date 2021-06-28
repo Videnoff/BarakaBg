@@ -1,9 +1,8 @@
-﻿using Azure.Storage.Blobs;
-
-namespace BarakaBg.Web
+﻿namespace BarakaBg.Web
 {
     using System.Reflection;
 
+    using Azure.Storage.Blobs;
     using BarakaBg.Data;
     using BarakaBg.Data.Common;
     using BarakaBg.Data.Common.Repositories;
@@ -45,7 +44,6 @@ namespace BarakaBg.Web
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddApplicationInsightsTelemetry();
 
             services.AddAuthentication()
                 .AddFacebook(fbOptions =>
@@ -106,7 +104,7 @@ namespace BarakaBg.Web
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration.GetValue<string>("SendGrid:ApiKey")));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IGetCountsService, GetCountsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();

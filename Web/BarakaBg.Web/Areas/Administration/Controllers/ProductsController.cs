@@ -132,7 +132,7 @@
         }
 
         // GET: Administration/Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> SoftDelete(int? id)
         {
             if (id == null)
             {
@@ -150,28 +150,21 @@
                 return this.NotFound();
             }
 
-            return this.View(product);
+            this.productRepository.Delete(product);
+            return this.RedirectToAction(nameof(this.All), "Products", new {area = string.Empty});
         }
 
         // POST: Administration/Products/Delete/5
         [HttpPost]
-        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> HardDelete(int id)
         {
-            await this.productsService.DeleteAsync(id);
+            var product = this.productRepository.All().FirstOrDefault(x => x.Id == id);
+            this.productRepository.HardDelete(product);
+
+            await this.productRepository.SaveChangesAsync();
             return this.RedirectToAction(nameof(this.All), "Products", new { area = string.Empty });
         }
-
-        // POST: Administration/Products/Delete/5
-        //[HttpPost]
-        //[ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    await this.productsService.DeleteAsync(id);
-        //    return this.RedirectToAction(nameof(this.All), "Products", new { area = string.Empty });
-        //}
 
         public IActionResult All(int id = 1)
         {

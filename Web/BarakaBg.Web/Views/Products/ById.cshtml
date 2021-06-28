@@ -4,7 +4,6 @@
     this.ViewData["Title"] = Model.Name;
 }
 
-
 <title>
     @this.ViewData["Title"]
 </title>
@@ -12,16 +11,16 @@
 <!-- CSS -->
 
 
-<div class="single-product-layout1">
-    <div class="ctg-name">
+<div>
+    <div>
         @Model.CategoryName
     </div>
-    <h2 class="item-title">
+    <h2>
         @this.ViewData["Title"]
     </h2>
     <div class="row mb-4">
         <div class="col-xl-9 col-12">
-            <ul class="entry-meta">
+            <ul>
                 @*<li class="single-meta">
                         <i class="far fa-calendar-alt"></i>
                         @Model.CreatedOn.ToShortDateString()
@@ -82,11 +81,35 @@
         <li class="single-meta">
             <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
         </li>
-        <li class="single-meta">
-            <form method="post" asp-area="Administration" asp-controller="Products" asp-action="Delete" id="deleteForm" asp-route-id="@Model.Id">
-            </form>
-            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-        </li>
+
+        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#softDeleteModal">Soft delete</a>
+        <div class="modal fade" id="softDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"><h5 class="modal-title">Soft delete</h5></div>
+                    <div class="modal-body">Are you sure you want to soft delete this news?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a asp-area="Administration" asp-controller="Products" asp-action="SoftDelete" asp-route-id="@this.Model.Id" class="btn btn-danger">Soft delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#hardDeleteModal">Hard delete</a>
+        <div class="modal fade" id="hardDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"><h5 class="modal-title">Hard delete</h5></div>
+                    <div class="modal-body">Are you sure you want to hard delete this news?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a asp-area="Administration" asp-controller="Products" asp-action="HardDelete" asp-route-id="@this.Model.Id" class="btn btn-danger">Hard delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <li class="single-meta">
             <form method="post" asp-area="Administration" asp-controller="Products" asp-action="SendToEmail" asp-route-id="@Model.Id">
                 <button class="btn btn-warning">Send to my Email</button>
@@ -116,9 +139,23 @@
                     success: function (data) {
                         $('#averageVoteValue').html(data.averageVote.toFixed(1));
                     },
-                    contentType: 'application/json',
+                    contentType: 'application/json'
                 });
-            })
+            });
         });
     </script>
 }
+
+<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Do you want to delete "@Model.Name"?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="deleteForm.submit()">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

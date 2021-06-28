@@ -15,8 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.0" />
+    <PackageReference Include="Azure.Identity" Version="1.2.2" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.9.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0-beta2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.6" />
