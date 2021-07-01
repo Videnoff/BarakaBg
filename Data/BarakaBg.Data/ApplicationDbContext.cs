@@ -73,6 +73,11 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Image>()
+                .HasOne(i => i.Product)
+                .WithMany(p => p.Images)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Needed for Identity models configuration
             base.OnModelCreating(builder);
 

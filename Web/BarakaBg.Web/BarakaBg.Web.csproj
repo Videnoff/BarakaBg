@@ -9,7 +9,13 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
     <ApplicationInsightsResourceId>/subscriptions/2f9a1f41-e67d-476a-a26e-bb0c18fba7cf/resourceGroups/barakabg/providers/microsoft.insights/components/barakabg</ApplicationInsightsResourceId>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <Win32Resource />
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\favicon.ico" />
+  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
@@ -54,5 +60,9 @@
 
   <ItemGroup>
     <Folder Include="Hubs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\favicon.ico" />
   </ItemGroup>
 </Project>

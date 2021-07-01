@@ -29,6 +29,7 @@
         {
             entity.IsDeleted = false;
             entity.DeletedOn = null;
+
             this.Update(entity);
         }
 

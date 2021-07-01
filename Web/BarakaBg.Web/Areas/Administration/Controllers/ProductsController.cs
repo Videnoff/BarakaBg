@@ -151,15 +151,19 @@
             }
 
             this.productRepository.Delete(product);
-            return this.RedirectToAction(nameof(this.All), "Products", new {area = string.Empty});
+
+            await this.productRepository.SaveChangesAsync();
+            return this.RedirectToAction(nameof(this.All), "Products", new { area = string.Empty });
         }
 
-        // POST: Administration/Products/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // Administration/Products/Delete/5
         public async Task<IActionResult> HardDelete(int id)
         {
-            var product = this.productRepository.All().FirstOrDefault(x => x.Id == id);
+            var product = await this.productRepository
+                .All()
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             this.productRepository.HardDelete(product);
 
             await this.productRepository.SaveChangesAsync();
