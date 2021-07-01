@@ -24,8 +24,6 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
-
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Category> Categories { get; set; }
@@ -73,11 +71,6 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Image>()
-                .HasOne(i => i.Product)
-                .WithMany(p => p.Images)
-                .OnDelete(DeleteBehavior.Cascade);
-
             // Needed for Identity models configuration
             base.OnModelCreating(builder);
 

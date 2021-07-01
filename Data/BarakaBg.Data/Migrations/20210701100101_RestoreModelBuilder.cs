@@ -2,7 +2,7 @@
 
 namespace BarakaBg.Data.Migrations
 {
-    public partial class ChangeModelBuilder : Migration
+    public partial class RestoreModelBuilder : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarakaBg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210630191205_ChangeModelBuilder")]
-    partial class ChangeModelBuilder
+    [Migration("20210701100101_RestoreModelBuilder")]
+    partial class RestoreModelBuilder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

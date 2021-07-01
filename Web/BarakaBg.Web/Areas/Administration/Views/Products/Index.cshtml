@@ -114,8 +114,8 @@
                     @Html.DisplayFor(modelItem => item.ModifiedOn)
                 </td>
                 <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id"  class="btn btn-warning">Edit</a> |
+                    <a asp-area="Administration" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |
 
                     <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#softDeleteModal">Soft delete</a>
                     <div class="modal fade" id="softDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#hardDeleteModal">Hard delete</a>
                     <div class="modal fade" id="hardDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -140,6 +140,30 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <a asp-area="Administration" asp-controller="Products" asp-action="HardDelete" asp-route-id="@item.Id" class="btn btn-danger">Hard delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#restoreModal">
+                        Restore
+                    </a>
+                    <div class="modal fade" id="restoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Restore</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to restore this product?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <a asp-area="Administration" asp-controller="Products" asp-action="Undelete" asp-route-id="@item.Id" class="btn btn-dark">
+                                        Restore
+                                    </a>
                                 </div>
                             </div>
                         </div>

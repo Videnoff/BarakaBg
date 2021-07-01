@@ -22,5 +22,9 @@
         IEnumerable<T> GetByIngredients<T>(IEnumerable<int> ingredientIds);
 
         Task DeleteAsync(int id);
+
+        public Task<bool> UndeleteAsync(int id);
+
+        public IEnumerable<T> GetAllDeleted<T>();
     }
 }

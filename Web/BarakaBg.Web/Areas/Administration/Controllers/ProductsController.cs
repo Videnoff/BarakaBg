@@ -12,6 +12,8 @@
     using BarakaBg.Services.Data;
     using BarakaBg.Services.Messaging;
     using BarakaBg.Web.ViewModels.Products;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
@@ -21,17 +23,23 @@
         private readonly IDeletableEntityRepository<Product> productRepository;
         private readonly IProductsService productsService;
         private readonly ICategoriesService categoriesService;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IWebHostEnvironment environment;
         private readonly IEmailSender emailSender;
 
         public ProductsController(
             IDeletableEntityRepository<Product> productRepository,
             IProductsService productsService,
             ICategoriesService categoriesService,
+            UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment environment,
             IEmailSender emailSender)
         {
             this.productRepository = productRepository;
             this.productsService = productsService;
             this.categoriesService = categoriesService;
+            this.userManager = userManager;
+            this.environment = environment;
             this.emailSender = emailSender;
         }
 
@@ -68,35 +76,42 @@
             return this.View(product);
         }
 
-        // GET: Administration/Products/Create
         public IActionResult Create()
         {
-            this.ViewData["AddedByUserId"] = new SelectList(this.productRepository.All(), "Id", "Id");
-            this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id");
-            return this.View();
+            var viewModel = new CreateProductInputModel
+            {
+                CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs(),
+            };
+
+            return this.View(viewModel);
         }
 
-        // POST: Administration/Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind(
-                "Name,Brand,ProductCode,Stock,Price,Description,Content,Feedback,OriginalUrl,CategoryId,AddedByUserId,IsDeleted,DeletedOn,Id,CreatedOn,ModifiedOn")]
-            Product product)
+        public async Task<IActionResult> Create(CreateProductInputModel input)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                await this.productRepository.AddAsync(product);
-                await this.productRepository.SaveChangesAsync();
-                return this.RedirectToAction(nameof(this.Index));
+                input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+                return this.View(input);
             }
 
-            this.ViewData["AddedByUserId"] =
-                new SelectList(this.productRepository.All(), "Id", "Id", product.AddedByUserId);
-            this.ViewData["CategoryId"] = new SelectList(this.productRepository.All(), "Id", "Id", product.CategoryId);
-            return this.View(product);
+            // var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await this.userManager.GetUserAsync(this.User);
+            try
+            {
+                await this.productsService.CreateAsync(input, user.Id, $"{this.environment.WebRootPath}/images");
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty, e.Message);
+                input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+                return this.View(input);
+            }
+
+            this.TempData["Message"] = "Product added successfully.";
+
+            // return this.Json(input);
+            return this.RedirectToAction(nameof(this.All), "Products", new { area = string.Empty });
         }
 
         // GET: Administration/Products/Edit/5
@@ -161,13 +176,28 @@
         {
             var product = await this.productRepository
                 .All()
-                .Include(p => p.Images)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            this.productRepository.HardDelete(product);
+            await this.productsService.DeleteAsync(id);
 
             await this.productRepository.SaveChangesAsync();
             return this.RedirectToAction(nameof(this.All), "Products", new { area = string.Empty });
+        }
+
+        public async Task<IActionResult> Undelete(int id)
+        {
+            var undeleteResult = await this.productsService.UndeleteAsync(id);
+
+            if (undeleteResult)
+            {
+                this.TempData["Alert"] = "Successfully restored product";
+            }
+            else
+            {
+                this.TempData["Error"] = "There was a problem restoring the product.";
+            }
+
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public IActionResult All(int id = 1)

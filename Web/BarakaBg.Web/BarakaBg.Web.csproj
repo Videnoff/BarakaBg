@@ -65,4 +65,11 @@
   <ItemGroup>
     <None Include="wwwroot\favicon.ico" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\Administration\Views\Products\Create.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

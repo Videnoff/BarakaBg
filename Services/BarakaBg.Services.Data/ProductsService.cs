@@ -17,13 +17,16 @@
         private readonly string[] AllowedExtensions = new[] { "jpg", "jpeg", "png", "gif" };
         private readonly IDeletableEntityRepository<Product> productsRepository;
         private readonly IDeletableEntityRepository<Ingredient> ingredientsRepository;
+        private readonly IDeletableEntityRepository<Image> imagesRepository;
 
         public ProductsService(
             IDeletableEntityRepository<Product> productsRepository,
-            IDeletableEntityRepository<Ingredient> ingredientsRepository)
+            IDeletableEntityRepository<Ingredient> ingredientsRepository,
+            IDeletableEntityRepository<Image> imagesRepository)
         {
             this.productsRepository = productsRepository;
             this.ingredientsRepository = ingredientsRepository;
+            this.imagesRepository = imagesRepository;
         }
 
         public async Task CreateAsync(CreateProductInputModel input, string userId, string imagePath)
@@ -178,7 +181,40 @@
                 .FirstOrDefault(x => x.Id == id);
 
             this.productsRepository.Delete(product);
+
+            foreach (var image in product.Images)
+            {
+                this.imagesRepository.Delete(image);
+            }
+
             await this.productsRepository.SaveChangesAsync();
+            await this.imagesRepository.SaveChangesAsync();
         }
+
+        public async Task<bool> UndeleteAsync(int id)
+        {
+            var product = this.GetDeletedById(id);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            this.productsRepository.Undelete(product);
+            await this.productsRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public IEnumerable<T> GetAllDeleted<T>() =>
+            this.productsRepository.AllAsNoTrackingWithDeleted()
+                .Where(x => x.IsDeleted)
+                .To<T>()
+                .ToList();
+
+        private Product GetDeletedById(int id) =>
+            this.productsRepository
+                .AllAsNoTrackingWithDeleted()
+                .FirstOrDefault(x => x.IsDeleted && x.Id == id);
     }
 }
