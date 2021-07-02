@@ -128,7 +128,7 @@
         public T GetById<T>(int id)
         {
             var product = this.productsRepository
-                .AllAsNoTracking()
+                .AllAsNoTrackingWithDeleted()
                 .Where(x => x.Id == id)
                 .To<T>()
                 .FirstOrDefault();
@@ -139,7 +139,7 @@
         public async Task UpdateAsync(int id, EditProductInputModel inputModel)
         {
             var products = this.productsRepository
-                .All()
+                .AllAsNoTrackingWithDeleted()
                 .FirstOrDefault(x => x.Id == id);
 
             if (products != null)
@@ -177,7 +177,7 @@
         public async Task DeleteAsync(int id)
         {
             var product = this.productsRepository
-                .All()
+                .AllAsNoTrackingWithDeleted()
                 .FirstOrDefault(x => x.Id == id);
 
             this.productsRepository.Delete(product);
@@ -207,7 +207,8 @@
         }
 
         public IEnumerable<T> GetAllDeleted<T>() =>
-            this.productsRepository.AllAsNoTrackingWithDeleted()
+            this.productsRepository
+                .AllAsNoTrackingWithDeleted()
                 .Where(x => x.IsDeleted)
                 .To<T>()
                 .ToList();

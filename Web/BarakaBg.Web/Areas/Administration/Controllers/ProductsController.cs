@@ -1,4 +1,5 @@
-﻿namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿
+namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -143,6 +144,7 @@
 
             await this.productsService.UpdateAsync(id, input);
 
+
             return this.RedirectToAction(nameof(this.ById), "Products", new { area = string.Empty, id });
         }
 
@@ -175,7 +177,7 @@
         public async Task<IActionResult> HardDelete(int id)
         {
             var product = await this.productRepository
-                .All()
+                .AllWithDeleted()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             await this.productsService.DeleteAsync(id);
