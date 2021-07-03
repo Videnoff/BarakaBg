@@ -144,8 +144,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
 
             await this.productsService.UpdateAsync(id, input);
 
-
-            return this.RedirectToAction(nameof(this.ById), "Products", new { area = string.Empty, id });
+            return this.RedirectToAction(nameof(this.ById), new { area = string.Empty, id });
         }
 
         // GET: Administration/Products/Delete/5

@@ -20,23 +20,15 @@
     </h2>
     <div class="row mb-4">
         <div class="col-xl-9 col-12">
-            <ul>
-                @*<li class="single-meta">
-                        <i class="far fa-calendar-alt"></i>
-                        @Model.CreatedOn.ToShortDateString()
-                    </li>*@
-                <li class="single-meta">
-                    <ul class="item-rating">
-                        <li class="star-fill" data-vote="1"><i class="fas fa-star"></i></li>
-                        <li class="star-fill" data-vote="2"><i class="fas fa-star"></i></li>
-                        <li class="star-fill" data-vote="3"><i class="fas fa-star"></i></li>
-                        <li class="star-fill" data-vote="4"><i class="fas fa-star"></i></li>
-                        <li class="star-fill" data-vote="5"><i class="fas fa-star"></i></li>
-                        <li>
-                            <span id="averageVoteValue">@Model.AverageVote.ToString("0.0")</span>
-                            <span> / 5</span>
-                        </li>
-                    </ul>
+            <ul class="item-rating">
+                <li data-vote="1"><i class="fas fa-star"></i>>
+                <li data-vote="2"><i class="fas fa-star"></i>>
+                <li data-vote="3"><i class="fas fa-star"></i>>
+                <li data-vote="4"><i class="fas fa-star"></i>>
+                <li data-vote="5"><i class="fas fa-star"></i>>
+                <li>
+                    <span id="averageVoteValue">@Model.AverageVote.ToString("0.0")</span>
+                    <span> / 5</span>
                 </li>
             </ul>
         </div>
@@ -58,15 +50,9 @@
                 </div>
                 <div class="pro-price-label">
                     <div class="price-box" id="ProductPrice">
-                        <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price" style="display: none !important;"></span>
-                        <span class="new-price">
-                            <span class=money>
-                                Price: @Model.Price lv
-                            </span>
+                        <span class=money>
+                            Price: @Model.Price lv
                         </span>
-                    </div>
-                    <div class="product-label">
-                        <span class="new-title">New</span>
                     </div>
                 </div>
                 <div class="product-description">
@@ -75,11 +61,14 @@
             </div>
         </div>
     </div>
+
+    <a asp-area="" asp-controller="Products" asp-action="All" class="btn btn-secondary">
+        Back to All Products
+    </a>
+
     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
     {
-        <li class="single-meta">
-            <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
-        </li>
+        <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
 
         <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#softDeleteModal">
             Soft delete
@@ -132,6 +121,10 @@
                 </div>
             </div>
         </div>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Back to Products Administration
+        </a>
 
         <li class="single-meta">
             <form method="post" asp-area="Administration" asp-controller="Products" asp-action="SendToEmail" asp-route-id="@Model.Id">

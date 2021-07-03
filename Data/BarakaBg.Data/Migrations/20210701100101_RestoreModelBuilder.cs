@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace BarakaBg.Data.Migrations
+﻿namespace BarakaBg.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class RestoreModelBuilder : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
