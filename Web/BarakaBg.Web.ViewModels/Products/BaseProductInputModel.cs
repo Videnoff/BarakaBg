@@ -36,7 +36,6 @@
         //public IEnumerable<IFormFile> Images { get; set; }
 
         //public IEnumerable<ProductIngredientInputModel> Ingredients { get; set; }
-
         public IEnumerable<KeyValuePair<string, string>> CategoriesItems { get; set; }
     }
 }

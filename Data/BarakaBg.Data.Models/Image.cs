@@ -22,7 +22,6 @@
         public string Extension { get; set; }
 
         // The contents of the Image is in the file system
-
         public string RemoteImageUrl { get; set; }
     }
 }

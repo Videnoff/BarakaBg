@@ -11,7 +11,6 @@
     using BarakaBg.Data.Models;
     using BarakaBg.Data.Repositories;
     using BarakaBg.Data.Seeding;
-    using BarakaBg.Services.Data;
     using BarakaBg.Services.Messaging;
     using CommandLine;
     using Microsoft.EntityFrameworkCore;
@@ -50,9 +49,6 @@
         {
             var sw = Stopwatch.StartNew();
 
-            var settingsService = serviceProvider.GetService<ISettingsService>();
-            Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
-
             Console.WriteLine(sw.Elapsed);
             return await Task.FromResult(0);
         }
@@ -79,7 +75,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
     }
 }
