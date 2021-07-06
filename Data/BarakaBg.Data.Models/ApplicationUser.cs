@@ -38,10 +38,6 @@ namespace BarakaBg.Data.Models
 
         public string Address { get; set; }
 
-        public string ChatRoomId { get; set; }
-
-        public virtual ChatRoom ChatRoom { get; set; }
-
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarakaBg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210703201037_ChatRooms")]
-    partial class ChatRooms
+    [Migration("20210706085648_mgr")]
+    partial class mgr
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,9 +113,6 @@ namespace BarakaBg.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ChatRoomId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -228,37 +225,6 @@ namespace BarakaBg.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("BarakaBg.Data.Models.ChatRoom", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("OwnerId")
-                        .IsUnique();
-
-                    b.ToTable("ChatRooms");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.City", b =>
@@ -584,40 +550,6 @@ namespace BarakaBg.Data.Migrations
                     b.ToTable("ProductIngredients");
                 });
 
-            modelBuilder.Entity("BarakaBg.Data.Models.RoomMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RoomId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("RoomMessages");
-                });
-
             modelBuilder.Entity("BarakaBg.Data.Models.Vote", b =>
                 {
                     b.Property<int>("Id")
@@ -775,17 +707,6 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BarakaBg.Data.Models.ChatRoom", b =>
-                {
-                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "Owner")
-                        .WithOne("ChatRoom")
-                        .HasForeignKey("BarakaBg.Data.Models.ChatRoom", "OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
             modelBuilder.Entity("BarakaBg.Data.Models.City", b =>
                 {
                     b.HasOne("BarakaBg.Data.Models.Country", "Country")
@@ -882,25 +803,6 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("BarakaBg.Data.Models.RoomMessage", b =>
-                {
-                    b.HasOne("BarakaBg.Data.Models.ChatRoom", "Room")
-                        .WithMany("Messages")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Room");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("BarakaBg.Data.Models.Vote", b =>
                 {
                     b.HasOne("BarakaBg.Data.Models.Product", "Product")
@@ -971,8 +873,6 @@ namespace BarakaBg.Data.Migrations
 
             modelBuilder.Entity("BarakaBg.Data.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("ChatRoom");
-
                     b.Navigation("Claims");
 
                     b.Navigation("Logins");
@@ -985,11 +885,6 @@ namespace BarakaBg.Data.Migrations
             modelBuilder.Entity("BarakaBg.Data.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("BarakaBg.Data.Models.ChatRoom", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.City", b =>

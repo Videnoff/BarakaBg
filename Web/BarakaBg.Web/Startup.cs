@@ -44,7 +44,6 @@
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
             services.AddAuthentication()
                 .AddFacebook(fbOptions =>
                     {
@@ -110,7 +109,6 @@
             services.AddTransient<IProductsService, ProductsService>();
             services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<IIngredientsService, IngredientsService>();
-            services.AddTransient<IChatService, ChatService>();
             services.AddTransient<IBarakaBgScraperService, BarakaBgScraperService>();
         }
 

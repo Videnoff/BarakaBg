@@ -64,6 +64,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Administration\Views\Shared\" />
     <Folder Include="Hubs\" />
   </ItemGroup>
 
