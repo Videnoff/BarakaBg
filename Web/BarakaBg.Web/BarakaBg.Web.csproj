@@ -64,12 +64,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Administration\Views\Chat\" />
     <Folder Include="Areas\Administration\Views\Shared\" />
     <Folder Include="Hubs\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\favicon.ico" />
+    <None Include="wwwroot\js\plugins\demo\demo.js" />
   </ItemGroup>
 
   <ItemGroup>

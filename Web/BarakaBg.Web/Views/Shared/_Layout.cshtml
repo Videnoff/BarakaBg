@@ -8,11 +8,15 @@
 
     <link href="~/favicon.ico" rel="icon" type="image/x-icon" />
 
+    <!-- CSS Files -->
+
+    <link href="~/css/material-dashboard.css?v=2.1.0" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     @*<link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />*@
     <link href="~/lib/fontawesome/css/all.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/datatables/media/css/jquery.dataTables.min.css" asp-append-version="true" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+
     @await this.RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -71,6 +75,24 @@
         </div>
     </footer>
 
+    <!-- End Footer Area -->
+    <partial name="_ChatPartial" />
+
+    <!--   Core JS Files   -->
+
+    <script src="~/js/core/jquery.min.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/js/core/popper.min.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/js/core/bootstrap-material-design.min.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/js/plugins/perfect-scrollbar.jquery.min.js" asp-append-version="true"></script>
+    <!--  Google Maps Plugin    -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+    <!-- Chartist JS -->
+    <script src="~/js/plugins/chartist.min.js" asp-append-version="true"></script>
+    <!--  Notifications Plugin    -->
+    <script src="~/js/plugins/bootstrap-notify.js" asp-append-version="true"></script>
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="~/js/material-dashboard.js?v=2.1.0" type="text/javascript" asp-append-version="true"></script>
+
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
@@ -78,6 +100,7 @@
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
+
     @await this.RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
