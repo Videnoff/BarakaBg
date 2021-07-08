@@ -71,7 +71,6 @@
 
   <ItemGroup>
     <None Include="wwwroot\favicon.ico" />
-    <None Include="wwwroot\js\plugins\demo\demo.js" />
   </ItemGroup>
 
   <ItemGroup>

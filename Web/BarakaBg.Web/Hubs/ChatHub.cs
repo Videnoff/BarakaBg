@@ -14,6 +14,27 @@
     [Authorize]
     public class ChatHub : Hub
     {
+        public async Task SendMessage(string message, string userId)
+        {
+            await this.Clients.Clients(userId).SendAsync("ReceiveMessage", message, this.Context.ConnectionId);
+            await this.Clients.Clients(this.Context.ConnectionId).SendAsync("OwnMessage", message.Trim());
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            var connectionId = this.Context.ConnectionId;
+            this.Clients.All.SendAsync("OnlineUserList", connectionId);
+            return base.OnConnectedAsync();
+        }
+
+        public async Task OnlineUsers()
+        {
+            var connectionId = this.Context.ConnectionId;
+            await this.Clients.All.SendAsync("OnlineUserList", connectionId);
+        }
+
+        /*
+         *
         private readonly IChatService chatService;
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -46,7 +67,10 @@
         {
             var userId = this.Context.UserIdentifier;
             var newMessage = await this.chatService.AddMessageAsync<MessageViewModel>(roomId, message, userId);
-            await this.Clients.Group(roomId).SendAsync("NewMessage", newMessage);
+
+            await this.Clients
+                .Group(roomId)
+                .SendAsync("NewMessage", newMessage);
         }
 
         public async Task LoadMessages()
@@ -88,6 +112,6 @@
 
             var newMessage = await this.chatService.AddMessageAsync<MessageViewModel>(roomId, message, userId);
             await this.Clients.Group(roomId).SendAsync("NewMessage", newMessage);
-        }
+        */
     }
 }
