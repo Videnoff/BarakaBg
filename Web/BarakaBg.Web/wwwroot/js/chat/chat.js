@@ -1,54 +1,86 @@
-﻿const connection = new signalR.HubConnectionBuilder()
-    .configureLogging(signalR.LogLevel.Debug)
-    .withUrl("https://localhost:44319/Index")
-    .configureLogging(signalR.LogLevel.Information)
-    .build();
-connection.start().then(() => {
-});
-//define unique id for send message
-var receiverId = function (id) {
-    $('#chat-with-id').text(id);
-}
-var sendMessage = function () {
-    const message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessage", message, $('#chat-with-id').text()).then((result) => {
-    }).catch(err => console.error(err.toString()));
-    event.preventDefault();
-}
-document.getElementById("sendButton").addEventListener("click", event => {
-    sendMessage();
-});
-$("#messageInput").keydown(function (e) {
-    if (e.keyCode === 13) {
-        sendMessage();
+﻿(function () {
+    var connection =
+        new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:44319/chathub")
+            .build();
+
+    async function start() {
+        try {
+            await connection.start();
+            await connection.invoke("LoadMessages");
+        } catch (err) {
+            console.error(err);
+            setTimeout(start, 5000);
+        }
+    };
+
+    connection.onclose(start);
+
+    // Start the connection.
+    start();
+
+    var INDEX = 0;
+    var submitButton = document.querySelector("#chat-submit");
+    submitButton.addEventListener("click", async function (e) {
         e.preventDefault();
+        var msg = $("#chat-input").val();
+        if (msg.trim() == '') {
+            return false;
+        }
+        await connection.invoke("Send", msg);
+    });
+
+    connection.on("NewMessage",
+        function (roomMessages) {
+            if (Array.isArray(roomMessages)) {
+                $(".chat-logs").val('');
+                for (var i = 0; i < roomMessages.length; i++) {
+                    generate_message(roomMessages[i]);
+                }
+            } else {
+                generate_message(roomMessages);
+            }
+        });
+
+    function generate_message(msg) {
+        INDEX++;
+        var str = "";
+        var type = "";
+        if (msg.isByRoomOwner) {
+            type = "self";
+        } else {
+            type = "user";
+        }
+        str += "<div id='cm-msg-" + INDEX + "' class=\"chat-msg " + type + "\">";
+        str += "          <div class=\"cm-msg-text\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"XeMart\">";
+        str += escapeHtml(msg.message);
+        str += "          <\/div>";
+        str += "        <\/div>";
+        $(".chat-logs").append(str);
+        $("#cm-msg-" + INDEX).hide().fadeIn(300);
+        if (type == 'self') {
+            $("#chat-input").val('');
+        }
+        $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
     }
-});
-connection.on("OnlineUserList", (connectionId) => {
-    console.log(connectionId)
-    $('#onlineUsersList').append('<li class= "active" onclick=receiverId(' + "'" + connectionId + "'" + ')>' +
-        '<div class="d-flex bd-highlight">' +
-        '<div class="img_cont">' +
-        '<img src="http://www.findandsolve.com/icon.png" alt="find and solve" class="rounded-circle user_img">' +
-        '<span class="online_icon"></span></div>' +
-        '<div class="user_info">' +
-        '<span>Unique User Id</span>' +
-        '<p>' + connectionId + '</p></div> </div></li>'
-    )
-});
-connection.on("OwnMessage", (message) => {
-    console.log('ownmessage');
-    console.log(message);
-    $('#messageListId').append('<li><div class="d-flex justify-content-end mb-4">' +
-        '<div class= ""msg_cotainer">' + message + '<span class= "msg_time_send" ></span></div >' +
-        '<div class="img_cont_msg">' +
-        '<img src="http://www.findandsolve.com/icon.png" alt="find and solve" class="rounded-circle user_img_msg"> </div> </div></li>')
-});
-connection.on("ReceiveMessage", (message, senderId) => {
-    $('#chat-with-id').text(senderId);
-    $('#messageListId').append('<li><div class="d-flex justify-content-start mb-4">' +
-        '<div class="img_cont_msg">' +
-        '<img src="http://www.findandsolve.com/icon.png" alt="find and solve" class="rounded-circle user_img_msg"> </div> ' +
-        '<div class= ""msg_cotainer">' + message + '<span class= "msg_time_send" ></span></div >' +
-        '</div ></li>')
-});
+
+    $("#chat-circle").click(function () {
+        $("#chat-circle").toggle('scale');
+        $(".chat-box").toggle('scale');
+        $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+    })
+
+    $(".chat-box-toggle").click(function () {
+        $("#chat-circle").toggle('scale');
+        $(".chat-box").toggle('scale');
+    })
+
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+})();

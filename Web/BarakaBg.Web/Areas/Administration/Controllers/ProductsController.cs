@@ -234,7 +234,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
             html.AppendLine($"<h1>{product.Name}</h1>");
             html.AppendLine($"<h3>{product.CategoryName}</h3>");
             html.AppendLine($"<img src=\"{product.ImageUrl}\" />");
-            await this.emailSender.SendEmailAsync("baraka@baraka.bg", "BarakaBg", "8k2xynpsi0e9@marmaryta.email", product.Name, html.ToString());
+            await this.emailSender.SendEmailAsync("videnoff@students.softuni.bg", "BarakaBg", "sabina.draganova@gmail.com", product.Name, html.ToString());
             return this.RedirectToAction(nameof(this.ById), "Products", new { area = string.Empty, id });
         }
 
