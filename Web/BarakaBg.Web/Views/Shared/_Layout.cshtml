@@ -8,6 +8,8 @@
 
     <link href="~/favicon.ico" rel="icon" type="image/x-icon" />
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
     <!-- CSS Files -->
 
     <link href="~/css/material-dashboard.css?v=2.1.0" rel="stylesheet" asp-append-version="true" />
@@ -40,13 +42,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                        @if (this.User.IsInRole(GlobalConstants.AdministratorName))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Administration" asp-controller="Categories" asp-action="Index">Categories Admin</a>
                             </li>
                         }
-                        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                        @if (this.User.IsInRole(GlobalConstants.AdministratorName))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Administration" asp-controller="Products" asp-action="Index">Products Admin</a>
@@ -75,9 +77,11 @@
         </div>
     </footer>
 
+    <partial name="_ChatPartial" />
+
     <!--   Core JS Files   -->
 
-    <script src="~/js/core/jquery.min.js" type="text/javascript" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" type="text/javascript" asp-append-version="true"></script>
     <script src="~/js/core/popper.min.js" type="text/javascript" asp-append-version="true"></script>
     <script src="~/js/core/bootstrap-material-design.min.js" type="text/javascript" asp-append-version="true"></script>
     <script src="~/js/plugins/perfect-scrollbar.jquery.min.js" asp-append-version="true"></script>

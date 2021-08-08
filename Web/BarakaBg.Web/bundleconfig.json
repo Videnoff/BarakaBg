@@ -9,16 +9,15 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/site.min.js",
+    "outputFileName": "wwwroot/js/chat/chat.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
-    ],
-    // Optionally specify minification options
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    },
-    // Optionally generate .map file
-    "sourceMap": false
+      "wwwroot/js/chat/chat.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/chat-admin.min.js",
+    "inputFiles": [
+      "wwwroot/js/chat-admin.js"
+    ]
   }
 ]

@@ -4,8 +4,12 @@
     {
         public const string SystemName = "BarakaBg";
 
-        public const string AdministratorRoleName = "Administrator";
+        public const string AdministratorName = "Administrator";
 
-        public const string DateTimeFormat = "dd-MMM-yyyy HH:mm";
+        public const string ParsedDate = "dd-MMM-yyyy HH:mm";
+
+        public const string ImageNotFoundPath = "\\images\\image-not-found.jpg";
+
+        public const string SessionShoppingBagKey = "shoppingBag";
     }
 }

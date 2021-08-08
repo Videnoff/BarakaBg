@@ -1,63 +1,47 @@
 ﻿@{
     this.ViewData["Title"] = "Chat";
-    string url = "https://cdn.jsdelivr.net/npm/@aspnet/signalr@1.0.0-rc1-update1/dist/browser/signalr.min.js";
 }
 
-<script src="@url"></script>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-<div class="container-fluid h-100">
-    <div class="row justify-content-center h-100">
-        <div class="col-md-4 col-xl-3 chat">
-            <div class="card mb-sm-3 mb-md-0 contacts_card">
-                <div class="card-header">
-                    <div class="input-group">
-                        <input type="text" placeholder="Search..." name="" class="form-control search">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
-                        </div>
+<div class="chat-container">
+    <h3 class=" text-center">
+        Messaging
+    </h3>
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="headind_srch">
+                    <div class="recent_heading">
+                        <h4>
+                            Rooms
+                        </h4>
                     </div>
                 </div>
-                <div class="card-body contacts_body">
-                    <ui class="contacts">
-                        <div id="onlineUsersList"></div>
-                    </ui>
+                <div class="inbox_chat">
+
                 </div>
-                <div class="card-footer"></div>
             </div>
-        </div>
-        <div class="col-md-8 col-xl-6 chat">
-            <div class="card">
-                <div class="card-header msg_head">
-                    <div class="d-flex bd-highlight">
-                        <div class="user_info">
-                            <span>Chat with : <span id="chat-with-id"></span></span>
-                        </div>
-                    </div>
+            <div class="mesgs">
+                <div class="msg_history">
+
                 </div>
-                <div class="card-body msg_card_body">
-                    <ul>
-                        <li id="messageListId"></li>
-                    </ul>
-                    @*<div id="receivedMessageId"></div>
-                        <div id="ownMessageId"></div>*@
-                </div>
-                <div class="card-footer">
-                    <div class="input-group">
-                        <div class="input-group-append">
-                            <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
-                        </div>
-                        <textarea name="" class="form-control type_msg" id="messageInput" placeholder="Type your message......">
-                         </textarea>
-                        <div class="input-group-append">
-                            <span class="input-group-text send_btn" id="sendButton"><i class="fas fa-location-arrow"></i></span>
-                        </div>
+                <div class="type_msg">
+                    <div class="input_msg_write">
+                        <form>
+                            <input type="text" class="write_msg" placeholder="Type a message" />
+                            <button class="msg_send_btn" type="submit">
+                                <i class="fa fa-paper-plane-o" aria-hidden="true">
+
+                                </i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="clearfix"></div>
 </div>
+
+@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+    <script src="~/js/chat-admin.js" asp-append-version="true"></script>
+}

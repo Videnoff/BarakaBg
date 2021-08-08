@@ -54,7 +54,13 @@
                             Price: @Model.Price lv
                         </span>
                     </div>
+                    <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@Model.Id" class="it-fav" data-toggle="tooltip" data-placement="top" title="WishList">
+                        <i class="fas fa-heart mr-0 pt-1"></i>
+                    </a>
                 </div>
+                <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@Model.Id" data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
                 <div class="product-description">
                     @Model.Description
                 </div>
@@ -66,7 +72,7 @@
         Back to All Products
     </a>
 
-    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+    @if (this.User.IsInRole(GlobalConstants.AdministratorName))
     {
         <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
 
@@ -122,7 +128,7 @@
             </div>
         </div>
 
-        <a asp-action="Index" class="btn btn-secondary">
+        <a asp-area="Administration" asp-controller="Products" asp-action="Index" class="btn btn-secondary">
             Back to Products Administration
         </a>
 

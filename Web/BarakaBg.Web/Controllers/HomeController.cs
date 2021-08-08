@@ -1,4 +1,4 @@
-﻿    namespace BarakaBg.Web.Controllers
+﻿namespace BarakaBg.Web.Controllers
 {
     using System.Diagnostics;
 

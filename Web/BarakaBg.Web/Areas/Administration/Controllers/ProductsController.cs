@@ -1,5 +1,4 @@
-﻿
-namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +11,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Data;
     using BarakaBg.Services.Messaging;
+    using BarakaBg.Web.ViewModels.Administration.Products;
     using BarakaBg.Web.ViewModels.Products;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -213,17 +213,39 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
             {
                 ItemsPerPage = ItemsPerPage,
                 PageNumber = id,
-                ProductsCount = this.productsService.GetCount(),
+                ItemsCount = this.productsService.GetCount(),
                 Products = this.productsService.GetAll<ProductInListViewModel>(id, ItemsPerPage),
             };
 
             return this.View(viewModel);
         }
 
+        public IActionResult Deleted()
+        {
+            var products = this.productsService.GetAllDeleted<DeletedProductViewModel>();
+            return this.View(products);
+        }
+
         public IActionResult ById(int id)
         {
             var product = this.productsService.GetById<SingleProductViewModel>(id);
             return this.View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteReview(string id, string returnUrl)
+        {
+            var deleteResult = await this.productsService.DeleteReviewAsync(id);
+            if (deleteResult)
+            {
+                this.TempData["Alert"] = "Successfully deleted review.";
+            }
+            else
+            {
+                this.TempData["Error"] = "There was a problem deleting the review.";
+            }
+
+            return this.LocalRedirect(returnUrl);
         }
 
         [HttpPost]
@@ -234,7 +256,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
             html.AppendLine($"<h1>{product.Name}</h1>");
             html.AppendLine($"<h3>{product.CategoryName}</h3>");
             html.AppendLine($"<img src=\"{product.ImageUrl}\" />");
-            await this.emailSender.SendEmailAsync("videnoff@students.softuni.bg", "BarakaBg", "sabina.draganova@gmail.com", product.Name, html.ToString());
+            await this.emailSender.SendEmailAsync("videnoff@students.softuni.bg", "BarakaBg", "videnoff@students.softuni.bg", product.Name, html.ToString());
             return this.RedirectToAction(nameof(this.ById), "Products", new { area = string.Empty, id });
         }
 

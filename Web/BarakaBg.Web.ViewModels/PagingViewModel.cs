@@ -1,6 +1,7 @@
 ﻿namespace BarakaBg.Web.ViewModels
 {
     using System;
+    using System.Collections.Generic;
 
     public class PagingViewModel
     {
@@ -14,10 +15,28 @@
 
         public int NextPageNumber => this.PageNumber + 1;
 
-        public int PagesCount => (int)Math.Ceiling((double)this.ProductsCount / this.ItemsPerPage);
+        public int PagesCount => (int)Math.Ceiling((double)this.ItemsCount / this.ItemsPerPage);
 
-        public int ProductsCount { get; set; }
+        public int ItemsCount { get; set; }
 
         public int ItemsPerPage { get; set; }
+
+        public string Area { get; set; } = string.Empty;
+
+        public string Controller { get; set; }
+
+        public string Action { get; set; }
+
+        public virtual Dictionary<string, string> GetPageQuery(int pageNumber)
+        {
+            var routes = new Dictionary<string, string>();
+
+            if (pageNumber > 1)
+            {
+                routes.Add("PageNumber", pageNumber.ToString());
+            }
+
+            return routes;
+        }
     }
 }

@@ -12,7 +12,7 @@
         public ChatRoom()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Messages = new HashSet<RoomMessage>();
+            this.Messages = new HashSet<ChatRoomMessage>();
         }
 
         [Required]
@@ -21,6 +21,6 @@
 
         public virtual ApplicationUser Owner { get; set; }
 
-        public virtual ICollection<RoomMessage> Messages { get; set; }
+        public virtual ICollection<ChatRoomMessage> Messages { get; set; }
     }
 }

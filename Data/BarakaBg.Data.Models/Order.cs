@@ -4,9 +4,19 @@
     using System.Collections.Generic;
 
     using BarakaBg.Data.Common.Models;
+    using BarakaBg.Data.Models.Enums;
 
     public class Order : BaseDeletableModel<string>
     {
+        public Order()
+        {
+            this.Id = Guid.NewGuid().ToString();
+            this.Products = new HashSet<ProductOrder>();
+            this.IsDelivered = false;
+            this.PayCondition = PayCondition.Unpaid;
+            this.Condition = OrderCondition.Processing;
+        }
+
         public string UserFullName { get; set; }
 
         public string Email { get; set; }
@@ -21,24 +31,24 @@
 
         public virtual Address Address { get; set; }
 
-        public PaymentStatus PaymentStatus { get; set; }
+        public PayCondition PayCondition { get; set; }
 
-        public PaymentType PaymentType { get; set; }
+        public PayForm PayForm { get; set; }
 
         public string StripeId { get; set; }
 
-        public OrderStatus OrderStatus { get; set; }
+        public OrderCondition Condition { get; set; }
 
         public decimal TotalPrice { get; set; }
 
         public bool IsDelivered { get; set; }
 
-        public DateTime DeliveredOn { get; set; }
+        public DateTime? DeliveredOn { get; set; }
 
-        public DeliveryType DeliveryType { get; set; }
+        public ShipmentType ShipmentType { get; set; }
 
         public decimal DeliveryPrice { get; set; }
 
-        public virtual ICollection<OrderProduct> Products { get; set; }
+        public virtual ICollection<ProductOrder> Products { get; set; }
     }
 }

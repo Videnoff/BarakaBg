@@ -1,5 +1,6 @@
 ﻿namespace BarakaBg.Web
 {
+    using System;
     using System.Reflection;
 
     using Azure.Storage.Blobs;
@@ -24,6 +25,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Stripe;
 
     public class Startup
     {
@@ -76,7 +78,18 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            services.AddSignalR();
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+            });
+
+            StripeConfiguration.ApiKey = this.configuration["Stripe:SecretKey"];
+
+            services.AddSignalR(x => x.EnableDetailedErrors = true);
 
             services.AddControllersWithViews(
                 options =>
@@ -107,7 +120,14 @@
             services.AddTransient<IGetCountsService, GetCountsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IProductsService, ProductsService>();
+            services.AddTransient<IShoppingBagService, ShoppingBagService>();
+            services.AddTransient<IWishListService, WishListService>();
+            services.AddTransient<IAddressesService, AddressesService>();
+            services.AddTransient<IChatService, ChatService>();
+            services.AddTransient<IOrdersService, OrdersService>();
+            services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<ITextService, TextService>();
             services.AddTransient<IIngredientsService, IngredientsService>();
             services.AddTransient<IBarakaBgScraperService, BarakaBgScraperService>();
         }
@@ -140,6 +160,8 @@
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -148,7 +170,7 @@
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapHub<ChatHub>($"/{nameof(ChatHub)}");
+                        endpoints.MapHub<ChatHub>("/chat");
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();

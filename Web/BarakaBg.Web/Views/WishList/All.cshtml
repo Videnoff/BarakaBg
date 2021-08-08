@@ -1,0 +1,48 @@
+﻿@model IEnumerable<BarakaBg.Web.ViewModels.Favorites.WishListProductViewModel>
+
+@{
+    this.ViewData["Title"] = "WishList";
+}
+
+<div class="col-md-12">
+    <table>
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Add to Cart</th>
+            <th>Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>
+                    <div>
+                        <a asp-area="" asp-controller="Products" asp-action="ById" asp-route-id="@product.ProductId">
+                            <img src="@product.ImageUrl"/>
+                        </a>
+                    </div>
+                    <div>
+                        <p><a asp-area="" asp-controller="Products" asp-action="ById" asp-route-id="@product.ProductId">
+                            @product.ProductName
+                        </a></p>
+                    </div>
+                </td>
+                <td>@product.ProductPrice лв.</td>
+                <td>
+                    <a class="btn" asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@product.ProductId">
+                        Add to Cart
+                    </a>
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="WishList" asp-action="Delete" asp-route-id="@product.ProductId">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

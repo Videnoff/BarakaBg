@@ -4,29 +4,33 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Mapping;
     using BarakaBg.Web.ViewModels.Products;
+    using Microsoft.EntityFrameworkCore;
 
     public class ProductsService : IProductsService
     {
         private readonly string[] AllowedExtensions = new[] { "jpg", "jpeg", "png", "gif" };
+
         private readonly IDeletableEntityRepository<Product> productsRepository;
         private readonly IDeletableEntityRepository<Ingredient> ingredientsRepository;
+        private readonly IRepository<UserProductComment> userProductReviewRepository;
         private readonly IDeletableEntityRepository<Image> imagesRepository;
 
         public ProductsService(
             IDeletableEntityRepository<Product> productsRepository,
             IDeletableEntityRepository<Ingredient> ingredientsRepository,
-            IDeletableEntityRepository<Image> imagesRepository)
+            IDeletableEntityRepository<Image> imagesRepository,
+            IRepository<UserProductComment> userProductReviewRepository)
         {
             this.productsRepository = productsRepository;
             this.ingredientsRepository = ingredientsRepository;
             this.imagesRepository = imagesRepository;
+            this.userProductReviewRepository = userProductReviewRepository;
         }
 
         public async Task CreateAsync(CreateProductInputModel input, string userId, string imagePath)
@@ -91,6 +95,22 @@
             await this.productsRepository.SaveChangesAsync();
         }
 
+        public async Task<bool> CreateReviewAsync<T>(T model)
+        {
+            var productReview = AutoMapperConfig.MapperInstance.Map<UserProductComment>(model);
+            var product = this.GetById(productReview.ProductId);
+
+            if (product == null || this.userProductReviewRepository.AllAsNoTracking().Any(x => x.ProductId == productReview.ProductId && x.UserId == productReview.UserId))
+            {
+                return false;
+            }
+
+            await this.userProductReviewRepository.AddAsync(productReview);
+            await this.userProductReviewRepository.SaveChangesAsync();
+
+            return true;
+        }
+
         public IEnumerable<T> GetAll<T>(int page, int itemsPerPage = 12)
         {
             /*
@@ -118,6 +138,39 @@
                 .Take(count)
                 .To<T>()
                 .ToList();
+        }
+
+        public IEnumerable<T> GetNewest<T>(int productsToTake) =>
+            this.productsRepository.AllAsNoTracking()
+                .OrderByDescending(x => x.CreatedOn)
+                .Take(productsToTake)
+                .To<T>()
+                .ToList();
+
+        public IEnumerable<T> GetTopRated<T>(int productsToTake)
+        {
+            var productIds = this.userProductReviewRepository.AllAsNoTracking()
+                .GroupBy(x => x.ProductId)
+                .Select(x => new
+                {
+                    ProductId = x.Key,
+                    Total = x.Count(),
+                    AvgRating = x.Average(r => r.Rating),
+                })
+                .OrderByDescending(x => x.AvgRating)
+                .ThenByDescending(x => x.Total)
+                .Take(productsToTake)
+                .ToList();
+
+            var products = new List<T>();
+
+            foreach (var product in productIds)
+            {
+                var mappedProduct = this.GetById<T>(product.ProductId);
+                products.Add(mappedProduct);
+            }
+
+            return products;
         }
 
         public int GetCount()
@@ -206,6 +259,20 @@
             return true;
         }
 
+        public async Task<bool> DeleteReviewAsync(string id)
+        {
+            var review = this.GetReviewById(id);
+            if (review == null)
+            {
+                return false;
+            }
+
+            this.userProductReviewRepository.Delete(review);
+            await this.userProductReviewRepository.SaveChangesAsync();
+
+            return true;
+        }
+
         public IEnumerable<T> GetAllDeleted<T>() =>
             this.productsRepository
                 .AllAsNoTrackingWithDeleted()
@@ -213,9 +280,20 @@
                 .To<T>()
                 .ToList();
 
+        public bool HasProduct(int id) => this.productsRepository.AllAsNoTracking().Any(x => x.Id == id);
+
         private Product GetDeletedById(int id) =>
             this.productsRepository
                 .AllAsNoTrackingWithDeleted()
                 .FirstOrDefault(x => x.IsDeleted && x.Id == id);
+
+        private Product GetById(int id) =>
+            this.productsRepository.All()
+                .Include(x => x.Images)
+                .FirstOrDefault(x => x.Id == id);
+
+        private UserProductComment GetReviewById(string id) =>
+            this.userProductReviewRepository.All()
+                .FirstOrDefault(x => x.Id == id);
     }
 }

@@ -1,0 +1,13 @@
+﻿@{
+    this.ViewData["Title"] = "Order Details";
+    var orderId = this.ViewData["OrderId"];
+}
+
+<!-- Order Details -->
+<section class="checkout">
+    <div class="container">
+        <div class="row">
+            <vc:order-details order-id="@orderId"></vc:order-details>
+        </div>
+    </div>
+</section>

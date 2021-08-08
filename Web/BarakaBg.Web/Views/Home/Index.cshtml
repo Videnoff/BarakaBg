@@ -26,6 +26,12 @@
                         <h5 class="card-title">@product.Name</h5>
                         <p class="card-text">@product.CategoryName</p>
                         <a asp-controller="Products" asp-action="ById" asp-route-id="@product.Id" class="btn btn-primary">Go to Product</a>
+                        <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="it-fav" data-toggle="tooltip" data-placement="top" title="WishList">
+                            <i class="fas fa-heart mr-0 pt-1"></i>
+                        </a>
+                        <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@product.Id" data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
                     </div>
                 </div>
             }

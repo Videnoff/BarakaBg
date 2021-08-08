@@ -1,0 +1,33 @@
+﻿@model BarakaBg.Web.ViewModels.Orders.OrderInfoViewModel
+
+@{
+    this.ViewData["Title"] = "Order Details";
+}
+
+<hr />
+<table class="table table-hover">
+    <thead class="thead-light">
+    <tr class="row">
+        <th scope="col" class="col-6 d-flex justify-content-center">Product</th>
+        <th scope="col" class="col-3 d-flex justify-content-center">Price (USD)</th>
+        <th scope="col" class="col-3 d-flex justify-content-center">Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var product in Model.Products)
+    {
+        <tr class="row">
+            <td class="col-6 d-flex justify-content-center">
+                <img src="@product.ImageUrl" class="custom-image-box" />
+                <a asp-area="" asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId" target="_blank">@product.ProductName</a>
+            </td>
+            <td class="col-3 d-flex justify-content-around">
+                @product.Price
+            </td>
+            <td class="col-3 d-flex justify-content-around">
+                @product.Quantity
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

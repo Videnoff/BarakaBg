@@ -22,7 +22,7 @@
 
         [Required]
         [Range(1, 1000)]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         public string Description { get; set; }
 

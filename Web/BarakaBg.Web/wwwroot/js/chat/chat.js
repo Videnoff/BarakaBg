@@ -1,13 +1,13 @@
 ﻿(function () {
     var connection =
         new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:44319/chathub")
+            .withUrl("/chat")
             .build();
 
     async function start() {
         try {
             await connection.start();
-            await connection.invoke("LoadMessages");
+            await  connection.invoke("LoadMessages");
         } catch (err) {
             console.error(err);
             setTimeout(start, 5000);
@@ -24,7 +24,7 @@
     submitButton.addEventListener("click", async function (e) {
         e.preventDefault();
         var msg = $("#chat-input").val();
-        if (msg.trim() == '') {
+        if (msg.trim() === '') {
             return false;
         }
         await connection.invoke("Send", msg);
@@ -38,7 +38,7 @@
                     generate_message(roomMessages[i]);
                 }
             } else {
-                generate_message(roomMessages);
+                generate_message(roomMessages)
             }
         });
 
@@ -52,7 +52,7 @@
             type = "user";
         }
         str += "<div id='cm-msg-" + INDEX + "' class=\"chat-msg " + type + "\">";
-        str += "          <div class=\"cm-msg-text\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"XeMart\">";
+        str += "          <div class=\"cm-msg-text\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"BarakaBg\">";
         str += escapeHtml(msg.message);
         str += "          <\/div>";
         str += "        <\/div>";

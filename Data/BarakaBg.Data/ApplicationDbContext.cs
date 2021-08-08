@@ -44,7 +44,19 @@
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<ProductOrder> ProductOrders { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<WishList> WishListProducts { get; set; }
+
+        public DbSet<ShoppingBag> ShoppingBags { get; set; }
+
+        public DbSet<ShoppingBagProduct> ShoppingBagProducts { get; set; }
+
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+
+        public DbSet<ChatRoomMessage> RoomMessages { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

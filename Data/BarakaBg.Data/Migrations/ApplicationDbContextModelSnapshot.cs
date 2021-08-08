@@ -113,6 +113,9 @@ namespace BarakaBg.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ChatRoomId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -171,6 +174,9 @@ namespace BarakaBg.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ShoppingBagId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Town")
                         .HasColumnType("nvarchar(max)");
 
@@ -192,6 +198,8 @@ namespace BarakaBg.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("ShoppingBagId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -223,6 +231,71 @@ namespace BarakaBg.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ChatRoom", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OwnerId")
+                        .IsUnique();
+
+                    b.ToTable("ChatRooms");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ChatRoomMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RoomId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("RoomMessages");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.City", b =>
@@ -261,6 +334,46 @@ namespace BarakaBg.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.Comment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.Country", b =>
@@ -362,20 +475,20 @@ namespace BarakaBg.Data.Migrations
                     b.Property<string>("AddressId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Condition")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeliveredOn")
+                    b.Property<DateTime?>("DeliveredOn")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DeliveryPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("DeliveryType")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -389,17 +502,17 @@ namespace BarakaBg.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderStatus")
+                    b.Property<int>("PayCondition")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PaymentType")
+                    b.Property<int>("PayForm")
                         .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShipmentType")
+                        .HasColumnType("int");
 
                     b.Property<string>("StripeId")
                         .HasColumnType("nvarchar(max)");
@@ -422,45 +535,6 @@ namespace BarakaBg.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("BarakaBg.Data.Models.OrderProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId1");
-
-                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.Product", b =>
@@ -506,8 +580,8 @@ namespace BarakaBg.Data.Migrations
                     b.Property<string>("OriginalUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductCode")
                         .HasColumnType("nvarchar(max)");
@@ -548,6 +622,108 @@ namespace BarakaBg.Data.Migrations
                     b.ToTable("ProductIngredients");
                 });
 
+            modelBuilder.Entity("BarakaBg.Data.Models.ProductOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductOrders");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBag", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ShoppingBags");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBagProduct", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShoppingBagId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ShoppingBagId");
+
+                    b.ToTable("ShoppingBagProducts");
+                });
+
             modelBuilder.Entity("BarakaBg.Data.Models.Vote", b =>
                 {
                     b.Property<int>("Id")
@@ -580,6 +756,33 @@ namespace BarakaBg.Data.Migrations
                     b.HasIndex("UId");
 
                     b.ToTable("Votes");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.WishList", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WishListProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -705,6 +908,45 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BarakaBg.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.ShoppingBag", "ShoppingBag")
+                        .WithMany()
+                        .HasForeignKey("ShoppingBagId");
+
+                    b.Navigation("ShoppingBag");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ChatRoom", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "Owner")
+                        .WithOne("ChatRoom")
+                        .HasForeignKey("BarakaBg.Data.Models.ChatRoom", "OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ChatRoomMessage", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.ChatRoom", "Room")
+                        .WithMany("Messages")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("BarakaBg.Data.Models.City", b =>
                 {
                     b.HasOne("BarakaBg.Data.Models.Country", "Country")
@@ -714,6 +956,21 @@ namespace BarakaBg.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.Comment", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.Image", b =>
@@ -746,23 +1003,6 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BarakaBg.Data.Models.OrderProduct", b =>
-                {
-                    b.HasOne("BarakaBg.Data.Models.Order", "Order")
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId1");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.Product", b =>
@@ -801,6 +1041,53 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("BarakaBg.Data.Models.ProductOrder", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.Order", "Order")
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBag", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBagProduct", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BarakaBg.Data.Models.ShoppingBag", "ShoppingBag")
+                        .WithMany("ShoppingBagProducts")
+                        .HasForeignKey("ShoppingBagId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ShoppingBag");
+                });
+
             modelBuilder.Entity("BarakaBg.Data.Models.Vote", b =>
                 {
                     b.HasOne("BarakaBg.Data.Models.Product", "Product")
@@ -816,6 +1103,25 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("U");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.WishList", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
+                        .WithMany("FavoriteProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "User")
+                        .WithMany("WishListProducts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -871,18 +1177,29 @@ namespace BarakaBg.Data.Migrations
 
             modelBuilder.Entity("BarakaBg.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("ChatRoom");
+
                     b.Navigation("Claims");
 
                     b.Navigation("Logins");
 
+                    b.Navigation("Reviews");
+
                     b.Navigation("Roles");
 
                     b.Navigation("Votes");
+
+                    b.Navigation("WishListProducts");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ChatRoom", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.City", b =>
@@ -907,11 +1224,20 @@ namespace BarakaBg.Data.Migrations
 
             modelBuilder.Entity("BarakaBg.Data.Models.Product", b =>
                 {
+                    b.Navigation("FavoriteProducts");
+
                     b.Navigation("Images");
 
                     b.Navigation("Ingredients");
 
+                    b.Navigation("Reviews");
+
                     b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBag", b =>
+                {
+                    b.Navigation("ShoppingBagProducts");
                 });
 #pragma warning restore 612, 618
         }

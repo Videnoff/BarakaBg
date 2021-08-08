@@ -10,23 +10,23 @@
 
     public class PersonalDataModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<PersonalDataModel> _logger;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILogger<PersonalDataModel> logger;
 
         public PersonalDataModel(
             UserManager<ApplicationUser> userManager,
             ILogger<PersonalDataModel> logger)
         {
-            this._userManager = userManager;
-            this._logger = logger;
+            this.userManager = userManager;
+            this.logger = logger;
         }
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await this._userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
             return this.Page();

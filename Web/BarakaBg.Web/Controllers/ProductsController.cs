@@ -1,6 +1,7 @@
 ﻿namespace BarakaBg.Web.Controllers
 {
     using BarakaBg.Data.Models;
+    using BarakaBg.Services;
     using BarakaBg.Services.Data;
     using BarakaBg.Web.ViewModels.Products;
     using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@
     {
         private readonly ICategoriesService categoriesService;
         private readonly IProductsService productsService;
+        private readonly ITextService textService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
 
@@ -18,12 +20,14 @@
             ICategoriesService categoriesService,
             IProductsService productsService,
             UserManager<ApplicationUser> userManager,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            ITextService textService)
         {
             this.categoriesService = categoriesService;
             this.productsService = productsService;
             this.userManager = userManager;
             this.environment = environment;
+            this.textService = textService;
         }
 
         public IActionResult All(int id = 1)
@@ -38,7 +42,7 @@
             {
                 ItemsPerPage = ItemsPerPage,
                 PageNumber = id,
-                ProductsCount = this.productsService.GetCount(),
+                ItemsCount = this.productsService.GetCount(),
                 Products = this.productsService.GetAll<ProductInListViewModel>(id, ItemsPerPage),
             };
 
@@ -48,6 +52,7 @@
         public IActionResult ById(int id)
         {
             var product = this.productsService.GetById<SingleProductViewModel>(id);
+            product.Description = this.textService.TruncateAtWord(product.Description, 200);
             return this.View(product);
         }
     }

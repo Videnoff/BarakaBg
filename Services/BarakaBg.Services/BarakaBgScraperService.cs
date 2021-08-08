@@ -179,7 +179,7 @@
                 .Last();
             var clearPrice = price.Trim();
             var lastPrice = clearPrice.Remove(clearPrice.Length - 3, 3).Replace(",", ".");
-            product.Price = Math.Round(double.Parse(lastPrice), 2);
+            product.Price = Math.Round(decimal.Parse(lastPrice), 2);
 
             /*
              * Get description

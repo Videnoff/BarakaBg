@@ -21,6 +21,18 @@
                     <a asp-action="ById" asp-route-id="@product.Id">
                         <img class="img-fluid" src="@product.ImageUrl" alt="@product.Name">
                     </a>
+                    <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="fav" data-placement="left" title="WishList">
+                        <i class="fas fa-heart mr-0 pt-1"></i>
+                    </a>
+                    <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@product.Id" class="it-cart">
+                        <span class="it-img">
+                            <i class="fas fa-shopping-cart">
+                            </i>
+                        </span>
+                        <span class="it-title">
+                            Add To Cart
+                        </span>
+                    </a>
                 </div>
                 <div>
                     <div>

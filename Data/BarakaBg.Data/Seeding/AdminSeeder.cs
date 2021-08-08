@@ -15,7 +15,7 @@
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            await this.SeedRoleAsync(userManager, GlobalConstants.AdministratorRoleName);
+            await this.SeedRoleAsync(userManager, GlobalConstants.AdministratorName);
         }
 
         private async Task SeedRoleAsync(UserManager<ApplicationUser> userManager, string administratorRoleName)
