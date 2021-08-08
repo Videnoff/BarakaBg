@@ -27,6 +27,7 @@
                           {
                               new RolesSeeder(),
                               new CategoriesSeeder(),
+                              new CountriesSeeder(),
                               new AdminSeeder(),
                           };
 

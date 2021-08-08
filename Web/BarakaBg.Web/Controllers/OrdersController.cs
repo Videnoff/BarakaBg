@@ -89,8 +89,6 @@
                     return this.RedirectToAction("Index", "Home");
                 }
 
-                //var suppliers = this.suppliersService.GetAll<SupplierViewModel>();
-
                 var addresses = this.addressesService.GetAll<AddressViewModel>(this.userId);
 
                 foreach (var address in addresses)
@@ -102,7 +100,6 @@
 
                 var email = this.User.Identity.Name;
 
-                //input.Suppliers = suppliers;
                 input.Addresses = addresses;
                 input.Email = email;
                 input.Countries = countries;

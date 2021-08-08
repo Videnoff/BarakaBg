@@ -1,9 +1,4 @@
-﻿using BarakaBg.Common;
-using BarakaBg.Services.Data;
-using BarakaBg.Web.Infrastructure;
-using BarakaBg.Web.ViewModels.Products;
-
-namespace BarakaBg.Web.Areas.Identity.Pages.Account
+﻿namespace BarakaBg.Web.Areas.Identity.Pages.Account
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +7,11 @@ namespace BarakaBg.Web.Areas.Identity.Pages.Account
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
+    using BarakaBg.Common;
     using BarakaBg.Data.Models;
+    using BarakaBg.Services.Data;
+    using BarakaBg.Web.Infrastructure;
+    using BarakaBg.Web.ViewModels.Products;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;

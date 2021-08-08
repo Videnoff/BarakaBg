@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BarakaBg.Data.Models
+﻿namespace BarakaBg.Data.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using BarakaBg.Data.Common.Models;
 

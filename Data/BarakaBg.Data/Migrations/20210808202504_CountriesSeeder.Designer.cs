@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarakaBg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210807211729_ShoppingBagFunctionality")]
-    partial class ShoppingBagFunctionality
+    [Migration("20210808202504_CountriesSeeder")]
+    partial class CountriesSeeder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -201,9 +201,7 @@ namespace BarakaBg.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("ShoppingBagId")
-                        .IsUnique()
-                        .HasFilter("[ShoppingBagId] IS NOT NULL");
+                    b.HasIndex("ShoppingBagId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -678,9 +676,14 @@ namespace BarakaBg.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingBags");
                 });
@@ -910,8 +913,8 @@ namespace BarakaBg.Data.Migrations
             modelBuilder.Entity("BarakaBg.Data.Models.ApplicationUser", b =>
                 {
                     b.HasOne("BarakaBg.Data.Models.ShoppingBag", "ShoppingBag")
-                        .WithOne("User")
-                        .HasForeignKey("BarakaBg.Data.Models.ApplicationUser", "ShoppingBagId");
+                        .WithMany()
+                        .HasForeignKey("ShoppingBagId");
 
                     b.Navigation("ShoppingBag");
                 });
@@ -1057,6 +1060,15 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBag", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBagProduct", b =>
@@ -1228,8 +1240,6 @@ namespace BarakaBg.Data.Migrations
             modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBag", b =>
                 {
                     b.Navigation("ShoppingBagProducts");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

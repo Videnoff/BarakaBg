@@ -26,6 +26,9 @@
         public string Phone { get; set; }
 
         [Required]
+        public ShipmentType ShipmentType { get; set; }
+
+        [Required]
         public string AddressId { get; set; }
 
         public IEnumerable<AddressViewModel> Addresses { get; set; }
