@@ -19,7 +19,6 @@
         private const string ShoppingBagMessage = "The shopping cart is empty";
 
         private readonly IOrdersService ordersService;
-        //private readonly ISuppliersService suppliersService;
         private readonly IAddressesService addressesService;
         private readonly ICountriesService countriesService;
         private readonly ITextService textService;
@@ -56,7 +55,10 @@
 
             foreach (var address in addresses)
             {
-                address.Description = this.textService.TruncateAtWord(address.Description, 30);
+                if (!string.IsNullOrEmpty(address.Description))
+                {
+                    address.Description = this.textService.TruncateAtWord(address.Description, 30);
+                }
             }
 
             var countries = this.countriesService.GetAll();
@@ -65,7 +67,6 @@
 
             var model = new OrderCreateInputModel
             {
-                //Suppliers = suppliers,
                 Addresses = addresses,
                 Email = email,
                 Countries = countries,

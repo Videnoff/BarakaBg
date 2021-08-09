@@ -17,6 +17,7 @@
 
         public IEnumerable<Country> GetAll() => this.countryRepository
             .AllAsNoTracking()
+            .OrderBy(x => x.Name)
             .ToList();
     }
 }

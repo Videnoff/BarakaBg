@@ -1,7 +1,4 @@
-﻿@model BarakaBg.Web.ViewModels.Products.ProductsListViewModel
-@{
-    this.ViewData["Title"] = "All Products, Page " + Model.PageNumber;
-}
+﻿@model BarakaBg.Web.ViewModels.SearchProducts.AllProductsQueryModel
 
 @if (this.TempData.ContainsKey("Message"))
 {
@@ -11,6 +8,16 @@
 <title>
     @this.ViewData["Title"]
 </title>
+
+<div class="row">
+    <form method="get">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="SearchTerm"></label>
+                <input asp-for="SearchTerm" class="form-control" placeholder="Search product..."/>
+            </div></div>
+    </form>
+</div>
 
 <div class="container">
     <div class="row">
