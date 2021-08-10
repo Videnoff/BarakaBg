@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using BarakaBg.Data.Models;
     using BarakaBg.Web.ViewModels.Products;
 
     public interface IProductsService
@@ -36,5 +37,7 @@
         public IEnumerable<T> GetAllDeleted<T>();
 
         public bool HasProduct(int id);
+
+        public IEnumerable<Product> Search(string searchTerm);
     }
 }

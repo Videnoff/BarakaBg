@@ -24,6 +24,8 @@
 
         public string Stock { get; set; }
 
+        public string SearchTerm { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Product, ProductInListViewModel>()

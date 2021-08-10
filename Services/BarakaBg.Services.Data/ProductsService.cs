@@ -282,12 +282,14 @@
 
         public bool HasProduct(int id) => this.productsRepository.AllAsNoTracking().Any(x => x.Id == id);
 
-        public IEnumerable<T> GetAllProducts<T>(string searchTerm, int page, int productsToTake)
+        public IEnumerable<Product> Search(string searchTerm)
         {
-            return this.productsRepository.AllAsNoTracking()
-                .Skip((page - 1) * productsToTake)
-                .Take(productsToTake)
-                .To<T>().ToList();
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return this.productsRepository.All();
+            }
+
+            return this.productsRepository.All().Where(x => x.Name.Contains(searchTerm) || x.Category.Name.Contains(searchTerm));
         }
 
         private Product GetDeletedById(int id) =>

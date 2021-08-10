@@ -27,6 +27,8 @@
 
         public string Action { get; set; }
 
+        public string SearchTerm { get; set; }
+
         public virtual Dictionary<string, string> GetPageQuery(int pageNumber)
         {
             var routes = new Dictionary<string, string>();
