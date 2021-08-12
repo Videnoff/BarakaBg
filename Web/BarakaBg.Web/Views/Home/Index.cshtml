@@ -3,7 +3,7 @@
 @using Microsoft.Extensions.Configuration
 @inject IWebHostEnvironment environment
 @inject IConfiguration configuration
-@model BarakaBg.Web.ViewModels.Home.IndexViewModel
+@model BarakaBg.Web.ViewModels.SearchProducts.AllProductsQueryModel
 @{
     this.ViewData["Title"] = "Home Page";
 }
@@ -16,6 +16,18 @@
 
 <div class="text-center row">
     <h1 class="display-4">Добре дошли в @GlobalConstants.SystemName!</h1>
+    <div class="form-group col-md">
+        <form method="get">
+            <div class="form-inline col-md">
+                <input asp-for="SearchTerm" class="form-control col-md" placeholder="Search product..."/>
+                <div class="col col-form-label col-md">
+                    <button type="submit" class="btn btn-primary">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="col-md-8">
         <div class="row">
             @foreach (var product in this.Model.RandomProducts)
@@ -25,7 +37,9 @@
                     <div class="card-body">
                         <h5 class="card-title">@product.Name</h5>
                         <p class="card-text">@product.CategoryName</p>
-                        <a asp-controller="Products" asp-action="ById" asp-route-id="@product.Id" class="btn btn-primary">Go to Product</a>
+                        <a asp-controller="Products" asp-action="ById" asp-route-id="@product.Id" class="btn btn-primary">
+                            Go to Product
+                        </a>
                         <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="it-fav" data-toggle="tooltip" data-placement="top" title="WishList">
                             <i class="fas fa-heart mr-0 pt-1"></i>
                         </a>
@@ -38,12 +52,22 @@
         </div>
     </div>
     <div class="col-md-4">
-        <p>We have:</p>
+        <p>
+            We have:
+        </p>
         <ul class="list-group">
-            <li class="list-group-item bg-info">Products: @Model.ProductsCount</li>
-            <li class="list-group-item bg-light">Categories: @Model.CategoriesCount</li>
-            <li class="list-group-item bg-info">Images: @Model.ImagesCount</li>
-            <li class="list-group-item bg-light">Ingredients: @Model.IngredientsCount</li>
+            <li class="list-group-item bg-info">
+                Products: @Model.ProductsCount
+            </li>
+            <li class="list-group-item bg-light">
+                Categories: @Model.CategoriesCount
+            </li>
+            <li class="list-group-item bg-info">
+                Images: @Model.ImagesCount
+            </li>
+            <li class="list-group-item bg-light">
+                Ingredients: @Model.IngredientsCount
+            </li>
         </ul>
     </div>
 </div>

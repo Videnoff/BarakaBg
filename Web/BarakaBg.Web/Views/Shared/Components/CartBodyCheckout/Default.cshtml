@@ -1,0 +1,33 @@
+﻿@model BarakaBg.Web.ViewModels.Products.ShoppingBagViewModel
+
+@{
+    var productClassName = string.Empty;
+}
+
+<div class="col-md-12">
+    <div class="order-review">
+        <h5>Order Review</h5>
+        <div class="review-box">
+            <ul class="list-unstyled">
+                <li>Product <span>Total</span></li>
+                @foreach (var product in Model.Products)
+                {
+                    productClassName = (product.ProductId == Model.Products.Last().ProductId) ? "last-product" : string.Empty;
+                    <li class="d-flex justify-content-between @productClassName">
+                        <div class="pro">
+                            <a asp-area="" asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">
+                                <img src="@product.ImageUrl" />
+                                <p>@product.ProductName</p>
+                            </a>
+                            <span>@product.Quantity X $@product.ProductPrice</span>
+                        </div>
+                        <div class="prc">
+                            <p>$@product.TotalPrice</p>
+                        </div>
+                    </li>
+                }
+                <li>Grand Total <span>$@Model.GrandTotalPrice</span></li>
+            </ul>
+        </div>
+    </div>
+</div>

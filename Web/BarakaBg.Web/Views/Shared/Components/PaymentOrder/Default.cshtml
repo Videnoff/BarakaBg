@@ -1,0 +1,12 @@
+﻿@using BarakaBg.Data.Models.Enums
+@model BarakaBg.Web.ViewModels.Payment.PaymentViewModel
+
+@if (Model.PayForm == PayForm.Stripe)
+{
+    <div class="col-md-7">
+        <button id="checkout-button" class="ord-btn">
+            Pay With Stripe
+        </button>
+    </div>
+    <form method="post" id="antiForgeryForm"></form>
+}

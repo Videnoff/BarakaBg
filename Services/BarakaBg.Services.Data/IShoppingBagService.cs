@@ -11,7 +11,7 @@
 
         public Task<IEnumerable<T>> GetAllProductsAsync<T>(bool isUserAuthenticated, ISession session, string userId);
 
-        public Task<int> GetProductsCount(bool isUserAuthenticated, ISession session, string userId);
+        public Task<int> GetProductsCountAsync(bool isUserAuthenticated, ISession session, string userId);
 
         public Task<bool> AnyProductsAsync(string userId);
 

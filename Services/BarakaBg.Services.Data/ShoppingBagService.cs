@@ -96,14 +96,22 @@
             }
         }
 
-        public async Task<int> GetProductsCount(bool isUserAuthenticated, ISession session, string userId)
+        public async Task<int> GetProductsCountAsync(bool isUserAuthenticated, ISession session, string userId)
         {
-            var user = await this.userManager.FindByIdAsync(userId);
-            var shoppingCardId = user.ShoppingBagId;
+            if (isUserAuthenticated)
+            {
+                var user = await this.userManager.FindByIdAsync(userId);
+                var shoppingCardId = user.ShoppingBagId;
 
-            return this.shoppingBagProductRepository
-                .AllAsNoTracking()
-                .Count(x => x.ShoppingBagId == shoppingCardId);
+                return this.shoppingBagProductRepository
+                    .AllAsNoTracking()
+                    .Count(x => x.ShoppingBagId == shoppingCardId);
+            }
+            else
+            {
+                var products = session.GetObjectFromJson<List<ShoppingBagProductViewModel>>(GlobalConstants.SessionShoppingBagKey);
+                return (products == null) ? 0 : products.Count;
+            }
         }
 
         public async Task<bool> AnyProductsAsync(string userId)

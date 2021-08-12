@@ -45,30 +45,30 @@
 
         public async Task<string> CompleteOrderAsync(string userId)
         {
-            var order = this.GetDeletedOrderById(userId);
+            var order = this.GetProcessingOrderByUserId(userId);
             if (order == null)
             {
                 return null;
             }
 
-            var shoppingCartProducts =
+            var shoppingBagProducts =
                 await this.shoppingBagService.GetAllProductsAsync<ShoppingBagProductViewModel>(true, null, userId);
-            if (shoppingCartProducts == null || shoppingCartProducts.Count() == 0)
+            if (shoppingBagProducts == null || shoppingBagProducts.Count() == 0)
             {
                 return null;
             }
 
-            foreach (var shoppingCartProduct in shoppingCartProducts)
+            foreach (var shoppingBagProduct in shoppingBagProducts)
             {
                 var orderProduct = new ProductOrder
                 {
                     Order = order,
-                    ProductId = shoppingCartProduct.ProductId,
-                    Quantity = shoppingCartProduct.Quantity,
-                    Price = shoppingCartProduct.ProductPrice,
+                    ProductId = shoppingBagProduct.ProductId,
+                    Quantity = shoppingBagProduct.Quantity,
+                    Price = shoppingBagProduct.ProductPrice,
                 };
 
-                if (!this.OrderHasProduct(order.Id, shoppingCartProduct.ProductId))
+                if (!this.OrderHasProduct(order.Id, shoppingBagProduct.ProductId))
                 {
                     order.Products.Add(orderProduct);
                 }

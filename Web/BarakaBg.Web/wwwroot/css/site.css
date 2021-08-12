@@ -291,3 +291,13 @@ body {
     clear: both;
     margin-bottom: 70px;
 }
+
+.fa-arrow-alt-circle-right {
+    border-top-style: solid;
+    border-top-width: 0px;
+    padding-top: 13px;
+}
+
+.form-inline {
+    padding-left: 131px;
+}

@@ -1,10 +1,9 @@
-﻿using System;
-using BarakaBg.Data.Common.Repositories;
-
-namespace BarakaBg.Web.Controllers
+﻿namespace BarakaBg.Web.Controllers
 {
+    using System;
     using System.Linq;
 
+    using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using BarakaBg.Services;
     using BarakaBg.Services.Data;

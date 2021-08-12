@@ -1,0 +1,18 @@
+﻿@model BarakaBg.Web.ViewModels.WishListAndShoppingBag.WishListAndShoppingBagViewModel
+
+<div class="col-lg-3 col-md-2">
+    <div class="carts-area d-flex">
+        <div class="wsh-box ml-auto">
+            <a asp-area="" asp-controller="WishList" asp-action="All" data-toggle="tooltip" data-placement="top" title="WishList">
+                <img src="~/images/icons/wishlist-small.png" alt="wishList">
+                <span>@Model.WishListProductsCount</span>
+            </a>
+        </div>
+        <div class="cart-box ml-4">
+            <a asp-area="" asp-controller="ShoppingBag" asp-action="Index" data-toggle="tooltip" data-placement="top" title="Shopping Cart" class="cart-btn">
+                <img src="~/images/icons/shoppingBag-small.png" alt="shoppingBag">
+                <span>@Model.ShoppingBagProductsCount</span>
+            </a>
+        </div>
+    </div>
+</div>

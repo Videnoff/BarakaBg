@@ -68,6 +68,8 @@
   <ItemGroup>
     <Folder Include="Areas\Administration\Views\Chat\" />
     <Folder Include="Hubs\" />
+    <Folder Include="wwwroot\images\icons\" />
+    <Folder Include="wwwroot\images\logo\" />
   </ItemGroup>
 
   <ItemGroup>
