@@ -5,20 +5,20 @@
     <div class="alert alert-success alert-dismissible">@this.TempData["Message"]</div>
 }
 
-<title>
-    @this.ViewData["Title"]
-</title>
+@{
+    this.ViewData["Title"] = "All products";
+}
 
-<div class="row">
+<div class="form-group col-md">
     <form method="get">
-            <div class="form-group">
-                <input asp-for="SearchTerm" class="form-control" placeholder="Search product..."/>
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary">
-                        Search
-                    </button>
-                </div>
+        <div class="form-inline col-md">
+            <input asp-for="SearchTerm" class="form-control col-md" placeholder="Search product..." />
+            <div class="col col-form-label col-md">
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
             </div>
+        </div>
     </form>
 </div>
 
@@ -29,7 +29,7 @@
             <div class="col-md-4 col-6">
                 <div>
                     <a asp-action="ById" asp-route-id="@product.Id">
-                        <img class="img-fluid" src="@product.ImageUrl" alt="@product.Name">
+                        <img src="@product.ImageUrl" class="img-fluid" alt="@product.Name">
                     </a>
                     <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="fav" data-placement="left" title="WishList">
                         <i class="fas fa-heart mr-0 pt-1"></i>

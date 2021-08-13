@@ -29,7 +29,8 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Product, ProductInListViewModel>()
-                .ForMember(x => x.ImageUrl, opt => opt.MapFrom(x => x.Images.FirstOrDefault().RemoteImageUrl != null
+                .ForMember(
+                    x => x.ImageUrl, opt => opt.MapFrom(x => x != null && x.Images.FirstOrDefault().RemoteImageUrl != null
                     ? x.Images.FirstOrDefault().RemoteImageUrl
                     : "/images/products/" + x.Images.FirstOrDefault().Id + "." + x.Images.FirstOrDefault().Extension));
         }

@@ -5,7 +5,6 @@
     using AutoMapper;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Mapping;
-    using BarakaBg.Web.ViewModels.Products;
 
     public class IndexPageProductViewModel : IMapFrom<Product>, IHaveCustomMappings
     {
@@ -20,7 +19,8 @@
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Product, IndexPageProductViewModel>()
-                .ForMember(x => x.ImageUrl, opt => opt.MapFrom(x => x.Images.FirstOrDefault().RemoteImageUrl != null
+                .ForMember(
+                    x => x.ImageUrl, opt => opt.MapFrom(x => x.Images.FirstOrDefault().RemoteImageUrl != null
                     ? x.Images.FirstOrDefault().RemoteImageUrl
                     : "/images/products/" + x.Images.FirstOrDefault().Id + "." + x.Images.FirstOrDefault().Extension));
         }

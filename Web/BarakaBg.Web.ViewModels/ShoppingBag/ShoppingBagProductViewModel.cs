@@ -29,11 +29,12 @@
         {
             configuration.CreateMap<ShoppingBagProduct, ShoppingBagProductViewModel>()
                 .ForMember(
-                    source => source.AverageRating,
-                    destination => destination.MapFrom(member => (!member.Product.Reviews.Any()) ? 0 : Math.Round(member.Product.Reviews.Average(x => x.Rating), 2)))
+                    x => x.AverageRating,
+                    opt => opt.MapFrom(member => (!member.Product.Reviews.Any()) ? 0 : Math.Round(member.Product.Reviews.Average(x => x.Rating), 2)))
                 .ForMember(
-                    source => source.ImageUrl,
-                    destination => destination.MapFrom(member => (!member.Product.Images.Any()) ? GlobalConstants.ImageNotFoundPath : member.Product.Images.FirstOrDefault().RemoteImageUrl));
+                    x => x.ImageUrl, opt => opt.MapFrom(x => x.Product.Images.FirstOrDefault().RemoteImageUrl != null
+                    ? x.Product.Images.FirstOrDefault().RemoteImageUrl
+                    : "/images/products/" + x.Product.Images.FirstOrDefault().Id + "." + x.Product.Images.FirstOrDefault().Extension));
         }
     }
 }

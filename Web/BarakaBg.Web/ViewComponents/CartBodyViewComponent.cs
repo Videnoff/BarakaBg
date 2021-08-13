@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using BarakaBg.Services;
-using BarakaBg.Services.Data;
-using BarakaBg.Web.ViewModels.Products;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BarakaBg.Web.ViewComponents
+﻿namespace BarakaBg.Web.ViewComponents
 {
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+
+    using BarakaBg.Services;
+    using BarakaBg.Services.Data;
+    using BarakaBg.Web.ViewModels.Products;
+    using Microsoft.AspNetCore.Mvc;
+
     public class CartBodyViewComponent : ViewComponent
     {
         private readonly IShoppingBagService shoppingBagService;

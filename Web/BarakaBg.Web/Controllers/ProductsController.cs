@@ -27,7 +27,8 @@
             IProductsService productsService,
             UserManager<ApplicationUser> userManager,
             IWebHostEnvironment environment,
-            ITextService textService, IRepository<Product> productRepository)
+            ITextService textService,
+            IRepository<Product> productRepository)
         {
             this.categoriesService = categoriesService;
             this.productsService = productsService;

@@ -301,3 +301,11 @@ body {
 .form-inline {
     padding-left: 131px;
 }
+
+.table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) {
+    padding-top: 1.2rem;
+}
+
+.table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(4) {
+    padding-top: 1.2rem;
+}

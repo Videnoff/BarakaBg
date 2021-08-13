@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
 
     using BarakaBg.Services.Data;
-    using BarakaBg.Web.ViewModels.Favorites;
+    using BarakaBg.Web.ViewModels.WishList;
     using Microsoft.AspNetCore.Mvc;
 
     public class WishListController : BaseController
@@ -18,9 +18,9 @@
 
         public IActionResult All()
         {
-            var favorites = this.wishListService
+            var wishListProducts = this.wishListService
                 .GetAll<WishListProductViewModel>(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            return this.View(favorites);
+            return this.View(wishListProducts);
         }
 
         public async Task<IActionResult> Add(int id)

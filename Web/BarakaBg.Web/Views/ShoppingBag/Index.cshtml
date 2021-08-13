@@ -14,10 +14,11 @@
                         <thead>
                             <tr>
                                 <th class="t-pro">Product</th>
+                                <th class="t-pro"></th>
                                 <th class="t-price">Price</th>
                                 <th class="t-qty">Quantity</th>
                                 <th class="t-total">Total</th>
-                                <th class="t-rem"></th>
+                                <th class="t-rem">Remove</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,13 +27,17 @@
                                 <tr>
                                     <td class="t-pro d-flex">
                                         <div class="t-img">
-                                            <a href=""><img src="@product.ImageUrl" class="custom-image-box"></a>
+                                            <a href="">
+                                                <img src="@product.ImageUrl" class="custom-image-box">
+                                            </a>
                                         </div>
+                                    </td>
+                                    <td>
                                         <div class="t-content">
                                             <p class="t-heading">
                                                 <a asp-area="" asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">@product.ProductName</a>
                                             </p>
-                                            @*<partial name="_ProductRatingPartial" model="new XeMart.Web.ViewModels.Products.ProductRatingViewModel { AverageRating = product.AverageRating, ShowAverageRating = false }" />*@
+                                            @*<partial name="_ProductRatingPartial" model="new BarakaBg.Web.ViewModels.Products.ProductRatingViewModel { AverageRating = product.AverageRating, ShowAverageRating = false }" />*@
                                         </div>
                                     </td>
                                     <td class="t-price">@product.ProductPrice лв.</td>
@@ -50,8 +55,9 @@
                                         </div>
                                     </td>
                                     <td class="t-total">@product.TotalPrice лв.</td>
-                                    <td class="t-rem">
-                                        <a asp-area="" asp-controller="ShoppingBag" asp-action="Delete" asp-route-id="@product.ProductId"><i class="fa fa-trash-o">
+                                    <td class="">
+                                        <a asp-area="" asp-controller="ShoppingBag" asp-action="Delete" asp-route-id="@product.ProductId">
+                                            <i class="fa fa-trash">
                                             </i>
                                         </a>
                                     </td>
