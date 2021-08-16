@@ -1,4 +1,4 @@
-﻿@model BarakaBg.Web.ViewModels.SearchProducts.AllProductsQueryModel
+﻿@model BarakaBg.Web.ViewModels.Products.ProductsListViewModel
 
 @if (this.TempData.ContainsKey("Message"))
 {
@@ -29,7 +29,7 @@
             <div class="col-md-4 col-6">
                 <div>
                     <a asp-action="ById" asp-route-id="@product.Id">
-                        <img src="@product.ImageUrl" class="img-fluid" alt="@product.Name">
+                        <img class="img-fluid" src="@product.ImageUrl" alt="@product.Name">
                     </a>
                     <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="fav" data-placement="left" title="WishList">
                         <i class="fas fa-heart mr-0 pt-1"></i>
@@ -57,7 +57,7 @@
                     </div>
                     <div>
                         <a asp-action="ById" asp-route-id="@product.Id">
-                            @product.Description
+                            @product.Description.Substring(0, product.Description.Length > 200 ? 200 : product.Description.Length)
                         </a>
                     </div>
                 </div>

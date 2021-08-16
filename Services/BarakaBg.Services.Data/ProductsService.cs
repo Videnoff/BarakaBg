@@ -8,8 +8,10 @@
 
     using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
+    using BarakaBg.Services;
     using BarakaBg.Services.Mapping;
     using BarakaBg.Web.ViewModels.Products;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
 
     public class ProductsService : IProductsService
@@ -20,80 +22,105 @@
         private readonly IDeletableEntityRepository<Ingredient> ingredientsRepository;
         private readonly IRepository<UserProductComment> userProductReviewRepository;
         private readonly IDeletableEntityRepository<Image> imagesRepository;
+        private readonly IImagesService imagesService;
+        private readonly ITextService textService;
 
         public ProductsService(
             IDeletableEntityRepository<Product> productsRepository,
             IDeletableEntityRepository<Ingredient> ingredientsRepository,
             IDeletableEntityRepository<Image> imagesRepository,
-            IRepository<UserProductComment> userProductReviewRepository)
+            IRepository<UserProductComment> userProductReviewRepository,
+            IImagesService imagesService, ITextService textService)
         {
             this.productsRepository = productsRepository;
             this.ingredientsRepository = ingredientsRepository;
             this.imagesRepository = imagesRepository;
             this.userProductReviewRepository = userProductReviewRepository;
+            this.imagesService = imagesService;
+            this.textService = textService;
         }
 
-        public async Task CreateAsync(CreateProductInputModel input, string userId, string imagePath)
+        public async Task CreateAsync<T>(T model, IEnumerable<IFormFile> images, string fullDirectoryPath, string webRootPath)
         {
-            var product = new Product
-            {
-                CategoryId = input.CategoryId,
-                Description = input.Description,
-                Brand = input.Brand,
-                Name = input.Name,
-                Price = input.Price,
-                Stock = input.Stock,
-                Content = input.Content,
-                ProductCode = input.ProductCode,
-                AddedByUserId = userId,
-            };
+            var product = AutoMapperConfig.MapperInstance.Map<Product>(model);
 
-            foreach (var inputIngredient in input.Ingredients)
+            if (images != null && images.Count() > 0)
             {
-                var ingredient = this.ingredientsRepository.All().FirstOrDefault(x => x.Name == inputIngredient.IngredientName);
-
-                if (ingredient == null)
+                foreach (var image in images)
                 {
-                    ingredient = new Ingredient
+                    var imageUrl = await this.imagesService.UploadLocalImageAsync(image, fullDirectoryPath);
+                    product.Images.Add(new Image
                     {
-                        Name = inputIngredient.IngredientName,
-                    };
+                        RemoteImageUrl = imageUrl.Replace(webRootPath, string.Empty).Replace("\\", "/"),
+                    });
                 }
-
-                product.Ingredients.Add(new ProductIngredient
-                {
-                    Ingredient = ingredient,
-                });
-            }
-
-            // /wwwroot/images/products/{id}.{ext}
-            Directory.CreateDirectory($"{imagePath}/products/");
-            foreach (var image in input.Images)
-            {
-                var extension = Path.GetExtension(image.FileName).TrimStart('.');
-                if (!this.AllowedExtensions.Any(x => extension.EndsWith(x)))
-                {
-                    throw new Exception($"Invalid image format - {extension}!");
-                }
-
-                var dbImage = new Image
-                {
-                    AddedByUserId = userId,
-                    Extension = extension,
-                };
-
-                product.Images.Add(dbImage);
-
-                var physicalPath = $"{imagePath}/products/{dbImage.Id}.{extension}";
-                using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
-                await image.CopyToAsync(fileStream);
-
-                // TODO: Save image!
             }
 
             await this.productsRepository.AddAsync(product);
             await this.productsRepository.SaveChangesAsync();
         }
+
+        //public async Task CreateAsync(CreateProductInputModel input, string userId, string imagePath)
+        //{
+        //    var product = new Product
+        //    {
+        //        CategoryId = input.CategoryId,
+        //        Description = input.Description,
+        //        Brand = input.Brand,
+        //        Name = input.Name,
+        //        Price = input.Price,
+        //        Stock = input.Stock,
+        //        Content = input.Content,
+        //        ProductCode = input.ProductCode,
+        //        AddedByUserId = userId,
+        //    };
+
+        //    foreach (var inputIngredient in input.Ingredients)
+        //    {
+        //        var ingredient = this.ingredientsRepository.All().FirstOrDefault(x => x.Name == inputIngredient.IngredientName);
+
+        //        if (ingredient == null)
+        //        {
+        //            ingredient = new Ingredient
+        //            {
+        //                Name = inputIngredient.IngredientName,
+        //            };
+        //        }
+
+        //        product.Ingredients.Add(new ProductIngredient
+        //        {
+        //            Ingredient = ingredient,
+        //        });
+        //    }
+
+        //    // /wwwroot/images/products/{id}.{ext}
+        //    Directory.CreateDirectory($"{imagePath}/products/");
+        //    foreach (var image in input.UploadedImages)
+        //    {
+        //        var extension = Path.GetExtension(image.FileName).TrimStart('.');
+        //        if (!this.AllowedExtensions.Any(x => extension.EndsWith(x)))
+        //        {
+        //            throw new Exception($"Invalid image format - {extension}!");
+        //        }
+
+        //        var dbImage = new Image
+        //        {
+        //            AddedByUserId = userId,
+        //            Extension = extension,
+        //        };
+
+        //        product.Images.Add(dbImage);
+
+        //        var physicalPath = $"{imagePath}/products/{dbImage.Id}.{extension}";
+        //        using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
+        //        await image.CopyToAsync(fileStream);
+
+        //        // TODO: Save image!
+        //    }
+
+        //    await this.productsRepository.AddAsync(product);
+        //    await this.productsRepository.SaveChangesAsync();
+        //}
 
         public async Task<bool> CreateReviewAsync<T>(T model)
         {

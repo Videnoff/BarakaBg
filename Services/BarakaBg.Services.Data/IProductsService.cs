@@ -5,10 +5,13 @@
 
     using BarakaBg.Data.Models;
     using BarakaBg.Web.ViewModels.Products;
+    using Microsoft.AspNetCore.Http;
 
     public interface IProductsService
     {
-        Task CreateAsync(CreateProductInputModel input, string userId, string imagePath);
+        public Task CreateAsync<T>(T model, IEnumerable<IFormFile> images, string fullDirectoryPath, string webRootPath);
+
+        //Task CreateAsync(CreateProductInputModel input, string userId, string imagePath);
 
         public Task<bool> CreateReviewAsync<T>(T model);
 

@@ -29,16 +29,16 @@
 
         public string SearchTerm { get; set; }
 
-        public virtual Dictionary<string, string> GetPageQuery(int pageNumber)
-        {
-            var routes = new Dictionary<string, string>();
+        //public virtual Dictionary<string, string> GetPageQuery(int pageNumber)
+        //{
+        //    var routes = new Dictionary<string, string>();
 
-            if (pageNumber > 1)
-            {
-                routes.Add("PageNumber", pageNumber.ToString());
-            }
+        //    if (pageNumber > 1)
+        //    {
+        //        routes.Add("PageNumber", pageNumber.ToString());
+        //    }
 
-            return routes;
-        }
+        //    return routes;
+        //}
     }
 }

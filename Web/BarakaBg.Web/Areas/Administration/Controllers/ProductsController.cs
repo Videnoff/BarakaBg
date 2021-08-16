@@ -21,12 +21,16 @@
 
     public class ProductsController : AdministrationController
     {
+        private const string ProductsDirectoryPath = "\\images\\products\\";
+
         private readonly IDeletableEntityRepository<Product> productRepository;
         private readonly IProductsService productsService;
         private readonly ICategoriesService categoriesService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
         private readonly IEmailSender emailSender;
+
+        private readonly string fullDirectoryPath;
 
         public ProductsController(
             IDeletableEntityRepository<Product> productRepository,
@@ -42,6 +46,8 @@
             this.userManager = userManager;
             this.environment = environment;
             this.emailSender = emailSender;
+
+            this.fullDirectoryPath = this.environment.WebRootPath + ProductsDirectoryPath;
         }
 
         // GET: Administration/Products
@@ -98,16 +104,18 @@
 
             // var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await this.userManager.GetUserAsync(this.User);
-            try
-            {
-                await this.productsService.CreateAsync(input, user.Id, $"{this.environment.WebRootPath}/images");
-            }
-            catch (Exception e)
-            {
-                this.ModelState.AddModelError(string.Empty, e.Message);
-                input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
-                return this.View(input);
-            }
+            //try
+            //{
+            //    await this.productsService.CreateAsync(input, user.Id, $"{this.environment.WebRootPath}/images");
+            //}
+            //catch (Exception e)
+            //{
+            //    this.ModelState.AddModelError(string.Empty, e.Message);
+            //    input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+            //    return this.View(input);
+            //}
+
+            await this.productsService.CreateAsync<CreateProductInputModel>(input, input.UploadedImages, this.fullDirectoryPath, this.environment.WebRootPath);
 
             this.TempData["Message"] = "Product added successfully.";
 

@@ -50,22 +50,22 @@
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Images"></label>
-        <input asp-for="Images" class="form-control"></>
-        <span asp-validation-for="Images" class="text-danger"></span>
+        <label asp-for="UploadedImages"></label>
+        <input asp-for="UploadedImages" class="form-control"></>
+        <span asp-validation-for="UploadedImages" class="text-danger"></span>
     </div>
-    <div id="IngredientsContainer">
+    @*<div id="IngredientsContainer">
         <label asp-for="Ingredients"></label>
         <a class="btn btn-success" onclick="AddMoreIngredients()">+</a>
-    </div>
+    </div>*@
     <input type="submit" class="btn btn-primary" />
 </form>
 
 @section Scripts {
-    <script>
+    @*<script>
         var ingredientIndex = 0;
         function AddMoreIngredients() {
             $("#IngredientsContainer").append(`<div class='form-control'>Name: <input type='text' name='Ingredients[${ingredientIndex++}].IngredientName' /> </div>`);
         }
-    </script>
+    </script>*@
 }

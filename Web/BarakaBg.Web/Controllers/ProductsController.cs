@@ -7,6 +7,7 @@
     using BarakaBg.Data.Models;
     using BarakaBg.Services;
     using BarakaBg.Services.Data;
+    using BarakaBg.Web.ViewModels.Home;
     using BarakaBg.Web.ViewModels.Products;
     using BarakaBg.Web.ViewModels.SearchProducts;
     using Microsoft.AspNetCore.Hosting;
@@ -47,45 +48,31 @@
 
             const int ItemsPerPage = 12;
 
-            //var viewModel = new ProductsListViewModel
-            //{
-            //    ItemsPerPage = ItemsPerPage,
-            //    PageNumber = id,
-            //    ItemsCount = this.productsService.GetCount(),
-            //    Products = this.productsService.GetAll<ProductInListViewModel>(id, ItemsPerPage),
-            //};
-
-            var productsQuery = this.productRepository.All().AsQueryable();
-
-            if (!string.IsNullOrEmpty(searchTerm))
+            var viewModel = new ProductsListViewModel
             {
-                productsQuery = productsQuery.Where(x =>
-                    x.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                    x.Category.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                     x.Description.ToLower().Contains(searchTerm.ToLower()));
+                ItemsPerPage = ItemsPerPage,
+                PageNumber = id,
+                ItemsCount = this.productsService.GetCount(),
+                Products = this.productsService.GetAll<ProductInListViewModel>(id),
+            };
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return this.View(viewModel);
             }
 
-            var products = productsQuery
-                .OrderByDescending(x => x.Id)
-                .Select(x =>
-                new ProductInListViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    CategoryId = x.CategoryId,
-                    CategoryName = x.Category.Name,
-                    Description = x.Description,
-                    ImageUrl = x.OriginalUrl,
-                    Price = x.Price,
-                    Stock = x.Stock,
-                })
-                .ToList();
-
-            return this.View(new AllProductsQueryModel
+            viewModel = new ProductsListViewModel
             {
-                Products = products,
-                SearchTerm = searchTerm,
-            });
+                ItemsPerPage = ItemsPerPage,
+                PageNumber = id,
+                ItemsCount = this.productsService.GetCount(),
+                Products = this.productsService.GetAll<ProductInListViewModel>(id).Where(x =>
+                    x.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                    x.CategoryName.ToLower().Contains(searchTerm.ToLower()) ||
+                    x.Description.ToLower().Contains(searchTerm.ToLower())),
+            };
+
+            return this.View(viewModel);
         }
 
         public IActionResult ById(int id)

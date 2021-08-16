@@ -128,6 +128,7 @@
             services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<ITextService, TextService>();
+            services.AddTransient<IImagesService, ImagesService>();
             services.AddTransient<IIngredientsService, IngredientsService>();
             services.AddTransient<IBarakaBgScraperService, BarakaBgScraperService>();
         }

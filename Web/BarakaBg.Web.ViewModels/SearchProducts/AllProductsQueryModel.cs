@@ -5,7 +5,7 @@
     using BarakaBg.Web.ViewModels.Home;
     using BarakaBg.Web.ViewModels.Products;
 
-    public class AllProductsQueryModel : PagingViewModel
+    public class AllProductsQueryModel
     {
         public string SearchTerm { get; set; }
 
