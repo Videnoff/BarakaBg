@@ -20,40 +20,94 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
 
     <!-- Material Dashboard CSS -->
-    <link rel="stylesheet" href="~/css/material-dashboard.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/material/material-dashboard.min.css" asp-append-version="true">
 
 </head>
 <body class="dark-edition">
 
-    <!--   Core JS Files   -->
-    <script src="~/js/core/jquery.min.js" asp-append-version="true"></script>
-    <script src="~/js/core/popper.min.js" asp-append-version="true"></script>
-    <script src="~/js/core/bootstrap-material-design.min.js" asp-append-version="true"></script>
+<div class="container-fluid">
 
-    <script src="https://unpkg.com/default-passive-events" asp-append-version="true"></script>
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">@this.ViewData["Title"]</h1>
 
-    <!--  Notifications Plugin, full documentation here: http://bootstrap-notify.remabledesigns.com/    -->
-    <script src="~/js/plugins/bootstrap-notify.js"></script>
+    <!-- Content Row -->
+    <div class="row">
 
-    <!--  Charts Plugin, full documentation here: https://gionkunz.github.io/chartist-js/ -->
-    <script src="~/js/plugins/chartist.min.js">
+        <div class="col-xl-8 col-lg-7">
 
-    </script>
+            <!-- Registered Users Area Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Registered Users</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="registeredUsersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Plugin for Scrollbar documentation here: https://github.com/utatti/perfect-scrollbar -->
-    <script src="~/js/plugins/perfect-scrollbar.jquery.min.js">
+        <!-- Users In Roles Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">User Roles</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="usersInRolesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    </script>
+</div>
+<!--   Core JS Files   -->
+@*<script src="~/js/material/jquery.min.js" asp-append-version="true"></script>*@
+<script src="~/js/material/popper.min.js" asp-append-version="true"></script>
+<script src="~/js/material/bootstrap-material-design.min.js" asp-append-version="true"></script>
+
+<script src="https://unpkg.com/default-passive-events" asp-append-version="true"></script>
+
+<!-- Sb Admin-->
+<script src="~/js/sb-admin-2.min.js" asp-append-version="true"></script>
+
+<!--  Notifications Plugin, full documentation here: http://bootstrap-notify.remabledesigns.com/    -->
+<script src="~/js/plugins/bootstrap-notify.js"></script>
+
+<!--  Charts Plugin, full documentation here: https://gionkunz.github.io/chartist-js/ -->
+<script src="~/js/plugins/chartist.min.js">
+
+</script>
+
+<!-- Plugin for Scrollbar documentation here: https://github.com/utatti/perfect-scrollbar -->
+<script src="~/js/plugins/perfect-scrollbar.jquery.min.js">
+
+</script>
 
 
-    <!-- Demo init -->
-    <script src="~/js/plugins/demo/demo.js">
+<!-- Demo init -->
+<script src="~/js/plugins/demo/demo.js">
 
-    </script>
+</script>
 
-    <!-- Material Dashboard Core initialisations of plugins and Bootstrap Material Design Library -->
-    <script src="~/js/material-dashboard.js?v=2.1.0">
+<!-- Material Dashboard Core initialisations of plugins and Bootstrap Material Design Library -->
+<script src="~/js/material/material-dashboard.js?v=2.1.0">
 
-    </script>
+</script>
 </body>
 </html>
+
+@section Scripts {
+    <!-- Page level plugins -->
+    <script src="~/lib/chart-js/dist/Chart.min.js" asp-append-version="true"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/chart--js/users-in-roles-pie-chart.js" asp-append-version="true"></script>
+    <script src="~/js/chart--js/registered-users-area-chart.js" asp-append-version="true"></script>
+    <script src="~/js/chart--js/chart-bar-demo.js" asp-append-version="true"></script>
+}
