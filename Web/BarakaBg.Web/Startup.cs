@@ -47,28 +47,17 @@
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAuthentication()
-                .AddFacebook(fbOptions =>
-                    {
-                        fbOptions.AppId = "123456789";
-                        fbOptions.AppSecret = "987654321";
-                    })
                 .AddGoogle(ggOptions =>
                 {
-                    IConfigurationSection googleAuthSection = this.configuration.GetSection("123456789");
+                    IConfigurationSection googleAuthNSection = this.configuration.GetSection("Authentication:Google");
 
-                    ggOptions.ClientId = "123456789";
-                    ggOptions.ClientSecret = "987654321";
+                    ggOptions.ClientId = googleAuthNSection["ClientId"];
+                    ggOptions.ClientSecret = googleAuthNSection["ClientSecret"];
                 })
                 .AddMicrosoftAccount(msOptions =>
                 {
-                    msOptions.ClientId = "123456789";
-                    msOptions.ClientSecret = "987654321";
-                })
-                .AddTwitter(twOptions =>
-                {
-                    twOptions.ConsumerKey = "123456789";
-                    twOptions.ConsumerSecret = "987654321";
-                    twOptions.RetrieveUserDetails = true;
+                    msOptions.ClientId = this.configuration["Authentication:Microsoft:ClientId"];
+                    msOptions.ClientSecret = this.configuration["Authentication:Microsoft:ClientSecret"];
                 });
 
             services.Configure<CookiePolicyOptions>(
@@ -116,7 +105,7 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration.GetValue<string>("SendGrid:ApiKey")));
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration.GetValue<string>("SendGridKey")));
             services.AddTransient<IGetCountsService, GetCountsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IProductsService, ProductsService>();

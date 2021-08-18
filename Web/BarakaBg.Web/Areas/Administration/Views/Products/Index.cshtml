@@ -12,7 +12,7 @@
     </a>
 </p>
 
-<table class="table table-bordered table-hover table-striped" id="DataTable">
+<table class="table table-bordered table-hover" id="DataTable">
     <thead>
         <tr>
             @*<th>
@@ -46,9 +46,6 @@
                 @Html.DisplayNameFor(model => model.OriginalUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AddedByUser)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
@@ -71,8 +68,8 @@
         {
         <tr>
             @*<td>
-                <img src="@Url.Content(item.Images.FirstOrDefault().Id != null ? item.Images.FirstOrDefault().Id : "/images/products/" + item.Images.FirstOrDefault().Id + "." + item.Images.FirstOrDefault().Extension)"/>
-            </td>*@
+            <img src="@Url.Content(item.Images.FirstOrDefault().Id != null ? item.Images.FirstOrDefault().Id : "/images/products/" + item.Images.FirstOrDefault().Id + "." + item.Images.FirstOrDefault().Extension)"/>
+        </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -107,10 +104,7 @@
                 @Html.DisplayFor(modelItem => item.OriginalUrl)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AddedByUser.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Id)
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsDeleted)
@@ -183,30 +177,32 @@
                         </div>
                     </div>
                 </div>
-
-                <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#restoreModal">
-                    Restore
-                </a>
-                <div class="modal fade" id="restoreModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Restore</h5>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to restore this product?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                    Close
-                                </button>
-                                <a asp-area="Administration" asp-controller="Products" asp-action="Undelete" asp-route-id="@item.Id" class="btn btn-dark">
-                                    Restore
-                                </a>
+                @if (item.IsDeleted)
+                {
+                    <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#restoreModal">
+                        Restore
+                    </a>
+                    <div class="modal fade" id="restoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Restore</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to restore this product?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <a asp-area="Administration" asp-controller="Products" asp-action="Undelete" asp-route-id="@item.Id" class="btn btn-dark">
+                                        Restore
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             </td>
         </tr>
         }

@@ -18,12 +18,15 @@
             this.userManager = userManager;
         }
 
-        [HttpGet]
+        [HttpGet("RegisteredUsers")]
         public IActionResult RegisteredUsers()
         {
             var registeredUsers = new List<RegisteredUsersViewModel>();
-            var userDate = this.userManager.Users.OrderBy(x => x.CreatedOn).ToList().GroupBy(x => x.CreatedOn
-                .ToString("dd-MMM-yyy", CultureInfo.InvariantCulture));
+            var userDate = this.userManager
+                .Users
+                .OrderBy(x => x.CreatedOn)
+                .ToList()
+                .GroupBy(x => x.CreatedOn.ToString("dd-MMM-yyy", CultureInfo.InvariantCulture));
 
             var usersCount = 0;
 

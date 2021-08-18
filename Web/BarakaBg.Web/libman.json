@@ -68,6 +68,16 @@
       ]
     },
     {
+      "library": "chart.js@2.9.4",
+      "destination": "wwwroot/lib/chart-js/",
+      "files": [
+        "dist/Chart.bundle.js",
+        "dist/Chart.bundle.min.js",
+        "dist/Chart.js",
+        "dist/Chart.min.js"
+      ]
+    },
+    {
       "library": "@microsoft/signalr@5.0.7",
       "destination": "wwwroot/lib/signalr",
       "files": [
