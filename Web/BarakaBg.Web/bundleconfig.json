@@ -8,32 +8,4 @@
       "wwwroot/css/site.css"
     ]
   },
-  {
-    "outputFileName": "wwwroot/js/chat/chat.min.js",
-    "inputFiles": [
-      "wwwroot/js/chat/chat.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/chat-admin.min.js",
-    "inputFiles": [
-      "wwwroot/js/chat-admin.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/chart--js/users-in-roles-pie-chart.min.js",
-    "inputFiles": [
-      "wwwroot/js/chart--js/users-in-roles-pie-chart.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": false
-    }
-  },
-  {
-    "outputFileName": "wwwroot/js/chart--js/registered-users-area-chart.min.js",
-    "inputFiles": [
-      "wwwroot/js/chart--js/registered-users-area-chart.js"
-    ]
-  }
 ]

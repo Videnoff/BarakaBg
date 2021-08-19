@@ -20,14 +20,16 @@
     </h2>
     <div class="row mb-4">
         <div class="col-xl-9 col-12">
-            <ul class="item-rating">
-                <li data-vote="1"><i class="fas fa-star"></i>>
-                <li data-vote="2"><i class="fas fa-star"></i>>
-                <li data-vote="3"><i class="fas fa-star"></i>>
-                <li data-vote="4"><i class="fas fa-star"></i>>
-                <li data-vote="5"><i class="fas fa-star"></i>>
+            <ul class="form-horizontal">
+                <li data-vote="1"><i class="fas fa-star"></i>
+                <li data-vote="2"><i class="fas fa-star"></i>
+                <li data-vote="3"><i class="fas fa-star"></i>
+                <li data-vote="4"><i class="fas fa-star"></i>
+                <li data-vote="5"><i class="fas fa-star"></i>
                 <li>
-                    <span id="averageVoteValue">@Model.AverageVote.ToString("0.0")</span>
+                    <span id="averageVoteValue">
+                        @Model.AverageVote.ToString("0.0")
+                    </span>
                     <span> / 5</span>
                 </li>
             </ul>
@@ -54,14 +56,15 @@
                             Price: @Model.Price lv
                         </span>
                     </div>
+
                     <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@Model.Id" class="it-fav" data-toggle="tooltip" data-placement="top" title="WishList">
                         <i class="fas fa-heart mr-0 pt-1"></i>
                     </a>
+                    <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@Model.Id" data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
                 </div>
-                <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@Model.Id" data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                    <i class="fas fa-shopping-cart"></i>
-                </a>
-                <div class="product-description">
+                <div>
                     @Model.Description
                 </div>
             </div>
@@ -179,8 +182,12 @@
                 <p>Do you want to delete "@Model.Name"?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="deleteForm.submit()">Yes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" onclick="deleteForm.submit()">
+                    Yes
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    No
+                </button>
             </div>
         </div>
     </div>

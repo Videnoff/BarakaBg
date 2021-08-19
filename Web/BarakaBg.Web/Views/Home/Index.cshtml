@@ -1,9 +1,14 @@
 ﻿@using BarakaBg.Common
+@using BarakaBg.Data.Models
 @using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.Extensions.Configuration
 @inject IWebHostEnvironment environment
 @inject IConfiguration configuration
+@inject SignInManager<ApplicationUser> SignInManager
+
 @model BarakaBg.Web.ViewModels.Home.IndexViewModel
+
 @{
     this.ViewData["Title"] = "Home Page";
 }
@@ -15,7 +20,7 @@
     <div class="form-group col-md">
         <form method="get">
             <div class="form-inline col-md">
-                <input asp-for="SearchTerm" class="form-control col-md" placeholder="Search product..."/>
+                <input asp-for="SearchTerm" class="form-control col-md" placeholder="Search product..." />
                 <div class="col col-form-label col-md">
                     <button type="submit" class="btn btn-primary">
                         Search
@@ -36,12 +41,15 @@
                         <a asp-controller="Products" asp-action="ById" asp-route-id="@product.Id" class="btn btn-primary">
                             Go to Product
                         </a>
-                        <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="it-fav" data-toggle="tooltip" data-placement="top" title="WishList">
-                            <i class="fas fa-heart mr-0 pt-1"></i>
-                        </a>
-                        <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@product.Id" data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </a>
+                        @if (this.SignInManager.IsSignedIn(this.User) && !this.User.IsInRole(GlobalConstants.AdministratorName))
+                        {
+                            <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="it-fav" data-toggle="tooltip" data-placement="top" title="WishList">
+                                <i class="fas fa-heart mr-0 pt-1"></i>
+                            </a>
+                            <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@product.Id" data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                                <i class="fas fa-shopping-cart"></i>
+                            </a>
+                        }
                     </div>
                 </div>
             }

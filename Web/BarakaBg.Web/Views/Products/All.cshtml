@@ -1,4 +1,8 @@
-﻿@model BarakaBg.Web.ViewModels.Products.ProductsListViewModel
+﻿@using BarakaBg.Common
+@using BarakaBg.Data.Models
+@using Microsoft.AspNetCore.Identity
+@model BarakaBg.Web.ViewModels.Products.ProductsListViewModel
+@inject SignInManager<ApplicationUser> SignInManager
 
 @if (this.TempData.ContainsKey("Message"))
 {
@@ -31,18 +35,21 @@
                     <a asp-action="ById" asp-route-id="@product.Id">
                         <img class="img-fluid" src="@product.ImageUrl" alt="@product.Name">
                     </a>
-                    <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="fav" data-placement="left" title="WishList">
-                        <i class="fas fa-heart mr-0 pt-1"></i>
-                    </a>
-                    <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@product.Id" class="it-cart">
-                        <span class="it-img">
-                            <i class="fas fa-shopping-cart">
-                            </i>
-                        </span>
-                        <span class="it-title">
-                            Add To Cart
-                        </span>
-                    </a>
+                    @if (this.SignInManager.IsSignedIn(this.User) && !this.User.IsInRole(GlobalConstants.AdministratorName))
+                    {
+                        <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@product.Id" class="fav" data-placement="left" title="WishList">
+                            <i class="fas fa-heart mr-0 pt-1"></i>
+                        </a>
+                        <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@product.Id" class="it-cart">
+                            <span class="it-img">
+                                <i class="fas fa-shopping-cart">
+                                </i>
+                            </span>
+                            <span class="it-title">
+                                Add To Cart
+                            </span>
+                        </a>
+                    }
                 </div>
                 <div>
                     <div>
@@ -56,7 +63,7 @@
                         </div>
                     </div>
                     <div>
-                        <a asp-action="ById" asp-route-id="@product.Id">
+                        <a>
                             @product.Description.Substring(0, product.Description.Length > 200 ? 200 : product.Description.Length)
                         </a>
                     </div>

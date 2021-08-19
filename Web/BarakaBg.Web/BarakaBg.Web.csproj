@@ -14,7 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Shared\_ChatPartial.cshtml" />
     <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -66,14 +65,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Administration\Views\Chat\" />
     <Folder Include="Hubs\" />
     <Folder Include="wwwroot\images\icons\" />
     <Folder Include="wwwroot\images\logo\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Shared\_ChatPartial.cshtml" />
     <None Include="wwwroot\favicon.ico" />
   </ItemGroup>
 
@@ -82,13 +79,5 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Shared\_ChatPartial.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Shared\_ChatPartial.cshtml" />
   </ItemGroup>
 </Project>

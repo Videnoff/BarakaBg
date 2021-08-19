@@ -14,7 +14,6 @@
     using BarakaBg.Services.Data;
     using BarakaBg.Services.Mapping;
     using BarakaBg.Services.Messaging;
-    using BarakaBg.Web.Hubs;
     using BarakaBg.Web.ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -47,14 +46,18 @@
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAuthentication()
+#pragma warning disable SA1305 // Field names should not use Hungarian notation
                 .AddGoogle(ggOptions =>
+#pragma warning restore SA1305 // Field names should not use Hungarian notation
                 {
                     IConfigurationSection googleAuthNSection = this.configuration.GetSection("Authentication:Google");
 
                     ggOptions.ClientId = googleAuthNSection["ClientId"];
                     ggOptions.ClientSecret = googleAuthNSection["ClientSecret"];
                 })
+#pragma warning disable SA1305 // Field names should not use Hungarian notation
                 .AddMicrosoftAccount(msOptions =>
+#pragma warning restore SA1305 // Field names should not use Hungarian notation
                 {
                     msOptions.ClientId = this.configuration["Authentication:Microsoft:ClientId"];
                     msOptions.ClientSecret = this.configuration["Authentication:Microsoft:ClientSecret"];
@@ -112,7 +115,6 @@
             services.AddTransient<IShoppingBagService, ShoppingBagService>();
             services.AddTransient<IWishListService, WishListService>();
             services.AddTransient<IAddressesService, AddressesService>();
-            services.AddTransient<IChatService, ChatService>();
             services.AddTransient<IOrdersService, OrdersService>();
             services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<IVotesService, VotesService>();
@@ -160,7 +162,6 @@
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapHub<ChatHub>("/chat");
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();
