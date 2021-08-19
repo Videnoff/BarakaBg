@@ -5,9 +5,9 @@
 
     using BarakaBg.Data.Common.Models;
 
-    public class UserProductComment : BaseModel<string>
+    public class UserProductReview : BaseModel<string>
     {
-        public UserProductComment()
+        public UserProductReview()
         {
             this.Id = Guid.NewGuid().ToString();
         }

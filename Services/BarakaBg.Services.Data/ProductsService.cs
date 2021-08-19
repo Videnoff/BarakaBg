@@ -20,7 +20,7 @@
 
         private readonly IDeletableEntityRepository<Product> productsRepository;
         private readonly IDeletableEntityRepository<Ingredient> ingredientsRepository;
-        private readonly IRepository<UserProductComment> userProductReviewRepository;
+        private readonly IRepository<UserProductReview> userProductReviewRepository;
         private readonly IDeletableEntityRepository<Image> imagesRepository;
         private readonly IImagesService imagesService;
         private readonly ITextService textService;
@@ -29,8 +29,9 @@
             IDeletableEntityRepository<Product> productsRepository,
             IDeletableEntityRepository<Ingredient> ingredientsRepository,
             IDeletableEntityRepository<Image> imagesRepository,
-            IRepository<UserProductComment> userProductReviewRepository,
-            IImagesService imagesService, ITextService textService)
+            IRepository<UserProductReview> userProductReviewRepository,
+            IImagesService imagesService,
+            ITextService textService)
         {
             this.productsRepository = productsRepository;
             this.ingredientsRepository = ingredientsRepository;
@@ -124,7 +125,7 @@
 
         public async Task<bool> CreateReviewAsync<T>(T model)
         {
-            var productReview = AutoMapperConfig.MapperInstance.Map<UserProductComment>(model);
+            var productReview = AutoMapperConfig.MapperInstance.Map<UserProductReview>(model);
             var product = this.GetById(productReview.ProductId);
 
             if (product == null || this.userProductReviewRepository.AllAsNoTracking().Any(x => x.ProductId == productReview.ProductId && x.UserId == productReview.UserId))
@@ -329,7 +330,7 @@
                 .Include(x => x.Images)
                 .FirstOrDefault(x => x.Id == id);
 
-        private UserProductComment GetReviewById(string id) =>
+        private UserProductReview GetReviewById(string id) =>
             this.userProductReviewRepository.All()
                 .FirstOrDefault(x => x.Id == id);
     }

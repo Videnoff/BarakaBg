@@ -1,4 +1,6 @@
-﻿namespace BarakaBg.Web.Controllers
+﻿using System.Threading.Tasks;
+
+namespace BarakaBg.Web.Controllers
 {
     using System;
     using System.Linq;
@@ -73,6 +75,42 @@
             };
 
             return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateReview(ProductReviewInputViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.RedirectToAction(nameof(this.ById), new { id = model.ProductId });
+            }
+
+            var createResult = await this.productsService.CreateReviewAsync<ProductReviewInputViewModel>(model);
+            if (createResult)
+            {
+                this.TempData["Alert"] = "Successfully added product review.";
+            }
+            else
+            {
+                this.TempData["Error"] = "There was a problem adding the product review.";
+            }
+
+            return this.RedirectToAction(nameof(this.ById), new { id = model.ProductId });
+        }
+
+        public async Task<IActionResult> DeleteReview(string id, string returnUrl)
+        {
+            var deleteResult = await this.productsService.DeleteReviewAsync(id);
+            if (deleteResult)
+            {
+                this.TempData["Alert"] = "Successfully deleted review.";
+            }
+            else
+            {
+                this.TempData["Error"] = "There was a problem deleting the review.";
+            }
+
+            return this.LocalRedirect(returnUrl);
         }
 
         public IActionResult ById(int id)

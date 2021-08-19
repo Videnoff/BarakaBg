@@ -54,9 +54,7 @@
 
         public DbSet<ShoppingBagProduct> ShoppingBagProducts { get; set; }
 
-        public DbSet<ChatRoom> ChatRooms { get; set; }
-
-        public DbSet<ChatRoomMessage> RoomMessages { get; set; }
+        public DbSet<UserProductReview> UserProductReviews { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

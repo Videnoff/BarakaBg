@@ -22,6 +22,7 @@
 
         [Required]
         [Range(1, 1000)]
+        [Display(Name = "Price (BGN)")]
         public decimal Price { get; set; }
 
         public string Description { get; set; }
