@@ -23,19 +23,22 @@
         private readonly IDeletableEntityRepository<Image> imagesRepository;
         private readonly IImagesService imagesService;
         private readonly ITextService textService;
+        private readonly IRepository<ProductComment> productCommentRepository;
 
         public ProductsService(
             IDeletableEntityRepository<Product> productsRepository,
             IDeletableEntityRepository<Ingredient> ingredientsRepository,
             IDeletableEntityRepository<Image> imagesRepository,
             IImagesService imagesService,
-            ITextService textService)
+            ITextService textService,
+            IRepository<ProductComment> productCommentRepository)
         {
             this.productsRepository = productsRepository;
             this.ingredientsRepository = ingredientsRepository;
             this.imagesRepository = imagesRepository;
             this.imagesService = imagesService;
             this.textService = textService;
+            this.productCommentRepository = productCommentRepository;
         }
 
         public async Task CreateAsync<T>(T model, IEnumerable<IFormFile> images, string fullDirectoryPath, string webRootPath)
@@ -56,6 +59,22 @@
 
             await this.productsRepository.AddAsync(product);
             await this.productsRepository.SaveChangesAsync();
+        }
+
+        public async Task<bool> CreateReviewAsync<T>(T model)
+        {
+            var productReview = AutoMapperConfig.MapperInstance.Map<ProductComment>(model);
+            var product = this.GetById(productReview.ProductId);
+
+            if (product == null || this.productCommentRepository.AllAsNoTracking().Any(x => x.ProductId == productReview.ProductId))
+            {
+                return false;
+            }
+
+            await this.productCommentRepository.AddAsync(productReview);
+            await this.productCommentRepository.SaveChangesAsync();
+
+            return true;
         }
 
         public IEnumerable<T> GetAll<T>(int page, int itemsPerPage = 12)

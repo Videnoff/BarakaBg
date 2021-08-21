@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarakaBg.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210819105850_ProductReview")]
-    partial class ProductReview
+    [Migration("20210821175843_InitialCr")]
+    partial class InitialCr
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -270,41 +270,6 @@ namespace BarakaBg.Data.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("BarakaBg.Data.Models.Comment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("BarakaBg.Data.Models.Country", b =>
                 {
                     b.Property<int>("Id")
@@ -529,6 +494,52 @@ namespace BarakaBg.Data.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("BarakaBg.Data.Models.ProductComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte>("Rating")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductComments");
+                });
+
             modelBuilder.Entity("BarakaBg.Data.Models.ProductIngredient", b =>
                 {
                     b.Property<int>("Id")
@@ -651,78 +662,6 @@ namespace BarakaBg.Data.Migrations
                     b.HasIndex("ShoppingBagId");
 
                     b.ToTable("ShoppingBagProducts");
-                });
-
-            modelBuilder.Entity("BarakaBg.Data.Models.UserProductReview", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("Rating")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserProductReviews");
-                });
-
-            modelBuilder.Entity("BarakaBg.Data.Models.Vote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte>("Value")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UId");
-
-                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.WishList", b =>
@@ -895,17 +834,6 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("BarakaBg.Data.Models.Comment", b =>
-                {
-                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("BarakaBg.Data.Models.Image", b =>
                 {
                     b.HasOne("BarakaBg.Data.Models.ApplicationUser", "AddedByUser")
@@ -953,6 +881,25 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("AddedByUser");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("BarakaBg.Data.Models.ProductComment", b =>
+                {
+                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
+                        .WithMany("ProductComments")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.ProductIngredient", b =>
@@ -1019,42 +966,6 @@ namespace BarakaBg.Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ShoppingBag");
-                });
-
-            modelBuilder.Entity("BarakaBg.Data.Models.UserProductReview", b =>
-                {
-                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BarakaBg.Data.Models.Vote", b =>
-                {
-                    b.HasOne("BarakaBg.Data.Models.Product", "Product")
-                        .WithMany("Votes")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BarakaBg.Data.Models.ApplicationUser", "U")
-                        .WithMany("Votes")
-                        .HasForeignKey("UId");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("U");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.WishList", b =>
@@ -1133,11 +1044,7 @@ namespace BarakaBg.Data.Migrations
 
                     b.Navigation("Logins");
 
-                    b.Navigation("Reviews");
-
                     b.Navigation("Roles");
-
-                    b.Navigation("Votes");
 
                     b.Navigation("WishListProducts");
                 });
@@ -1175,9 +1082,7 @@ namespace BarakaBg.Data.Migrations
 
                     b.Navigation("Ingredients");
 
-                    b.Navigation("Reviews");
-
-                    b.Navigation("Votes");
+                    b.Navigation("ProductComments");
                 });
 
             modelBuilder.Entity("BarakaBg.Data.Models.ShoppingBag", b =>

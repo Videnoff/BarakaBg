@@ -11,6 +11,7 @@
             this.Ingredients = new HashSet<ProductIngredient>();
             this.Images = new HashSet<Image>();
             this.FavoriteProducts = new HashSet<WishList>();
+            this.ProductComments = new HashSet<ProductComment>();
         }
 
         public string Name { get; set; }
@@ -38,6 +39,8 @@
         public virtual ApplicationUser AddedByUser { get; set; }
 
         public virtual Category Category { get; set; }
+
+        public virtual ICollection<ProductComment> ProductComments { get; set; }
 
         public virtual ICollection<ProductIngredient> Ingredients { get; set; }
 

@@ -11,6 +11,8 @@
     {
         public Task CreateAsync<T>(T model, IEnumerable<IFormFile> images, string fullDirectoryPath, string webRootPath);
 
+        public Task<bool> CreateReviewAsync<T>(T model);
+
         IEnumerable<T> GetAll<T>(int page, int itemsPerPage = 12);
 
         IEnumerable<T> GetRandom<T>(int random);

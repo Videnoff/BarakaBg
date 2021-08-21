@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-
-namespace BarakaBg.Web.Controllers
+﻿namespace BarakaBg.Web.Controllers
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
 
+    using BarakaBg.Data;
     using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using BarakaBg.Services;
@@ -18,6 +18,7 @@ namespace BarakaBg.Web.Controllers
 
     public class ProductsController : Controller
     {
+        private readonly ApplicationDbContext dbContext;
         private readonly ICategoriesService categoriesService;
         private readonly IProductsService productsService;
         private readonly ITextService textService;
@@ -31,7 +32,7 @@ namespace BarakaBg.Web.Controllers
             UserManager<ApplicationUser> userManager,
             IWebHostEnvironment environment,
             ITextService textService,
-            IRepository<Product> productRepository)
+            IRepository<Product> productRepository, ApplicationDbContext dbContext)
         {
             this.categoriesService = categoriesService;
             this.productsService = productsService;
@@ -39,6 +40,7 @@ namespace BarakaBg.Web.Controllers
             this.environment = environment;
             this.textService = textService;
             this.productRepository = productRepository;
+            this.dbContext = dbContext;
         }
 
         public IActionResult All(string searchTerm, int id = 1)
@@ -92,10 +94,45 @@ namespace BarakaBg.Web.Controllers
         //    return this.LocalRedirect(returnUrl);
         //}
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(ProductCommentViewModel viewModel)
+        {
+            //var createResult = await this.productsService.CreateReviewAsync<ProductCommentViewModel>(viewModel);
+
+            //if (createResult)
+            //{
+            //    this.TempData["Alert"] = "Successfully added product review.";
+            //}
+            //else
+            //{
+            //    this.TempData["Error"] = "There was a problem adding the product review.";
+            //}
+
+            //return this.RedirectToAction(nameof(this.ById), new { id = viewModel.Id });
+
+            var comment = viewModel.Comment;
+            var productId = viewModel.Id;
+            var rating = viewModel.Rating;
+
+            var artComment = new ProductComment
+            {
+                ProductId = productId,
+                Comments = comment,
+                Rating = rating,
+                PublishDate = DateTime.Now,
+            };
+
+            await this.dbContext.ProductComments.AddAsync(artComment);
+            await this.dbContext.SaveChangesAsync();
+
+            return this.RedirectToAction("ById", "Products", new { id = productId });
+        }
+
         public IActionResult ById(int id)
         {
             var product = this.productsService.GetById<SingleProductViewModel>(id);
-            product.Description = this.textService.TruncateAtWord(product.Description, 200);
+            //product.Description = this.textService.TruncateAtWord(product.Description, 200);
             return this.View(product);
         }
     }

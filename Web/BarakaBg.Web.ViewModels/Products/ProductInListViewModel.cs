@@ -6,7 +6,7 @@
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Mapping;
 
-    public class ProductInListViewModel : IMapFrom<Product>, IHaveCustomMappings
+    public class ProductInListViewModel : ProductCommentViewModel, IMapFrom<Product>, IHaveCustomMappings
     {
         public int Id { get; set; }
 

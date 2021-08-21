@@ -57,9 +57,13 @@
                             <a asp-action="ById" asp-route-id="@product.Id" title="@product.Name">@product.Name</a>
                         </h3>
                         <div>
-                            <span>
-                                <span>@product.Price</span>
-                            </span>
+                            <h3 >
+                                <span>
+                                    Price:
+                                </span>
+                                <span>
+                                    @product.Price lv.
+                                </span></h3>
                         </div>
                     </div>
                     <div>
@@ -72,4 +76,5 @@
         }
     </div>
 </div>
+
 <partial name="_PagingPartial" model="@Model" />
