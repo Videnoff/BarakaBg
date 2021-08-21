@@ -11,8 +11,6 @@
             this.Ingredients = new HashSet<ProductIngredient>();
             this.Images = new HashSet<Image>();
             this.FavoriteProducts = new HashSet<WishList>();
-            this.Reviews = new HashSet<UserProductReview>();
-            this.Votes = new HashSet<Vote>();
         }
 
         public string Name { get; set; }
@@ -46,9 +44,5 @@
         public virtual ICollection<Image> Images { get; set; }
 
         public virtual ICollection<WishList> FavoriteProducts { get; set; }
-
-        public virtual ICollection<UserProductReview> Reviews { get; set; }
-
-        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

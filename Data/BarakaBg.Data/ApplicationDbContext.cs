@@ -34,8 +34,6 @@
 
         public DbSet<ProductIngredient> ProductIngredients { get; set; }
 
-        public DbSet<Vote> Votes { get; set; }
-
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<City> Cities { get; set; }
@@ -46,15 +44,11 @@
 
         public DbSet<ProductOrder> ProductOrders { get; set; }
 
-        public DbSet<Comment> Comments { get; set; }
-
         public DbSet<WishList> WishListProducts { get; set; }
 
         public DbSet<ShoppingBag> ShoppingBags { get; set; }
 
         public DbSet<ShoppingBagProduct> ShoppingBagProducts { get; set; }
-
-        public DbSet<UserProductReview> UserProductReviews { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

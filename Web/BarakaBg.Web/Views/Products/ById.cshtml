@@ -23,83 +23,50 @@
     </h2>
     <div class="row mb-4">
         <div class="pro-rating">
-            <partial name="_ProductRatingPartial" model="new ProductRatingViewModel { AverageVote = Model.AverageVote }" />
         </div>
-            <div class="product-image">
-                <a class="pro-img" href="@Model.ImageUrl">
-                    <img class="img-fluid w-100" src="@Model.ImageUrl" alt="@Model.Name">
-                </a>
-            </div>
-            <div class="col-md-6 col-xl-6 product_details">
-                <div class="product_details_info">
-                    <div class="product-title">
-                        <h2>@Model.Name</h2>
+        <div class="product-image">
+            <a class="pro-img" href="@Model.ImageUrl">
+                <img class="img-fluid w-100" src="@Model.ImageUrl" alt="@Model.Name">
+            </a>
+        </div>
+        <div class="col-md-6 col-xl-6 product_details">
+            <div class="product_details_info">
+                <div class="product-title">
+                    <h2>
+                        @Model.Name
+                    </h2>
+                </div>
+                <div class="product-inventory">
+                    <h2>
+                        <span>
+                            Availability:
+                        </span>
+                        <span id="variant-inventory" class="in-stock">
+                            @Model.Stock
+                        </span>
+                    </h2>
+                </div>
+                <div class="pro-price-label">
+                    <div class="price-box" id="ProductPrice">
+                        <span class=money>
+                            Price: @Model.Price lv
+                        </span>
                     </div>
-                    <div class="product-inventory">
-                        <h2>
-                            <span>Availability:</span>
-                            <span id="variant-inventory" class="in-stock">@Model.Stock</span>
-                        </h2>
-                    </div>
-                    <div class="pro-price-label">
-                        <div class="price-box" id="ProductPrice">
-                            <span class=money>
-                                Price: @Model.Price lv
-                            </span>
-                        </div>
 
-                        <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@Model.Id" class="it-fav" data-toggle="tooltip" data-placement="top" title="WishList">
-                            <i class="fas fa-heart mr-0 pt-1"></i>
-                        </a>
-                        <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@Model.Id" data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </a>
-                    </div>
-                    <div>
-                        @Model.Description
-                    </div>
+                    <a asp-area="" asp-controller="WishList" asp-action="Add" asp-route-id="@Model.Id" class="it-fav" data-toggle="tooltip" data-placement="top" title="WishList">
+                        <i class="fas fa-heart mr-0 pt-1"></i>
+                    </a>
+                    <a asp-area="" asp-controller="ShoppingBag" asp-action="Add" asp-route-productId="@Model.Id" data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
                 </div>
-                <div class="sg-tab">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#pro-det">Product Details</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#rev">Reviews (@Model.Reviews.Count())</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="pro-det" role="tabpanel">
-                            <p>@Model.Description</p>
-                        </div>
-                        <div class="tab-pane fade" id="rev" role="tabpanel">
-                            @foreach (var review in Model.Reviews)
-                            {
-                                <div class="review-box d-flex">
-                                    <div class="rv-content">
-                                        <h6>
-                                            @review.Name <span>
-                                                (@review.CreatedOn)
-                                            </span>
-                                            @if (this.User.IsInRole(GlobalConstants.AdministratorName))
-                                            {
-                                                <a asp-area="Administration" asp-controller="Products" asp-action="DeleteReview" asp-route-id="@review.Id" asp-route-returnUrl="@string.Format("{0}{1}", this.Context.Request.Path, this.Context.Request.QueryString)" class="btn btn-danger float-right">
-                                                    Delete
-                                                </a>
-                                            }
-                                        </h6>
-                                        <ul class="list-unstyled list-inline">
-                                            @for (int i = 0; i < review.Rating; i++)
-                                            {
-                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
-                                            }
-                                        </ul>
-                                        <p>@review.Content</p>
-                                    </div>
-                                </div>
-                            }
-                            <partial name="_AddReviewPartial" model="new ProductReviewInputViewModel { UserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier), ProductId = Model.Id }" />
-                        </div>
-                    </div>
+                <div>
+                    @Model.Description
                 </div>
             </div>
+
         </div>
+    </div>
 
     <a asp-area="" asp-controller="Products" asp-action="All" class="btn btn-secondary">
         Back to All Products
@@ -107,7 +74,9 @@
 
     @if (this.User.IsInRole(GlobalConstants.AdministratorName))
     {
-        <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+        <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">
+            Edit
+        </a>
 
         <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#softDeleteModal">
             Soft delete
@@ -181,28 +150,6 @@
 </div>
 
 @section Scripts {
-    <script>
-        $("li[data-vote]").each(function (el) {
-            $(this).click(function () {
-                var value = $(this).attr("data-vote");
-                var recipeId = @Model.Id;
-                var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
-                var data = { recipeId: recipeId, value: value };
-                $.ajax({
-                    type: "POST",
-                    url: "/api/Votes",
-                    data: JSON.stringify(data),
-                    headers: {
-                        'X-CSRF-TOKEN': antiForgeryToken
-                    },
-                    success: function (data) {
-                        $('#averageVoteValue').html(data.averageVote.toFixed(1));
-                    },
-                    contentType: 'application/json'
-                });
-            });
-        });
-    </script>
 }
 
 <div class="modal" tabindex="-1" role="dialog" id="deleteModal">

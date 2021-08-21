@@ -24,11 +24,9 @@
             configuration.CreateMap<WishList, WishListProductViewModel>()
                 .ForMember(
                     x => x.ImageUrl, opt => opt.MapFrom(x => x.Product.Images.FirstOrDefault().RemoteImageUrl != null
-                    ? x.Product.Images.FirstOrDefault().RemoteImageUrl
-                    : "/images/products/" + x.Product.Images.FirstOrDefault().Id + "." + x.Product.Images.FirstOrDefault().Extension))
-                .ForMember(
-                    x => x.AverageRating,
-                    opt => opt.MapFrom(member => (!member.Product.Reviews.Any()) ? 0 : Math.Round(member.Product.Reviews.Average(x => x.Rating), 2)));
+                        ? x.Product.Images.FirstOrDefault().RemoteImageUrl
+                        : "/images/products/" + x.Product.Images.FirstOrDefault().Id + "." +
+                          x.Product.Images.FirstOrDefault().Extension));
         }
     }
 }

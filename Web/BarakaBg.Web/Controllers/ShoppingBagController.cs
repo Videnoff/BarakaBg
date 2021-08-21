@@ -51,7 +51,6 @@
             });
         }
 
-
         [HttpGet("/ShoppingBag/Add/{productId:int}")]
         public async Task<IActionResult> Add(int productId)
         {

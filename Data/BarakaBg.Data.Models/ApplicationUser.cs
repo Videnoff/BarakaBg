@@ -19,8 +19,6 @@ namespace BarakaBg.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.WishListProducts = new HashSet<WishList>();
-            this.Reviews = new HashSet<UserProductReview>();
-            this.Votes = new HashSet<Vote>();
         }
 
         // Audit info
@@ -51,14 +49,11 @@ namespace BarakaBg.Data.Models
 
         public virtual ICollection<WishList> WishListProducts { get; set; }
 
-        public virtual ICollection<UserProductReview> Reviews { get; set; }
-
         //[Required]
         [ForeignKey(nameof(ShoppingBag))]
         public string ShoppingBagId { get; set; }
 
         public virtual ShoppingBag ShoppingBag { get; set; }
 
-        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

@@ -117,7 +117,6 @@
             services.AddTransient<IAddressesService, AddressesService>();
             services.AddTransient<IOrdersService, OrdersService>();
             services.AddTransient<ICountriesService, CountriesService>();
-            services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<ITextService, TextService>();
             services.AddTransient<IImagesService, ImagesService>();
             services.AddTransient<IIngredientsService, IngredientsService>();
