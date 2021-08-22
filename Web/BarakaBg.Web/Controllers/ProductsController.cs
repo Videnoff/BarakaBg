@@ -97,7 +97,7 @@
             };
 
             await this.dbContext.ProductComments.AddAsync(artComment);
-            await this.dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync(); 
 
             return this.RedirectToAction("ById", "Products", new { id = productId });
         }

@@ -42,13 +42,14 @@
                     PriceData = new SessionLineItemPriceDataOptions
                     {
                         UnitAmount = (long?)(product.Price * 100),
-                        Currency = "usd",
+                        Currency = "lv",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = product.ProductName,
                             Images = new List<string> { this.domain + product.ImageUrl },
                         },
                     },
+
                     Quantity = product.Quantity,
                 });
             }

@@ -63,7 +63,12 @@
                                         <input asp-for="AddressId" type="radio" value="@address.Id" checked />
                                         @address.Street @address.CityName, @address.CityZIPCode,  @address.CityCountryName@(string.IsNullOrEmpty(address.Description) ? string.Empty : ", " + address.Description)
                                     </label>
-                                    <div class="float-right"><a asp-area="" asp-controller="Addresses" asp-action="Delete" asp-route-id="@address.Id"><i class="fas fa-trash"></i></a></div>
+                                    <div class="float-right">
+
+                                        <a asp-area="" asp-controller="Addresses" asp-action="Delete" asp-route-id="@address.Id">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
                                 </li>
                             }
                         </ul>

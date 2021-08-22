@@ -2,7 +2,10 @@
 
 <div class="cart-body">
     <div class="close-btn">
-        <button class="close-cart"><img src="~/images/close.png" alt="">Close</button>
+        <button class="close-cart">
+            <img src="~/images/close.png" alt="">
+            Close
+        </button>
     </div>
     <div class="crt-bd-box">
         <div class="cart-heading text-center">
@@ -11,7 +14,9 @@
         <div class="cart-content">
             @if (!Model.Products.Any())
             {
-                <h3 class="text-center">No products</h3>
+                <h3 class="text-center">
+                    No products
+                </h3>
             }
             @foreach (var product in Model.Products)
             {
@@ -21,7 +26,7 @@
                     </div>
                     <div class="cart-disc">
                         <p><a asp-area="" asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">@product.ProductName</a></p>
-                        <span>@product.Quantity x $@product.ProductPrice</span>
+                        <span>@product.Quantity x @product.ProductPrice lv.</span>
                     </div>
                     <div class="delete-btn">
                         <a asp-area="" asp-controller="ShoppingBag" asp-action="Delete" asp-route-id="@product.ProductId"><i class="fa fa-trash-o"></i></a>
@@ -30,7 +35,9 @@
             }
         </div>
         <div class="cart-btm">
-            <p class="text-right">Grand Total: <span>$@Model.GrandTotalPrice</span></p>
+            <p class="text-right">Grand Total: <span>
+                @Model.GrandTotalPrice lv.
+            </span></p>
             <a asp-area="" asp-controller="Orders" asp-action="Create">Checkout</a>
         </div>
     </div>

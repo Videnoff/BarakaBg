@@ -53,13 +53,13 @@
 
             var addresses = this.addressesService.GetAll<AddressViewModel>(this.userId);
 
-            foreach (var address in addresses)
-            {
-                if (!string.IsNullOrEmpty(address.Description))
-                {
-                    address.Description = this.textService.TruncateAtWord(address.Description, 30);
-                }
-            }
+            //foreach (var address in addresses)
+            //{
+            //    if (!string.IsNullOrEmpty(address.Description))
+            //    {
+            //        address.Description = this.textService.TruncateAtWord(address.Description, 30);
+            //    }
+            //}
 
             var countries = this.countriesService.GetAll();
 

@@ -79,16 +79,24 @@
                                         <img src="@product.ImageUrl" />
                                         <p>@product.ProductName</p>
                                     </a>
-                                    <span>@product.Quantity X $@product.Price</span>
+                                    <span>@product.Quantity X @product.Price lv.</span>
                                 </div>
                                 <div class="prc">
-                                    <p>$@product.Price</p>
+                                    <p>@product.Price lv.</p>
                                 </div>
                             </li>
                         }
-                        <li class="sub-total">Sub Total <span>$@(Model.TotalPrice - Model.DeliveryPrice)</span></li>
-                        <li class="shipping-and-tax">Shipping <span>$@Model.DeliveryPrice</span></li>
-                        <li>Grand Total <span>$@Model.TotalPrice</span></li>
+                        <li class="sub-total">
+                            Sub Total <span>
+                                @(Model.TotalPrice - Model.DeliveryPrice) lv.
+                            </span>
+                        </li>
+                        <li>
+                            Grand Total
+                            <span>
+                                @Model.TotalPrice lv.
+                            </span>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -9,7 +9,12 @@
         <h5>Order Review</h5>
         <div class="review-box">
             <ul class="list-unstyled">
-                <li>Product <span>Total</span></li>
+                <li>
+                    Product
+                    <span>
+                        Total
+                    </span>
+                </li>
                 @foreach (var product in Model.Products)
                 {
                     productClassName = (product.ProductId == Model.Products.Last().ProductId) ? "last-product" : string.Empty;
@@ -19,14 +24,18 @@
                                 <img src="@product.ImageUrl" />
                                 <p>@product.ProductName</p>
                             </a>
-                            <span>@product.Quantity X $@product.ProductPrice</span>
+                            <span>@product.Quantity X @product.ProductPrice lv.</span>
                         </div>
                         <div class="prc">
-                            <p>$@product.TotalPrice</p>
+                            <p>@product.TotalPrice lv.</p>
                         </div>
                     </li>
                 }
-                <li>Grand Total <span>$@Model.GrandTotalPrice</span></li>
+                <li>
+                    Grand Total <span>
+                        @Model.GrandTotalPrice lv.
+                    </span>
+                </li>
             </ul>
         </div>
     </div>

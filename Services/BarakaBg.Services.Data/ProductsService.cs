@@ -19,25 +19,19 @@
         private readonly string[] AllowedExtensions = new[] { "jpg", "jpeg", "png", "gif" };
 
         private readonly IDeletableEntityRepository<Product> productsRepository;
-        private readonly IDeletableEntityRepository<Ingredient> ingredientsRepository;
-        private readonly IDeletableEntityRepository<Image> imagesRepository;
         private readonly IImagesService imagesService;
-        private readonly ITextService textService;
+        private readonly IDeletableEntityRepository<Image> imagesRepository;
         private readonly IRepository<ProductComment> productCommentRepository;
 
         public ProductsService(
             IDeletableEntityRepository<Product> productsRepository,
-            IDeletableEntityRepository<Ingredient> ingredientsRepository,
-            IDeletableEntityRepository<Image> imagesRepository,
             IImagesService imagesService,
-            ITextService textService,
+            IDeletableEntityRepository<Image> imagesRepository,
             IRepository<ProductComment> productCommentRepository)
         {
             this.productsRepository = productsRepository;
-            this.ingredientsRepository = ingredientsRepository;
-            this.imagesRepository = imagesRepository;
             this.imagesService = imagesService;
-            this.textService = textService;
+            this.imagesRepository = imagesRepository;
             this.productCommentRepository = productCommentRepository;
         }
 
@@ -112,32 +106,6 @@
                 .Take(productsToTake)
                 .To<T>()
                 .ToList();
-
-        //public IEnumerable<T> GetTopRated<T>(int productsToTake)
-        //{
-        //    var productIds = this.userProductReviewRepository.AllAsNoTracking()
-        //        .GroupBy(x => x.ProductId)
-        //        .Select(x => new
-        //        {
-        //            ProductId = x.Key,
-        //            Total = x.Count(),
-        //            AvgRating = x.Average(r => r.Rating),
-        //        })
-        //        .OrderByDescending(x => x.AvgRating)
-        //        .ThenByDescending(x => x.Total)
-        //        .Take(productsToTake)
-        //        .ToList();
-
-        //    var products = new List<T>();
-
-        //    foreach (var product in productIds)
-        //    {
-        //        var mappedProduct = this.GetById<T>(product.ProductId);
-        //        products.Add(mappedProduct);
-        //    }
-
-        //    return products;
-        //}
 
         public int GetCount()
         {

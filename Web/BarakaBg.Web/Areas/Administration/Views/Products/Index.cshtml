@@ -16,8 +16,8 @@
     <thead>
         <tr>
             @*<th>
-                @Html.DisplayNameFor(model => model.Images)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.Images)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -66,145 +66,153 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            @*<td>
-            <img src="@Url.Content(item.Images.FirstOrDefault().Id != null ? item.Images.FirstOrDefault().Id : "/images/products/" + item.Images.FirstOrDefault().Id + "." + item.Images.FirstOrDefault().Extension)"/>
-        </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            @{
-                string descriptionValue = item.Description.Substring(0, item.Content.Length > 50 ? 50 : item.Content.Length);
-            }
-            <td>
-                @Html.DisplayFor(modelItem => descriptionValue)
-            </td>
-            @{
-                string contentValue = item.Description.Substring(0, item.Content.Length > 50 ? 50 : item.Content.Length);
-            }
-            <td>
-                @Html.DisplayFor(modelItem => contentValue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Feedback)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OriginalUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedOn)
-            </td>
-            <td>
-                <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
-                    Edit
-                </a> |
-                <a asp-area="Administration" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
-                    Details
-                </a> |
+            <tr>
+                @*<td>
+                        <img src="@Url.Content(item.Images.FirstOrDefault().Id != null ? item.Images.FirstOrDefault().Id : "/images/products/" + item.Images.FirstOrDefault().Id + "." + item.Images.FirstOrDefault().Extension)"/>
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stock)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
 
-                @if (!item.IsDeleted)
+                @if (item.Description != null)
                 {
-                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#softDeleteModal">
-                        Soft delete
+                    var descriptionValue = item.Description.Substring(0, item.Description.Length > 50 ? 50 : item.Description.Length);
+                    <td>
+                        <text>
+                            @Html.DisplayFor(modelItem => descriptionValue)
+                        </text>
+                    </td>
+                }
+
+                @if (item.Content != null)
+                {
+                    var contentValue = item.Content.Substring(0, item.Content.Length > 50 ? 50 : item.Content.Length);
+                    <td>
+                        <text>
+                            @Html.DisplayFor(modelItem => contentValue)
+                        </text>
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Feedback)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OriginalUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDeleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeletedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedOn)
+                </td>
+                <td>
+                    <a asp-area="Administration" asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
+                        Edit
+                    </a> |
+                    <a asp-area="Administration" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
+                        Details
+                    </a> |
+
+                    @if (!item.IsDeleted)
+                    {
+                        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#softDeleteModal">
+                            Soft delete
+                        </a>
+                        <div class="modal fade" id="softDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">
+                                            Soft delete
+                                        </h5>
+                                    </div>
+                                    <div class="modal-body">Are you sure you want to soft delete this product?</div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <a asp-area="Administration" asp-controller="Products" asp-action="SoftDelete" asp-route-id="@item.Id" class="btn btn-danger">
+                                            Soft delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#hardDeleteModal">
+                        Hard delete
                     </a>
-                    <div class="modal fade" id="softDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="hardDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">
-                                        Soft delete
+                                        Hard delete
                                     </h5>
                                 </div>
-                                <div class="modal-body">Are you sure you want to soft delete this product?</div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                        Close
-                                    </button>
-                                    <a asp-area="Administration" asp-controller="Products" asp-action="SoftDelete" asp-route-id="@item.Id" class="btn btn-danger">
-                                        Soft delete
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#hardDeleteModal">
-                    Hard delete
-                </a>
-                <div class="modal fade" id="hardDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">
-                                    Hard delete
-                                </h5>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to hard delete this product?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                    Close
-                                </button>
-                                <a asp-area="Administration" asp-controller="Products" asp-action="HardDelete" asp-route-id="@item.Id" class="btn btn-danger">
-                                    Hard delete
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @if (item.IsDeleted)
-                {
-                    <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#restoreModal">
-                        Restore
-                    </a>
-                    <div class="modal fade" id="restoreModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Restore</h5>
-                                </div>
                                 <div class="modal-body">
-                                    Are you sure you want to restore this product?
+                                    Are you sure you want to hard delete this product?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                         Close
                                     </button>
-                                    <a asp-area="Administration" asp-controller="Products" asp-action="Undelete" asp-route-id="@item.Id" class="btn btn-dark">
-                                        Restore
+                                    <a asp-area="Administration" asp-controller="Products" asp-action="HardDelete" asp-route-id="@item.Id" class="btn btn-danger">
+                                        Hard delete
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                }
-            </td>
-        </tr>
+                    @if (item.IsDeleted)
+                    {
+                        <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#restoreModal">
+                            Restore
+                        </a>
+                        <div class="modal fade" id="restoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Restore</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to restore this product?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <a asp-area="Administration" asp-controller="Products" asp-action="Undelete" asp-route-id="@item.Id" class="btn btn-dark">
+                                            Restore
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>
