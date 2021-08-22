@@ -32,7 +32,8 @@
             UserManager<ApplicationUser> userManager,
             IWebHostEnvironment environment,
             ITextService textService,
-            IRepository<Product> productRepository, ApplicationDbContext dbContext)
+            IRepository<Product> productRepository,
+            ApplicationDbContext dbContext)
         {
             this.categoriesService = categoriesService;
             this.productsService = productsService;
@@ -79,38 +80,10 @@
             return this.View(viewModel);
         }
 
-        //public async Task<IActionResult> DeleteReview(string id, string returnUrl)
-        //{
-        //    var deleteResult = await this.productsService.DeleteReviewAsync(id);
-        //    if (deleteResult)
-        //    {
-        //        this.TempData["Alert"] = "Successfully deleted review.";
-        //    }
-        //    else
-        //    {
-        //        this.TempData["Error"] = "There was a problem deleting the review.";
-        //    }
-
-        //    return this.LocalRedirect(returnUrl);
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ProductCommentViewModel viewModel)
         {
-            //var createResult = await this.productsService.CreateReviewAsync<ProductCommentViewModel>(viewModel);
-
-            //if (createResult)
-            //{
-            //    this.TempData["Alert"] = "Successfully added product review.";
-            //}
-            //else
-            //{
-            //    this.TempData["Error"] = "There was a problem adding the product review.";
-            //}
-
-            //return this.RedirectToAction(nameof(this.ById), new { id = viewModel.Id });
-
             var comment = viewModel.Comment;
             var productId = viewModel.Id;
             var rating = viewModel.Rating;
@@ -132,7 +105,6 @@
         public IActionResult ById(int id)
         {
             var product = this.productsService.GetById<SingleProductViewModel>(id);
-            //product.Description = this.textService.TruncateAtWord(product.Description, 200);
             return this.View(product);
         }
     }
