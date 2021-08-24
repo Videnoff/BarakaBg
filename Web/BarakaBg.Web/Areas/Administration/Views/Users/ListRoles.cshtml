@@ -9,7 +9,31 @@
 
 @if (Model.Any())
 {
-    
+    <a asp-controller="Users" asp-action="CreateRole" class=" btn btn-primary mb-3" style="width: auto">
+        Add new Role
+    </a>
+
+    foreach (var role in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Role Id: @role.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    @role.Name
+                </h5>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-warning" asp-action="EditRole" asp-controller="Users", asp-route-id="@role.Id">
+                    Edit
+                </a>
+                <a href="#" class="btn btn-danger">
+                    Delete
+                </a>
+            </div>
+        </div>
+    }
 }
 else
 {
@@ -21,7 +45,7 @@ else
             <h5 class="card-title">
                 Use the button below to create a role
             </h5>
-            <a class="btn btn-primary" style="width: auto" asp-area="Identity" asp-page="/Account/Register">
+            <a class="btn btn-primary" style="width: auto" asp-controller="Users" asp-action="CreateRole">
                 Create Role
             </a>
         </div>
