@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BarakaBg.Data.Models.ApplicationRole>
+
+@{
+    this.ViewData["Title"] = "All Roles";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+
+@if (Model.Any())
+{
+    
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No roles created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a role
+            </h5>
+            <a class="btn btn-primary" style="width: auto" asp-area="Identity" asp-page="/Account/Register">
+                Create Role
+            </a>
+        </div>
+    </div>
+}

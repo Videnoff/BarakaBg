@@ -27,8 +27,8 @@
         {
             var user = new ApplicationUser()
             {
-                Email = "",
-                UserName = "",
+                Email = string.Empty,
+                UserName = string.Empty,
                 EmailConfirmed = true,
                 PhoneNumber = "9876543210",
             };

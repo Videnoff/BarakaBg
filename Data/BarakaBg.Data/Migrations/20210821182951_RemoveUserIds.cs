@@ -26,7 +26,7 @@
                 table: "ProductComments",
                 type: "nvarchar(450)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductComments_UserId",
