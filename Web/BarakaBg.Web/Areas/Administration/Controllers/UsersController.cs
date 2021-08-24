@@ -18,29 +18,11 @@
             this.userManager = userManager;
         }
 
-        [HttpGet("RegisteredUsers")]
-        public IActionResult RegisteredUsers()
+        [HttpGet]
+        public IActionResult ListUsers()
         {
-            var registeredUsers = new List<RegisteredUsersViewModel>();
-            var userDate = this.userManager
-                .Users
-                .OrderBy(x => x.CreatedOn)
-                .ToList()
-                .GroupBy(x => x.CreatedOn.ToString("dd-MMM-yyy", CultureInfo.InvariantCulture));
-
-            var usersCount = 0;
-
-            foreach (var user in userDate)
-            {
-                usersCount += user.Count();
-                registeredUsers.Add(new RegisteredUsersViewModel
-                {
-                    RegistrationDate = user.Key,
-                    UsersCount = usersCount,
-                });
-            }
-
-            return this.Json(registeredUsers);
+            var users = this.userManager.Users;
+            return this.View(users);
         }
     }
 }

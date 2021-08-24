@@ -1,0 +1,70 @@
+﻿@model IEnumerable<BarakaBg.Data.Models.ApplicationUser>
+
+<h1>@this.ViewData["Title"]</h1>
+
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" ari-expanded="false">
+        Manage
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <a asp-action="ListUsers" asp-controller="Users" class="dropdown-item">
+            Users
+        </a>
+        @*<a asp-action="ListRoles" asp-controller="Users" class="dropdown-item">
+                Roles
+            </a>*@
+    </div>
+</li>
+
+@if (Model.Any())
+{
+    <a asp-area="Identity" asp-page="/Account/Register" class=" btn btn-primary mb-3" style="width: auto">
+        Add new user
+    </a>
+
+    foreach (var user in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                User Id: @user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    @user.UserName
+                </h5>
+            </div>
+            <div class="card-header">
+                User Email: @user.Email
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    @user.Email
+                </h5>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-warning">
+                    Edit
+                </a>
+                <a href="#" class="btn btn-danger">
+                    Delete
+                </a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No users created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button bellow to create a user
+            </h5>
+            <a class="btn btn-primary" style="width: auto" asp-area="Identity" asp-page="/Account/Register">
+                Add new user
+            </a>
+        </div>
+    </div>
+}

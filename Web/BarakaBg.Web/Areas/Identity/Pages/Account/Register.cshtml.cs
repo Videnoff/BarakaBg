@@ -138,6 +138,11 @@
                     }
                     else
                     {
+                        if (this.User.IsInRole(GlobalConstants.AdministratorName))
+                        {
+                            return this.RedirectToAction("ListUsers", "Users", new {area = "Administration"});
+                        }
+
                         await this.signInManager.SignInAsync(user, isPersistent: false);
 
                         var bag = this.HttpContext.Session.GetObjectFromJson<List<ShoppingBagProductViewModel>>(
@@ -147,8 +152,7 @@
                         {
                             foreach (var product in bag)
                             {
-                                await this.shoppingBagService.AddProductAsync(true, this.HttpContext.Session, user.Id,
-                                    product.ProductId, product.Quantity);
+                                await this.shoppingBagService.AddProductAsync(true, this.HttpContext.Session, user.Id, product.ProductId, product.Quantity);
                             }
 
                             this.HttpContext.Session.Remove(GlobalConstants.SessionShoppingBagKey);
