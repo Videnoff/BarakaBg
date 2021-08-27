@@ -14,9 +14,9 @@
         <a asp-action="ListUsers" asp-controller="Users" class="dropdown-item">
             Users
         </a>
-        @*<a asp-action="ListRoles" asp-controller="Users" class="dropdown-item">
-                Roles
-            </a>*@
+        <a asp-action="ListRoles" asp-controller="Users" class="dropdown-item">
+            Roles
+        </a>
     </div>
 </li>
 
@@ -46,7 +46,7 @@
                 </h5>
             </div>
             <div class="card-footer">
-                <a href="#" class="btn btn-warning">
+                <a asp-action="EditUser" asp-controller="Users" asp-route-id="@user.Id" class="btn btn-warning">
                     Edit
                 </a>
                 <a href="#" class="btn btn-danger">

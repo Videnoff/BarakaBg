@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Areas\Administration\Views\Users\EditUser.cshtml" />
     <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +72,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\Administration\Views\Users\EditUser.cshtml" />
     <None Include="wwwroot\favicon.ico" />
   </ItemGroup>
 
@@ -79,5 +81,13 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Administration\Views\Users\EditUser.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\Administration\Views\Users\EditUser.cshtml" />
   </ItemGroup>
 </Project>
