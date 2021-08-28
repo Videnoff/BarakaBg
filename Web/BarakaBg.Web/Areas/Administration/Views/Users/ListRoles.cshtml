@@ -25,12 +25,27 @@
                 </h5>
             </div>
             <div class="card-footer">
-                <a class="btn btn-warning" asp-action="EditRole" asp-controller="Users", asp-route-id="@role.Id">
-                    Edit
-                </a>
-                <a href="#" class="btn btn-danger">
-                    Delete
-                </a>
+                <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
+                    <a class="btn btn-warning" asp-action="EditRole" asp-controller="Users", asp-route-id="@role.Id">
+                        Edit
+                    </a>
+                    <span id="confirmDeleteSpan_@role.Id" style="display: none">
+                        <span>
+                            Are you sure you want to delete?
+                        </span>
+                        <button type="submit" class="btn btn-danger">
+                            Yes
+                        </button>
+                        <a href="#" class="btn btn-primary" onclick="confirmDelete('@role.Id', false)">
+                            No
+                        </a>
+                    </span>
+                    <span id="deleteSpan_@role.Id">
+                        <a href="#" class="btn btn-danger" onclick="confirmDelete('@role.Id', true)">
+                            Delete
+                        </a>
+                    </span>
+                </form>
             </div>
         </div>
     }
@@ -50,4 +65,8 @@ else
             </a>
         </div>
     </div>
+}
+
+@section Scripts {
+    <script src="~/js/CutomScript.js"></script>
 }
