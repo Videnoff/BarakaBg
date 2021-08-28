@@ -1,4 +1,7 @@
-﻿namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿using BarakaBg.Data.Common.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System.Collections.Generic;
     using System.Globalization;
@@ -14,13 +17,16 @@
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
 
         public UsersController(
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> roleManager,
+            IDeletableEntityRepository<ApplicationUser> usersRepository)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.usersRepository = usersRepository;
         }
 
         [HttpGet]
@@ -86,6 +92,40 @@
                 }
 
                 return this.View(model);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await this.userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                this.ViewBag.ErrorMessage = $"User with Id = {id} cannot be found!";
+                return this.NotFound();
+            }
+            else
+            {
+                var result = await this.userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return this.RedirectToAction("ListUsers");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    this.ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                //await this.usersRepository
+                //    .All()
+                //    .Include(p => p.ShoppingBag)
+                //    .Include(p => p.WishListProducts)
+                //    .FirstOrDefaultAsync(m => m.Id == id);
+
+                return this.View("ListUsers");
             }
         }
 
