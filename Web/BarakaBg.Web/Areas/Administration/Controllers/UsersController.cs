@@ -31,78 +31,6 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ManageUserClaims(string userId)
-        {
-            var user = await this.userManager.FindByIdAsync(userId);
-
-            if (user == null)
-            {
-                this.ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found!";
-                return this.NotFound();
-            }
-
-            var existingUserClaims = await this.userManager.GetClaimsAsync(user);
-
-            var model = new UserClaimsViewModel
-            {
-                UserId = userId,
-            };
-
-            foreach (var claim in ClaimsStore.AllClaims)
-            {
-                var userClaim = new UserClaim
-                {
-                    ClaimType = claim.Type,
-                };
-
-                /*
-                 * If the user has the claim, ser IsSelected property to true, so the checkbox next to the claim is checked on the UI
-                 */
-                if (existingUserClaims.Any(x => x.Type == claim.Type))
-                {
-                    userClaim.IsSelected = true;
-                }
-
-                model.Claims.Add(userClaim);
-            }
-
-            return this.View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ManageUserClaims(UserClaimsViewModel model)
-        {
-            var user = await userManager.FindByIdAsync(model.UserId);
-
-            if (user == null)
-            {
-                this.ViewBag.ErrorMessage = $"User with Id = {model.UserId} cannot be found!";
-                return this.NotFound();
-            }
-
-            var claims = await this.userManager.GetClaimsAsync(user);
-            var result = await this.userManager.RemoveClaimsAsync(user, claims);
-
-            if (!result.Succeeded)
-            {
-                this.ModelState.AddModelError(string.Empty, "Cannot remove user existing claims");
-                return this.View();
-            }
-
-            result = await this.userManager.AddClaimsAsync(user, model.Claims
-                .Where(x => x.IsSelected)
-                .Select(c => new Claim(c.ClaimType, c.ClaimType)));
-
-            if (!result.Succeeded)
-            {
-                this.ModelState.AddModelError(string.Empty, "Cannot add selected claims to user!");
-                return this.View();
-            }
-
-            return this.RedirectToAction("EditUser", new { Id = model.UserId });
-        }
-
-        [HttpGet]
         public IActionResult ListUsers()
         {
             var users = this.userManager.Users;
@@ -207,6 +135,75 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
         {
             var roles = this.roleManager.Roles;
             return this.View(roles);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles(string userId)
+        {
+            this.ViewBag.userId = userId;
+
+            var user = await this.userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                this.ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found!";
+                return this.NotFound();
+            }
+
+            var model = new List<UserRolesViewModel>();
+
+            foreach (var role in this.roleManager.Roles)
+            {
+                var userRolesViewModel = new UserRolesViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name,
+                };
+
+                if (await this.userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRolesViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRolesViewModel.IsSelected = false;
+                }
+
+                model.Add(userRolesViewModel);
+            }
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
+        {
+            var user = await this.userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                this.ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found!";
+                return this.NotFound();
+            }
+
+            var roles = await this.userManager.GetRolesAsync(user);
+            var result = await this.userManager.RemoveFromRolesAsync(user, roles);
+
+            if (!result.Succeeded)
+            {
+                this.ModelState.AddModelError(string.Empty, "Cannot remove user existing roles!");
+                return this.View(model);
+            }
+
+            result = await this.userManager.AddToRolesAsync(user, model.Where(x => x.IsSelected).Select(y => y.RoleName));
+
+            if (result.Succeeded)
+            {
+                this.ModelState.AddModelError(string.Empty, "Cannot add selected roles to user!");
+                return this.View(model);
+            }
+
+            return this.RedirectToAction("EditUser", new { Id = userId });
         }
 
         [HttpGet]
