@@ -1,5 +1,4 @@
-﻿using BarakaBg.Data.Common.Repositories;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Claims;
 
 namespace BarakaBg.Web.Areas.Administration.Controllers
 {
@@ -8,10 +7,12 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
     using System.Linq;
     using System.Threading.Tasks;
 
+    using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using BarakaBg.Web.ViewModels.Administration.Users;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
 
     public class UsersController : AdministrationController
     {
@@ -27,6 +28,78 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.usersRepository = usersRepository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims(string userId)
+        {
+            var user = await this.userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                this.ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found!";
+                return this.NotFound();
+            }
+
+            var existingUserClaims = await this.userManager.GetClaimsAsync(user);
+
+            var model = new UserClaimsViewModel
+            {
+                UserId = userId,
+            };
+
+            foreach (var claim in ClaimsStore.AllClaims)
+            {
+                var userClaim = new UserClaim
+                {
+                    ClaimType = claim.Type,
+                };
+
+                /*
+                 * If the user has the claim, ser IsSelected property to true, so the checkbox next to the claim is checked on the UI
+                 */
+                if (existingUserClaims.Any(x => x.Type == claim.Type))
+                {
+                    userClaim.IsSelected = true;
+                }
+
+                model.Claims.Add(userClaim);
+            }
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserClaims(UserClaimsViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                this.ViewBag.ErrorMessage = $"User with Id = {model.UserId} cannot be found!";
+                return this.NotFound();
+            }
+
+            var claims = await this.userManager.GetClaimsAsync(user);
+            var result = await this.userManager.RemoveClaimsAsync(user, claims);
+
+            if (!result.Succeeded)
+            {
+                this.ModelState.AddModelError(string.Empty, "Cannot remove user existing claims");
+                return this.View();
+            }
+
+            result = await this.userManager.AddClaimsAsync(user, model.Claims
+                .Where(x => x.IsSelected)
+                .Select(c => new Claim(c.ClaimType, c.ClaimType)));
+
+            if (!result.Succeeded)
+            {
+                this.ModelState.AddModelError(string.Empty, "Cannot add selected claims to user!");
+                return this.View();
+            }
+
+            return this.RedirectToAction("EditUser", new { Id = model.UserId });
         }
 
         [HttpGet]

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace BarakaBg.Web.ViewModels.Administration.Users
+﻿namespace BarakaBg.Web.ViewModels.Administration.Users
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class EditUserViewModel
     {
         public EditUserViewModel()
