@@ -7,6 +7,7 @@
         public static void GetIdentityOptions(IdentityOptions options)
         {
             options.SignIn.RequireConfirmedAccount = false;
+            options.SignIn.RequireConfirmedEmail = true;
             options.Password.RequireDigit = true;
             options.Password.RequireLowercase = true;
             options.Password.RequireUppercase = true;
