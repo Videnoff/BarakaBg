@@ -60,7 +60,6 @@
             //        address.Description = this.textService.TruncateAtWord(address.Description, 30);
             //    }
             //}
-
             var countries = this.countriesService.GetAll();
 
             var email = this.User.Identity.Name;

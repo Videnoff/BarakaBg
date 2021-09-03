@@ -103,6 +103,7 @@
         {
             returnUrl ??= this.Url.Content("~/");
             this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (this.ModelState.IsValid)
             {
                 var shoppingBag = new ShoppingBag();
@@ -140,23 +141,25 @@
                     {
                         if (this.User.IsInRole(GlobalConstants.AdministratorName))
                         {
-                            return this.RedirectToAction("ListUsers", "Users", new {area = "Administration"});
+                            return this.RedirectToAction("ListUsers", "Users", new { area = "Administration" });
                         }
 
-                        await this.signInManager.SignInAsync(user, isPersistent: false);
+                        //await this.signInManager.SignInAsync(user, isPersistent: false);
 
-                        var bag = this.HttpContext.Session.GetObjectFromJson<List<ShoppingBagProductViewModel>>(
-                            GlobalConstants.SessionShoppingBagKey);
+                        //ViewBag.ErrorTitle = "Registration successful";
 
-                        if (bag != null)
-                        {
-                            foreach (var product in bag)
-                            {
-                                await this.shoppingBagService.AddProductAsync(true, this.HttpContext.Session, user.Id, product.ProductId, product.Quantity);
-                            }
+                        //var bag = this.HttpContext.Session.GetObjectFromJson<List<ShoppingBagProductViewModel>>(
+                        //    GlobalConstants.SessionShoppingBagKey);
 
-                            this.HttpContext.Session.Remove(GlobalConstants.SessionShoppingBagKey);
-                        }
+                        //if (bag != null)
+                        //{
+                        //    foreach (var product in bag)
+                        //    {
+                        //        await this.shoppingBagService.AddProductAsync(true, this.HttpContext.Session, user.Id, product.ProductId, product.Quantity);
+                        //    }
+
+                        //    this.HttpContext.Session.Remove(GlobalConstants.SessionShoppingBagKey);
+                        //}
 
                         return this.LocalRedirect(returnUrl);
                     }

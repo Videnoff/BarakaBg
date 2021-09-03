@@ -1,10 +1,9 @@
-﻿using System.Security.Claims;
-
-namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     using BarakaBg.Data.Common.Repositories;
@@ -125,7 +124,6 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
                 //    .Include(p => p.ShoppingBag)
                 //    .Include(p => p.WishListProducts)
                 //    .FirstOrDefaultAsync(m => m.Id == id);
-
                 return this.View("ListUsers");
             }
         }

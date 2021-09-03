@@ -26,6 +26,7 @@
                 {
                     UserName = this.adminUserName,
                     Email = this.adminUserName,
+                    EmailConfirmed = true,
                 };
 
                 var result = await userManager.CreateAsync(user, "Px/Y@+TPPYggfVO!g;8U");

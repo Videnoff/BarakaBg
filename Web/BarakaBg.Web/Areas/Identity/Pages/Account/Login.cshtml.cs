@@ -93,7 +93,7 @@
             {
                 var user = await this.userManager.FindByEmailAsync(this.Input.Email);
 
-                if (user != null && !user.EmailConfirmed && await this.userManager.CheckPasswordAsync(user, this.Input.Password))
+                if (user != null && !user.EmailConfirmed && (await this.userManager.CheckPasswordAsync(user, this.Input.Password)))
                 {
                     this.ModelState.AddModelError(string.Empty, "Email not confirmed yet!");
                     return this.Page();
@@ -102,6 +102,7 @@
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await this.signInManager.PasswordSignInAsync(this.Input.Email, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
                     this.logger.LogInformation("User logged in.");

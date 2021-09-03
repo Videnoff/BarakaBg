@@ -110,7 +110,6 @@
             //    input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
             //    return this.View(input);
             //}
-
             await this.productsService.CreateAsync<CreateProductInputModel>(input, input.UploadedImages, this.fullDirectoryPath, this.environment.WebRootPath);
 
             this.TempData["Message"] = "Product added successfully.";
@@ -251,7 +250,6 @@
 
         //    return this.LocalRedirect(returnUrl);
         //}
-
         [HttpPost]
         public async Task<IActionResult> SendToEmail(int id)
         {

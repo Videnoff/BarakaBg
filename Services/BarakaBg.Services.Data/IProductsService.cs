@@ -20,7 +20,6 @@
         public IEnumerable<T> GetNewest<T>(int productsToTake);
 
         //public IEnumerable<T> GetTopRated<T>(int productsToTake);
-
         int GetCount();
 
         T GetById<T>(int id);
@@ -34,7 +33,6 @@
         public Task<bool> UndeleteAsync(int id);
 
         //public Task<bool> DeleteReviewAsync(string id);
-
         public IEnumerable<T> GetAllDeleted<T>();
 
         public bool HasProduct(int id);

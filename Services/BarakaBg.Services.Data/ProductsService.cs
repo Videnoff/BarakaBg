@@ -206,7 +206,6 @@
 
         //    return true;
         //}
-
         public IEnumerable<T> GetAllDeleted<T>() =>
             this.productsRepository
                 .AllAsNoTrackingWithDeleted()
