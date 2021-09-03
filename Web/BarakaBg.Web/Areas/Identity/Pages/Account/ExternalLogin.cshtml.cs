@@ -86,6 +86,20 @@
                 return this.RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            ApplicationUser user = null;
+
+            if (email != null)
+            {
+                user = await this.userManager.FindByEmailAsync(email);
+
+                if (user != null && !user.EmailConfirmed)
+                {
+                    this.ModelState.AddModelError(string.Empty, "Email not confirmed yet!");
+                    return this.RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                }
+            }
+
             // Sign in the user with this external login provider if the user already has a login.
             var result = await this.signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
@@ -127,6 +141,20 @@
                 this.ErrorMessage = "Error loading external login information during confirmation.";
                 return this.RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
+
+            //var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            //ApplicationUser user = null;
+
+            //if (email != null)
+            //{
+            //    user = await this.userManager.FindByEmailAsync(email);
+
+            //    if (user != null && !user.EmailConfirmed)
+            //    {
+            //        this.ModelState.AddModelError(string.Empty, "Email not confirmed yet!");
+            //        return this.RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+            //    }
+            //}
 
             if (this.ModelState.IsValid)
             {
