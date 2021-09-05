@@ -10,9 +10,9 @@
     using System.Threading.Tasks;
 
     using BarakaBg.Data.Models;
+    using BarakaBg.Services.Messaging;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
@@ -30,12 +30,13 @@
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            Services.Messaging.IEmailSender emailSender1)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.logger = logger;
-            this.emailSender = emailSender;
+            this.emailSender = emailSender1;
         }
 
         [BindProperty]
@@ -95,7 +96,7 @@
 
                 if (user != null && !user.EmailConfirmed)
                 {
-                    this.ModelState.AddModelError(string.Empty, "Email not confirmed yet!");
+                    this.ErrorMessage = "Email not confirmed yet!";
                     return this.RedirectToPage("./Login", new { ReturnUrl = returnUrl });
                 }
             }
@@ -180,10 +181,21 @@
                         var callbackUrl = this.Url.Page(
                             "/Account/ConfirmEmail",
                             pageHandler: null,
-                            values: new { area = "Identity", userId = userId, code = code },
+                            values: new
+                                {
+                                    area = "Identity",
+                                    userId = userId,
+                                    code = code,
+
+                                },
                             protocol: this.Request.Scheme);
 
-                        await this.emailSender.SendEmailAsync(this.Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        await this.emailSender.SendEmailAsync(
+                            "videnoff@students.softuni.bg",
+                            "BarakaBg",
+                            this.Input.Email,
+                            "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (this.userManager.Options.SignIn.RequireConfirmedAccount)
@@ -191,7 +203,7 @@
                             return this.RedirectToPage("./RegisterConfirmation", new { Email = this.Input.Email });
                         }
 
-                        await this.signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                        //await this.signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
 
                         return this.LocalRedirect(returnUrl);
                     }

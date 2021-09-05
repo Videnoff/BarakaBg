@@ -128,7 +128,13 @@
                     var callbackUrl = this.Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new
+                        {
+                            area = "Identity",
+                            userId = user.Id,
+                            code = code,
+                            returnUrl = returnUrl,
+                        },
                         protocol: this.Request.Scheme);
 
                     await this.emailSender.SendEmailAsync(this.Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -146,22 +152,22 @@
 
                         //await this.signInManager.SignInAsync(user, isPersistent: false);
 
-                        //ViewBag.ErrorTitle = "Registration successful";
+                        var bag = this.HttpContext.Session.GetObjectFromJson<List<ShoppingBagProductViewModel>>(
+                            GlobalConstants.SessionShoppingBagKey);
 
-                        //var bag = this.HttpContext.Session.GetObjectFromJson<List<ShoppingBagProductViewModel>>(
-                        //    GlobalConstants.SessionShoppingBagKey);
+                        if (bag != null)
+                        {
+                            foreach (var product in bag)
+                            {
+                                await this.shoppingBagService.AddProductAsync(true, this.HttpContext.Session, user.Id, product.ProductId, product.Quantity);
+                            }
 
-                        //if (bag != null)
-                        //{
-                        //    foreach (var product in bag)
-                        //    {
-                        //        await this.shoppingBagService.AddProductAsync(true, this.HttpContext.Session, user.Id, product.ProductId, product.Quantity);
-                        //    }
+                            this.HttpContext.Session.Remove(GlobalConstants.SessionShoppingBagKey);
+                        }
 
-                        //    this.HttpContext.Session.Remove(GlobalConstants.SessionShoppingBagKey);
-                        //}
+                        return this.RedirectToPage("./RegisterConfirmation", new {ReturnUrl = returnUrl});
 
-                        return this.LocalRedirect(returnUrl);
+                        //return this.LocalRedirect(returnUrl);
                     }
                 }
 
