@@ -59,9 +59,15 @@
 #pragma warning disable SA1305 // Field names should not use Hungarian notation
                 .AddMicrosoftAccount(msOptions =>
 #pragma warning restore SA1305 // Field names should not use Hungarian notation
+                    //{
+                    //    msOptions.ClientId = this.configuration["Authentication:Microsoft:ClientId"];
+                    //    msOptions.ClientSecret = this.configuration["Authentication:Microsoft:ClientSecret"];
+                    //});
                 {
-                    msOptions.ClientId = this.configuration["Authentication:Microsoft:ClientId"];
-                    msOptions.ClientSecret = this.configuration["Authentication:Microsoft:ClientSecret"];
+                    IConfigurationSection microsoftAuthNSection = this.configuration.GetSection("Authentication:Microsoft");
+
+                    msOptions.ClientId = microsoftAuthNSection["ClientId"];
+                    msOptions.ClientSecret = microsoftAuthNSection["ClientSecret"];
                 });
 
             services.Configure<CookiePolicyOptions>(

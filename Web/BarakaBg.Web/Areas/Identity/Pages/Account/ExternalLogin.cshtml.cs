@@ -205,7 +205,9 @@
 
                         //await this.signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
 
-                        return this.LocalRedirect(returnUrl);
+                        return this.RedirectToPage("./RegisterConfirmation", new { Email = this.Input.Email });
+
+                        //return this.LocalRedirect(returnUrl);
                     }
                 }
 
