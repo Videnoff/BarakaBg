@@ -9,6 +9,7 @@
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
+    using BarakaBg.Common;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Messaging;
     using Microsoft.AspNetCore.Authorization;
@@ -192,7 +193,7 @@
 
                         await this.emailSender.SendEmailAsync(
                             "videnoff@students.softuni.bg",
-                            "BarakaBg",
+                            GlobalConstants.SystemName,
                             this.Input.Email,
                             "Confirm your email",
                             $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

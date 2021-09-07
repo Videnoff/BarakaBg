@@ -14,14 +14,14 @@
     public class ExternalLoginsModel : PageModel
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
         public ExternalLoginsModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
-            this._signInManager = signInManager;
+            this.signInManager = signInManager;
         }
 
         public IList<UserLoginInfo> CurrentLogins { get; set; }
@@ -42,7 +42,7 @@
             }
 
             this.CurrentLogins = await this.userManager.GetLoginsAsync(user);
-            this.OtherLogins = (await this._signInManager.GetExternalAuthenticationSchemesAsync())
+            this.OtherLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync())
                 .Where(auth => this.CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
                 .ToList();
             this.ShowRemoveButton = user.PasswordHash != null || this.CurrentLogins.Count > 1;
@@ -64,7 +64,7 @@
                 return this.RedirectToPage();
             }
 
-            await this._signInManager.RefreshSignInAsync(user);
+            await this.signInManager.RefreshSignInAsync(user);
             this.StatusMessage = "The external login was removed.";
             return this.RedirectToPage();
         }
@@ -76,7 +76,7 @@
 
             // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = this.Url.Page("./ExternalLogins", pageHandler: "LinkLoginCallback");
-            var properties = this._signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, this.userManager.GetUserId(this.User));
+            var properties = this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, this.userManager.GetUserId(this.User));
             return new ChallengeResult(provider, properties);
         }
 
@@ -88,7 +88,7 @@
                 return this.NotFound($"Unable to load user with ID 'user.Id'.");
             }
 
-            var info = await this._signInManager.GetExternalLoginInfoAsync(user.Id);
+            var info = await this.signInManager.GetExternalLoginInfoAsync(user.Id);
             if (info == null)
             {
                 throw new InvalidOperationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");

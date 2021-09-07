@@ -11,12 +11,12 @@
     using BarakaBg.Data;
     using BarakaBg.Data.Models;
     using BarakaBg.Services.Data;
+    using BarakaBg.Services.Messaging;
     using BarakaBg.Web.Infrastructure;
     using BarakaBg.Web.ViewModels.Products;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
@@ -137,7 +137,12 @@
                         },
                         protocol: this.Request.Scheme);
 
-                    await this.emailSender.SendEmailAsync(this.Input.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await this.emailSender.SendEmailAsync(
+                        "videnoff@students.softuni.bg",
+                        GlobalConstants.SystemName,
+                        this.Input.Email,
+                        "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (this.userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -165,7 +170,9 @@
                             this.HttpContext.Session.Remove(GlobalConstants.SessionShoppingBagKey);
                         }
 
-                        return this.RedirectToPage("./RegisterConfirmation", new {ReturnUrl = returnUrl});
+                        //return this.RedirectToPage("./RegisterConfirmation", new {ReturnUrl = returnUrl});
+
+                        return this.RedirectToPage("./RegisterConfirmation", new { Email = this.Input.Email });
 
                         //return this.LocalRedirect(returnUrl);
                     }
