@@ -54,6 +54,5 @@ namespace BarakaBg.Data.Models
         public string ShoppingBagId { get; set; }
 
         public virtual ShoppingBag ShoppingBag { get; set; }
-
     }
 }

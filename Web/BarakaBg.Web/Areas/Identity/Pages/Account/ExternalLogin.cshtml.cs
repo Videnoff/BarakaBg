@@ -187,7 +187,6 @@
                                     area = "Identity",
                                     userId = userId,
                                     code = code,
-
                                 },
                             protocol: this.Request.Scheme);
 
