@@ -70,6 +70,11 @@
                     msOptions.ClientSecret = microsoftAuthNSection["ClientSecret"];
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+            });
+
             services.Configure<CookiePolicyOptions>(
                 options =>
                     {

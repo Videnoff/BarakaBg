@@ -1,4 +1,6 @@
-﻿namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System.Collections.Generic;
     using System.Globalization;
@@ -452,6 +454,7 @@
         }
 
         [HttpPost]
+        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string id)
         {
             var role = await this.roleManager.FindByIdAsync(id);
