@@ -4,6 +4,7 @@
     using System.Reflection;
 
     using Azure.Storage.Blobs;
+    using BarakaBg.Common;
     using BarakaBg.Data;
     using BarakaBg.Data.Common;
     using BarakaBg.Data.Common.Repositories;
@@ -14,7 +15,10 @@
     using BarakaBg.Services.Data;
     using BarakaBg.Services.Mapping;
     using BarakaBg.Services.Messaging;
+    using BarakaBg.Web.Areas.Administration.Security;
     using BarakaBg.Web.ViewModels;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -46,6 +50,8 @@
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<DataProtectionTokenProviderOptions>(x => x.TokenLifespan = TimeSpan.FromHours(5));
+
             services.AddAuthentication()
 #pragma warning disable SA1305 // Field names should not use Hungarian notation
                 .AddGoogle(ggOptions =>
@@ -72,7 +78,18 @@
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+                options.AddPolicy(
+                    "CreateRolePolicy",
+                    policy => policy.RequireClaim("Create Role", "true"));
+                options.AddPolicy(
+                    "DeleteRolePolicy",
+                    policy => policy.RequireClaim("Delete Role", "true"));
+                options.AddPolicy(
+                    "EditRolePolicy",
+                    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+                options.AddPolicy(
+                    "AdminRolePolicy",
+                    policy => policy.RequireRole("Administrator"));
             });
 
             services.Configure<CookiePolicyOptions>(
@@ -133,6 +150,7 @@
             services.AddTransient<IImagesService, ImagesService>();
             services.AddTransient<IIngredientsService, IngredientsService>();
             services.AddTransient<IBarakaBgScraperService, BarakaBgScraperService>();
+            services.AddSingleton<IAuthorizationHandler, CanEditOnlyAdminRolesAndClaimsHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

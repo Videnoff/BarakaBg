@@ -1,4 +1,7 @@
-﻿@model IEnumerable<BarakaBg.Data.Models.ApplicationRole>
+﻿@using Microsoft.AspNetCore.Authorization
+@model IEnumerable<BarakaBg.Data.Models.ApplicationRole>
+
+@inject IAuthorizationService authorizationService;
 
 @{
     this.ViewData["Title"] = "All Roles";
@@ -26,9 +29,12 @@
             </div>
             <div class="card-footer">
                 <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
-                    <a class="btn btn-warning" asp-action="EditRole" asp-controller="Users", asp-route-id="@role.Id">
-                        Edit
-                    </a>
+                    @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                    {
+                        <a class="btn btn-warning" asp-action="EditRole" asp-controller="Users" , asp-route-id="@role.Id">
+                            Edit
+                        </a>
+                    }
                     <span id="confirmDeleteSpan_@role.Id" style="display: none">
                         <span>
                             Are you sure you want to delete?

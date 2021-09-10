@@ -1,21 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace BarakaBg.Web.Areas.Administration.Controllers
+﻿namespace BarakaBg.Web.Areas.Administration.Controllers
 {
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using BarakaBg.Data.Common;
     using BarakaBg.Data.Common.Repositories;
     using BarakaBg.Data.Models;
     using BarakaBg.Data.Models.Claims;
     using BarakaBg.Web.ViewModels.Administration.Users;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
 
     public class UsersController : AdministrationController
     {
@@ -58,7 +54,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
                     ClaimType = claim.Type,
                 };
 
-                if (existingUserClaims.Any(x => x.Type == claim.Type))
+                if (existingUserClaims.Any(x => x.Type == claim.Type && x.Value == "true"))
                 {
                     userClaim.IsSelected = true;
                 }
@@ -91,10 +87,8 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
             }
 
             // Add all the claims that are selected on the UI
-            result = await this.userManager.AddClaimsAsync(user,
-                model.UserClaims
-                    .Where(c => c.IsSelected)
-                    .Select(c => new Claim(c.ClaimType, c.ClaimType)));
+            result = await this.userManager.AddClaimsAsync(user, model.UserClaims
+                    .Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")));
 
             if (!result.Succeeded)
             {
@@ -132,7 +126,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
                 Email = user.Email,
                 Username = user.UserName,
                 City = user.Town,
-                Claims = userClaims.Select(x => x.Value).ToList(),
+                Claims = userClaims.Select(x => x.Type + " : " + x.Value).ToList(),
                 Roles = userRoles,
             };
 
@@ -212,6 +206,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             this.ViewBag.userId = userId;
@@ -250,6 +245,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await this.userManager.FindByIdAsync(userId);
@@ -271,7 +267,7 @@ namespace BarakaBg.Web.Areas.Administration.Controllers
 
             result = await this.userManager.AddToRolesAsync(user, model.Where(x => x.IsSelected).Select(y => y.RoleName));
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
                 this.ModelState.AddModelError(string.Empty, "Cannot add selected roles to user!");
                 return this.View(model);
