@@ -151,6 +151,7 @@
             services.AddTransient<IIngredientsService, IngredientsService>();
             services.AddTransient<IBarakaBgScraperService, BarakaBgScraperService>();
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyAdminRolesAndClaimsHandler>();
+            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

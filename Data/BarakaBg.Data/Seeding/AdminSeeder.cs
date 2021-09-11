@@ -10,7 +10,7 @@
 
     public class AdminSeeder : ISeeder
     {
-        private string adminUserName = "admin@baraka.bg";
+        private string adminUsername = "admin@baraka.bg";
 
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
@@ -20,12 +20,12 @@
 
         private async Task SeedRoleAsync(UserManager<ApplicationUser> userManager, string administratorRoleName)
         {
-            if (userManager.FindByNameAsync(this.adminUserName).Result == null)
+            if (userManager.FindByNameAsync(this.adminUsername).Result == null)
             {
                 var user = new ApplicationUser
                 {
-                    UserName = this.adminUserName,
-                    Email = this.adminUserName,
+                    UserName = this.adminUsername,
+                    Email = this.adminUsername,
                     EmailConfirmed = true,
                 };
 
