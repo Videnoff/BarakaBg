@@ -1,4 +1,7 @@
-﻿namespace BarakaBg.Data.Seeding
+﻿using BarakaBg.Data.Models.Credentials;
+using Microsoft.Extensions.Options;
+
+namespace BarakaBg.Data.Seeding
 {
     using System;
     using System.Threading.Tasks;
@@ -10,30 +13,35 @@
 
     public class AdminSeeder : ISeeder
     {
-        private string adminUsername = "admin@baraka.bg";
+        private readonly AdminCredentials adminCredentials;
+
+        public AdminSeeder(AdminCredentials adminCredentials)
+        {
+            this.adminCredentials = adminCredentials;
+        }
 
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            await this.SeedRoleAsync(userManager, GlobalConstants.AdministratorName);
+            await this.SeedRoleAsync(userManager, this.adminCredentials);
         }
 
-        private async Task SeedRoleAsync(UserManager<ApplicationUser> userManager, string administratorRoleName)
+        private async Task SeedRoleAsync(UserManager<ApplicationUser> userManager, AdminCredentials adminCredentials)
         {
-            if (userManager.FindByNameAsync(this.adminUsername).Result == null)
+            if (userManager.FindByNameAsync(this.adminCredentials.Username).Result == null)
             {
-                var user = new ApplicationUser
+                var admin = new ApplicationUser
                 {
-                    UserName = this.adminUsername,
-                    Email = this.adminUsername,
+                    UserName = this.adminCredentials.Username,
+                    Email = this.adminCredentials.Username,
                     EmailConfirmed = true,
                 };
 
-                var result = await userManager.CreateAsync(user, "Px/Y@+TPPYggfVO!g;8U");
+                var result = await userManager.CreateAsync(admin, this.adminCredentials.Password);
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, administratorRoleName);
+                    await userManager.AddToRoleAsync(admin, GlobalConstants.AdministratorName);
                 }
             }
         }

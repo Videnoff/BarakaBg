@@ -1,4 +1,6 @@
-﻿namespace BarakaBg.Web
+﻿using BarakaBg.Data.Models.Credentials;
+
+namespace BarakaBg.Web
 {
     using System;
     using System.Reflection;
@@ -65,10 +67,6 @@
 #pragma warning disable SA1305 // Field names should not use Hungarian notation
                 .AddMicrosoftAccount(msOptions =>
 #pragma warning restore SA1305 // Field names should not use Hungarian notation
-                    //{
-                    //    msOptions.ClientId = this.configuration["Authentication:Microsoft:ClientId"];
-                    //    msOptions.ClientSecret = this.configuration["Authentication:Microsoft:ClientSecret"];
-                    //});
                 {
                     IConfigurationSection microsoftAuthNSection = this.configuration.GetSection("Authentication:Microsoft");
 
@@ -91,6 +89,8 @@
                     "AdminRolePolicy",
                     policy => policy.RequireRole("Administrator"));
             });
+
+            services.Configure<AdminCredentials>(this.configuration.GetSection("Admin"));
 
             services.Configure<CookiePolicyOptions>(
                 options =>
@@ -164,7 +164,16 @@
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 dbContext.Database.Migrate();
-                new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+                var adminCredentials = new AdminCredentials
+                {
+                    Username = this.configuration["AdminCredentials:Username"],
+                    Password = this.configuration["AdminCredentials:Password"],
+                };
+
+                new ApplicationDbContextSeeder(adminCredentials)
+                    .SeedAsync(dbContext, serviceScope.ServiceProvider)
+                    .GetAwaiter()
+                    .GetResult();
             }
 
             if (env.IsDevelopment())

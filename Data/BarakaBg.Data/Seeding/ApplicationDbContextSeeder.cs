@@ -1,4 +1,7 @@
-﻿namespace BarakaBg.Data.Seeding
+﻿using BarakaBg.Data.Models.Credentials;
+using Microsoft.Extensions.Options;
+
+namespace BarakaBg.Data.Seeding
 {
     using System;
     using System.Collections.Generic;
@@ -10,6 +13,13 @@
 
     public class ApplicationDbContextSeeder : ISeeder
     {
+        private readonly AdminCredentials adminCredentials;
+
+        public ApplicationDbContextSeeder(AdminCredentials adminCredentials)
+        {
+            this.adminCredentials = adminCredentials;
+        }
+
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (dbContext == null)
@@ -29,7 +39,7 @@
                               new RolesSeeder(),
                               new CategoriesSeeder(),
                               new CountriesSeeder(),
-                              new AdminSeeder(),
+                              new AdminSeeder(this.adminCredentials),
                           };
 
             foreach (var seeder in seeders)
